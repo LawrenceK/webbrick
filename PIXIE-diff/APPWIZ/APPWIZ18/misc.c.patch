@@ -1,0 +1,16 @@
+--- /home/lawrence/webbrick/webbrick/PIXIE/APPWIZ/APPWIZ18/Misc.c
++++ /home/lawrence/webbrick/andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Misc.c
+@@ -9,13 +9,11 @@
+ 	  	  ElCnt=ElCnt-1
+ 	 	 endw
+ 		endm
+-		module
+ InitEdge::
+ 		ElCnt=(_EdgenCopy-1)/8+1	;Edge Detector
+ 		movlw H'FF'
+ 		MCLREDGE
+ 		MRET 0
+-		endmodule
+ #pragma asmend
+ #endif
+ #ifdef EdgeUsed		// %% - flag to show code repeated for each instance

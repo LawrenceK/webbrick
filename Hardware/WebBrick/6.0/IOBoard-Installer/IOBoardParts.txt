@@ -1,0 +1,114 @@
+Partlist
+
+Exported from IOBoard-6-64.sch at 02/05/2007 16:11:28 
+
+EAGLE Version 4.13 Copyright (c) 1988-2004 CadSoft
+
+Part     Value                Device              Package   Library           Sheet
+
+C1       1nF                  C-EUC1206           C1206     rcl               1
+C2       1nF                  C-EUC1206           C1206     rcl               1
+C3       1nF                  C-EUC1206           C1206     rcl               1
+C4       1nF                  C-EUC1206           C1206     rcl               1
+C5       1nF                  C-EUC1206           C1206     rcl               1
+C6       1nF                  C-EUC1206           C1206     rcl               1
+C7       1nF                  C-EUC1206           C1206     rcl               1
+C8       1nF                  C-EUC1206           C1206     rcl               1
+C9       10nF                 C-EUC1206           C1206     rcl               1
+C10      10nF                 C-EUC1206           C1206     rcl               1
+C11      1nF                  C-EUC1206           C1206     rcl               1
+C12      1nF                  C-EUC1206           C1206     rcl               1
+C13      1nF                  C-EUC1206           C1206     rcl               1
+C14      1nF                  C-EUC1206           C1206     rcl               1
+C15      1nF                  C-EUC1206           C1206     rcl               1
+C16      1nF                  C-EUC1206           C1206     rcl               1
+C17      1nF                  C-EUC1206           C1206     rcl               1
+C18      1nF                  C-EUC1206           C1206     rcl               1
+C19      1nF                  C-EUC1206           C1206     rcl               1
+C20      1nF                  C-EUC1206           C1206     rcl               1
+C21      1nF                  C-EUC1206           C1206     rcl               1
+C22      1nF                  C-EUC1206           C1206     rcl               1
+C23      1nF                  C-EUC1206           C1206     rcl               1
+C24      1nF                  C-EUC1206           C1206     rcl               1
+C25      1nF                  C-EUC1206           C1206     rcl               1
+C26      1nF                  C-EUC1206K          C1206K    rcl               1
+C27      1nF                  C-EUC1206           C1206     rcl               1
+C28      1nF                  C-EUC1206           C1206     rcl               1
+C29      1nF                  C-EUC1206           C1206     rcl               1
+C30      1nF                  C-EUC1206           C1206     rcl               1
+C31      1nF                  C-EUC1206K          C1206K    rcl               1
+C32      1nF                  C-EUC1206K          C1206K    rcl               1
+C33      1nF                  C-EUC1206K          C1206K    rcl               1
+C34      1nF                  C-EUC1206K          C1206K    rcl               1
+C37      100nF                C-EUC1206           C1206     rcl               1
+C38      10uF                 CP-3216             3216/T    cap-master        1
+C39      100nF                C-EUC1206           C1206     rcl               1
+C40      100nF                C-EUC1206           C1206     rcl               1
+C41      100nF                C-EUC1206           C1206     rcl               1
+C42      100nF                C-EUC1206           C1206     rcl               1
+C43      100nF                C-EUC1206           C1206     rcl               1
+D1       2A Max               DIODE-DO214BA       DO-214BA  diode             1
+D2                            SCHOTTKY-DIODE      SOD123    diode             1
+DRV1     MOC3042              OPTRIAC             DIL06     my-optocoupler    1
+DRV2     MOC3042              OPTRIAC             DIL06     my-optocoupler    1
+DRV3     MOC3042              OPTRIAC             DIL06     my-optocoupler    1
+DRV4     MOC3042              OPTRIAC             DIL06     my-optocoupler    1
+F1       Farnell 146-123      SHK20L              SHK20L    fuse              1
+IC1      Farnell 1329-620     UDN2981AD           SO20W     uln-udn           1
+IC2      ADM485               MAX481CSA           SO08      maxim             1
+IC3      MAX3221CUE           MAX3221CUE          TSSOP16   maxim-8           1
+K1       Farnell 1094-066     G2R2                G2R2      relay             1
+K2       Farnell 1094-066     G2R2                G2R2      relay             1
+Q1       FZT690B              FZT753SMD           SOT223    transistor-pnp    1
+R1       330R                 R-EU_M1206          M1206     rcl               1
+R2       330R                 R-EU_M1206          M1206     rcl               1
+R3       330R                 R-EU_M1206          M1206     rcl               1
+R4       330R                 R-EU_M1206          M1206     rcl               1
+R5       330R                 R-EU_M1206          M1206     rcl               1
+R6       330R                 R-EU_M1206          M1206     rcl               1
+R7       330R                 R-EU_M1206          M1206     rcl               1
+R8       330R                 R-EU_M1206          M1206     rcl               1
+R9       330R                 R-EU_M1206          M1206     rcl               1
+R10      330R                 R-EU_M1206          M1206     rcl               1
+R11      330R                 R-EU_M1206          M1206     rcl               1
+R12      330R                 R-EU_M1206          M1206     rcl               1
+R13      330R                 R-EU_M1206          M1206     rcl               1
+R14      330R                 R-EU_M1206          M1206     rcl               1
+R15      330R                 R-EU_M1206          M1206     rcl               1
+R16      330R                 R-EU_M1206          M1206     rcl               1
+R17      330R                 R-EU_M1206          M1206     rcl               1
+R18      330R                 R-EU_M1206          M1206     rcl               1
+R19      330R                 R-EU_M1206          M1206     rcl               1
+R20      330R                 R-EU_M1206          M1206     rcl               1
+R23      10K                  R-EU_R1206          R1206     rcl               1
+R24      100R                 R-EU_R1206          R1206     rcl               1
+R25      47K                  R-EU_R1206          R1206     rcl               1
+R26      47K                  R-EU_R1206          R1206     rcl               1
+R27      47K                  R-EU_R1206          R1206     rcl               1
+R28      47K                  R-EU_R1206          R1206     rcl               1
+R29      330R                 R-EU_M1206          M1206     rcl               1
+R30      330R                 R-EU_M1206          M1206     rcl               1
+R31      330R                 R-EU_M1206          M1206     rcl               1
+R32      330R                 R-EU_M1206          M1206     rcl               1
+R33      47K                  R-EU_M1206          M1206     rcl               1
+R34      47K                  R-EU_M1206          M1206     rcl               1
+R35      47K                  R-EU_M1206          M1206     rcl               1
+R36      47K                  R-EU_M1206          M1206     rcl               1
+R37      10K                  R-EU_R1206          R1206     rcl               1
+R38      10K                  R-EU_R1206          R1206     rcl               1
+R39      47K                  R-EU_R1206          R1206     rcl               1
+R40      47K                  R-EU_R1206          R1206     rcl               1
+SV1      2x20 Socket          MA20-2              MA20-2    con-lstb          1
+SV2      2x20 Socket          MA20-2              MA20-2    con-lstb          1
+T1                            BCW60-NPN-SOT23-BEC SOT23-BEC transistor        1
+T2                            BCW60-NPN-SOT23-BEC SOT23-BEC transistor        1
+U$1      MC 1,5/12-G-3,5      MC123.5PITCH        MC12-3.5  con-phoenix-381_l 1
+U$2      MC 1,5/12-G-3,5      MC123.5PITCH        MC12-3.5  con-phoenix-381_l 1
+U$3      BTA08-600CW          BTA08TO220AV        TO220AV   my-optocoupler    1
+U$4      BTA08-600CW          BTA08TO220AV        TO220AV   my-optocoupler    1
+U$5      BTA08-600CW          BTA08TO220AV        TO220AV   my-optocoupler    1
+U$6      BTA08-600CW          BTA08TO220AV        TO220AV   my-optocoupler    1
+U$7      MC 1,5/12-G-3,5      MC123.5PITCH        MC12-3.5  con-phoenix-381_l 1
+U$8      MC 1,5/12-G-3,5      MC123.5PITCH        MC12-3.5  con-phoenix-381_l 1
+X1       MSTBA 2,5/ 9-G-5,08  MSTBV9              MSTBV9    con-phoenix-508   1
+X2       MSTBA 2,5/ 9-G-5,08  MSTBV9              MSTBV9    con-phoenix-508   1

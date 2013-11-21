@@ -1,0 +1,29 @@
+EAGLE Version 4.13 Copyright (c) 1988-2004 CadSoft
+
+Electrical Rule Check for D:/EaglePCB/projects/WebBrick 6/WebBrick6-64 Development/DevAndDemo.sch at 05/12/2005 23:38:36 
+
+WARNING: Sheet 1/1: unconnected Pin: U$8G$4 1
+WARNING: Sheet 1/1: unconnected Pin: U$8G$5 1
+WARNING: Sheet 1/1: unconnected Pin: U$8G$6 1
+WARNING: Sheet 1/1: unconnected Pin: U$8G$7 1
+WARNING: Sheet 1/1: unconnected Pin: U$8G$8 1
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 OSC1/RA5
+WARNING: Sheet 1/1: POWER Pin IC1 VSS connected to GND
+WARNING: Sheet 1/1, Net GND: missing Junction at (5.2 0)
+WARNING: Sheet 1/1, Net GND: missing Junction at (6.8 0)
+WARNING: Sheet 1/1: Nets GND and N$69 too close at (6.8 -0.7)
+WARNING: Sheet 1/1: Nets GND and N$67 too close at (6.1 -0.7)
+WARNING: Sheet 1/1: Nets GND and N$68 too close at (6.6 -0.7)
+WARNING: Sheet 1/1, Net GND: close but unconnected wires at (7 0)
+WARNING: Sheet 1/1, Net N$5: wire overlaps pin at (4.75 0.4)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (4.75 0)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (6 0)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (5.4 0)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (6.6 -0.7)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (6.8 -0.7)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (6.1 -0.7)
+
+Board and schematic are consistent
+
+    1 errors
+   19 warnings

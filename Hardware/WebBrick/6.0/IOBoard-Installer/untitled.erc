@@ -1,0 +1,25 @@
+EAGLE Version 4.13 Copyright (c) 1988-2004 CadSoft
+
+Electrical Rule Check for D:/EaglePCB/projects/WebBrick 6/WebBrick 6.0 64 IO/untitled.sch at 31/08/2005 19:13:43 
+
+WARNING: Sheet 1/1: unconnected Pin: R4 2
+WARNING: Sheet 1/1: unconnected Pin: R6 1
+WARNING: Sheet 1/1: unconnected Pin: R1 2
+WARNING: Sheet 1/1: unconnected Pin: R3 1
+WARNING: Sheet 1/1: unconnected Pin: R7 2
+WARNING: Sheet 1/1: unconnected Pin: R9 1
+WARNING: Sheet 1/1: unconnected Pin: R10 2
+WARNING: Sheet 1/1: unconnected Pin: R12 1
+WARNING: Only 1 Pin on net N$8
+WARNING: Only 1 Pin on net N$10
+WARNING: Only 1 Pin on net N$15
+WARNING: Only 1 Pin on net N$20
+WARNING: Sheet 1/1, Net N$8: wire overlaps pin at (4.75 4.6)
+WARNING: Sheet 1/1, Net N$10: wire overlaps pin at (-0.15 4.6)
+WARNING: Sheet 1/1, Net N$15: wire overlaps pin at (2.05 4.6)
+WARNING: Sheet 1/1, Net N$20: wire overlaps pin at (7.05 4.6)
+
+No board loaded - consistency has not been checked
+
+    0 errors
+   16 warnings

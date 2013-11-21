@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<WebbrickStatus Ver="6.1.614">
+<Error>0</Error>
+<Context>2</Context>
+<LoginState>3</LoginState>
+
+<DI>0</DI>
+<DO>0</DO>
+<Clock>
+<Date>0/0/0</Date> 
+<Time>12:54:52</Time>
+<Day>3</Day>
+</Clock>
+
+<OWBus>1</OWBus>
+<Tmps>
+<Tmp id="1" lo="-800" hi="384">283</Tmp>
+<Tmp id="2" lo="-800" hi="1600">0</Tmp>
+<Tmp id="3" lo="-800" hi="1600">0</Tmp>
+<Tmp id="4" lo="-800" hi="1600">0</Tmp>
+<Tmp id="5" lo="-800" hi="1600">0</Tmp>
+</Tmps>
+
+<AOs>
+<AO id="0">0</AO>
+<AO id="1">0</AO>
+<AO id="2">0</AO>
+<AO id="3">0</AO>
+</AOs>
+<AIs>
+<AI id="0" lo="0" hi="100">1</AI>
+<AI id="1" lo="0" hi="100">0</AI>
+<AI id="2" lo="0" hi="100">0</AI>
+<AI id="3" lo="0" hi="100">0</AI>
+</AIs>
+</WebbrickStatus>

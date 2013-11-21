@@ -1,0 +1,13 @@
+wbFactoryTest.py factoryReset
+wbFactoryTest.py setConfiguration
+wbFactoryTest.py doSetClock
+wbFactoryTest.py testMimicVolts
+wbFactoryTest.py testDigitals
+wbFactoryTest.py testTemperature
+wbFactoryTest.py testAnalogue
+wbFactoryTest.py testSerial232OutOfWebBrick
+wbFactoryTest.py testSerial232InToWebBrick
+wbFactoryTest.py testSerial485OutOfWebBrick
+wbFactoryTest.py testSerial485InToWebBrick
+wbFactoryTest.py factoryReset
+wbFactoryTest.py checkTime

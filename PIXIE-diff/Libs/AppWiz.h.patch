@@ -1,0 +1,12 @@
+--- /home/lawrence/webbrick/webbrick/PIXIE/Libs/AppWiz.h
++++ /home/lawrence/webbrick/andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/AppWiz.h
+@@ -35,9 +35,6 @@
+ void SetPWM5Volts(unsigned int value);
+ #pragma asmfunc SetPWM1Volts
+ #pragma asmfunc SetPWM2Volts
+-#pragma asmfunc SetPWM3Volts
+-#pragma asmfunc SetPWM4Volts
+-#pragma asmfunc SetPWM5Volts
+ 
+ // Timer 0 extension
+ 

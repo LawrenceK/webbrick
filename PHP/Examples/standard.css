@@ -1,0 +1,100 @@
+.head {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; font-weight: bolder; text-transform: italic; color: #006600}
+.middle {text-align: CENTER; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small; font-weight: bolder; color: #006600}
+
+.gap {height: 30% ;font-size: small}
+.nav {text-align: CENTER; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small; font-weight: bolder; color: #88FF88}
+.left {text-align: LEFT; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small; font-weight: bolder; color: #88FF88}
+
+.isON  {text-align: LEFT; 
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: small; 
+	font-weight: bolder; 
+	color: #88FF88; 
+    border-style: solid;
+    border-bottom-color: #333333;
+    border-right-color: #555555;
+    border-left-color: #AACCAA;
+    border-top-color: #99EE99;
+	background-color: #BB0000}
+.isOFF {text-align: LEFT; 
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: small; 
+	font-weight: bolder; 
+	color: #88FF88;
+    border-style: solid;
+    border-bottom-color: #333333;
+    border-right-color: #555555;
+    border-left-color: #AACCAA;
+    border-top-color: #99EE99;
+	background-color: #085508}
+    
+.isONover  {text-align: LEFT; 
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: small; 
+	font-weight: bolder; 
+	color: #88FF88; 
+    border-style: solid;
+    border-bottom-color: #333333;
+    border-right-color: #555555;
+    border-left-color: #AACCAA;
+    border-top-color: #99EE99;
+	background-color: #888888}
+.isOFFover {text-align: LEFT; 
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: small; 
+	font-weight: bolder; 
+	color: #88FF88;
+    border-style: solid;
+    border-bottom-color: #333333;
+    border-right-color: #555555;
+    border-left-color: #AACCAA;
+    border-top-color: #99EE99;
+	background-color: #888888}
+
+.genBut {text-align: LEFT; 
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: small; 
+	font-weight: bolder; 
+	color: #88FF88;
+    border-style: solid;
+    border-bottom-color: #333333;
+    border-right-color: #555555;
+    border-left-color: #AACCAA;
+    border-top-color: #99EE99;
+	background-color: #228822}
+
+
+.sts {text-align: LEFT; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small; font-weight: bolder; color: #88FF88; background-color: #228822}
+.asts {text-align: LEFT; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small; font-weight: bolder; color: #88FF88; background-color: #006600}
+
+.tight{margin: 0px; padding: 0px; vertical-align: bottom}
+
+
+.TitleRight {text-align: RIGHT; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: xx-large; font-weight: bolder; font-style: italic; color: #BBFFBB}
+.midTitle {text-align: CENTER; 
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: large; 
+		font-weight: bolder; 
+		font-style: italic; 
+		color: #BBFFBB;
+		background-color: #228822}
+
+.midTitle2 {text-align: CENTER; 
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: medium ; 
+		font-weight: bolder; 
+		color: #BBFFBB;
+		background-color: #006600}
+		
+.wide {width: 100%}
+.line {
+	color: #00FF33;
+	font-size: 4pt;
+	border-bottom: 1 solid #FFFFFF;
+	border-top: 1 solid #FFFFFF;
+	background-color: #00FF66;
+}
+
+A:link {color: #AAFFAA; TEXT-DECORATION: none;; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small}
+A:visited {color: #AAFFAA; TEXT-DECORATION: none;; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small}
+A:hover{ color: #BBBBBB; TEXT-DECORATION: underline;; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: small}

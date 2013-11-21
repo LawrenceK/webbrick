@@ -1,0 +1,69 @@
+Cabling.
+========
+
+The factory test harness connects WebBrick  outputs to WebBrick inouts so that most 
+of the inputs/outputs can be tested automatically.
+
+As there are a large number of outputs there are two plugs (Plug A & Plug B) that connect 
+to the digital inputs, one from the Mimics and one from the digital outputs/open collector outputs.
+
+i) Connect Mimics 1-8 to Digital In 1-8 (Plug A)
+
+ii) Connect O/C output 1-4 to Digital input 1-4 Plug B. Also connect O/C 1-4 to 5V using a 
+Pullup resistor of between 1K and 10K.
+
+iii)Connect Digital outputs 5-8 to digital input 5-8 Plug B.
+
+iv) Connect Analogue outputs 1-4 to Analogue input 1-4 using a 1K resistor and also
+connect analogue input 1-4 to ground using a 1K resistor. This is to divide the analogue
+output by 2 as ii is 0-10V and the input is 0-5V.
+
+v) Connect all relay NO contacts to 5V
+
+vi) Connect all relay NO contacts to 0V
+
+vii) Connect relay C(ommon) contacts to the monitor inputs. 5A to monitor 1, 5B to monitor 2,
+ 6A to monitor 3 & 6B to monitor 3.
+
+viii) connect 12v supply to top right connector.
+
+To Come:
+========
+Using the temperature sensors to test the mains triacs. By using small 15W bulbs and clipping a 
+temp sensor to each one. Requires 5 temperature sensors so we can also detect bacjground temperature.
+
+Notes:
+======
+oV and 5V are available on the middle bottom connector, as part fo the 1 wire bus.
+
+Not tested as yet.
+Rotary encoder (A&B top right.)
+
+Python Test Code.
+=================
+
+Digitals
+
+a) This first of all sets all digital input trigger actions to None and the fade rate to 1 so the
+analogue inputs shift faster.
+
+b) Then sets all digital outputs to off and reads the inputs to detect whether we are testing Mimics or 
+Open Collector outputs (these switch the ground rail, hence are pulled up to 5V).
+
+c) Then for each output sets output high and verifies that only this input has gone high.
+
+d) Sets all outputs high and for each output sets it low and verifies that only one input low.
+
+Analogues
+
+a) Set all analogues to 0%
+
+b) The test then sets all the outputs not on test to a sequence of levels. And at each level sets the 
+output under test to a set of levels. At each point it verifies that all the inputs are at the expected
+levels. This verifies that we have no interaction between each level. At present the steps are 20%.
+
+Monitors/Relays.
+a) Set all outputs to off
+
+b) Switch each relay and verify all the monitor inputs are as expected.
+

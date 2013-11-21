@@ -1,0 +1,14 @@
+We have three pages.
+
+Index.htm is a simplified status/local control page.
+
+config.htm is the original style of home page but with various links to configure what you see.
+Will verify login state and issue password prompt which feeds a command to the PIC for validation.
+The PIC will ignore commands if it feels the client is not logged in.
+
+Advanced
+Show Ip address
+Port etc.
+Diagnostic details
+
+Want LockOut/Disable/Night button.

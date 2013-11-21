@@ -1,0 +1,52 @@
+\section{Revision}
+\index{Revision}
+
+This section highlights changes to WebBricks and WebBrick firmware.
+
+\subsection{6.3}
+
+\begin{enumerate}
+\item
+Added Real Time clock support.
+\item
+All 12 digital inputs can support rotary encoders. Connecting rotary encoder to dedicated terminals no longer supported.
+\end{enumerate}
+
+\subsection{6.4}
+
+\begin{enumerate}
+\item
+Added hardware and command to switch mimic output from 4V to 10V, this enables using some more generic switches that are designed for 
+higher voltages.
+
+\item
+Added hardware to suppoprt RS232 and RS485 serial interfaces, only one of which can be active at any time.
+
+\item
+Added minimal support in firmware to configure the serial interface and access it from the Gateway over http.
+
+\item
+Added support in firmware to use the serial port for DMX control.
+
+\item
+Add Dwell On and Dwell off commands. This extends the dwell options. Dwell Always will always dwell the output, Dwell On only actions the dwell 
+if the output is currently off, dwell off starts a dwell timer to switch an output off if it is currently on and dwell cancel switches an output
+off if currently on or switches it on for dwell time if off.
+
+\end{enumerate}
+\subsection{7.0}
+
+\begin{enumerate}
+\item
+Changed connections for Relay 4 so that all connections go to 'Relay 4B'.
+
+\item
+Introduced dual power supplies so that noise or shorts on the temperature sensor bus do not compromise the operation of the WebBrick.
+
+\item
+Changed the watchdog scheme so that the web server is power cycled on network disruption.
+
+\item Upgraded the open collector outputs to handle 3 Amps.
+
+
+\end{enumerate}

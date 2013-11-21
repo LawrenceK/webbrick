@@ -1,0 +1,4140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<meta name="GENERATOR" content="TtH 3.78">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+ 
+
+<title> \sf{WebBrick}\linebreak User and Reference Manual</title>
+ 
+<h1 align="center">User and Reference Manual </h1>
+
+<div class="p"><!----></div>
+
+
+<div class="p"><!----></div>
+
+<h3 align="center">Andy Harris, Lawrence Klyne </h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img width=300 src="Images/H2M8-logo.png">
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/wb_logo.jpg">
+</center>
+<div class="p"><!----></div>
+
+<dl compact="compact">
+ <dt><b>July 2007 Document Version 6.4</b></dt>
+	<dd></dd>
+ <dt><b>Firmware Versions 6.4</b></dt>
+	<dd></dd>
+</dl>
+
+<div class="p"><!----></div>
+
+<dl compact="compact">
+ <dt><b>http:<br />www.h2m8.com</b></dt>
+	<dd> for company information</dd>
+ <dt><b>http:<br />community.h2m8.com</b></dt>
+	<dd> for WebBrick information</dd>
+</dl>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Revision</h2>
+
+
+<div class="p"><!----></div>
+This section highlights changes to WebBricks and WrebBrick firmware.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.1">
+1.1</a>&nbsp;&nbsp;6.3</h3>
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li>Added Real Time clock support.
+<div class="p"><!----></div>
+</li>
+
+<li>
+All 12 digital inputs can support rotary encoders. Connecting rotary encoder to dedicated terminals no longer supported.
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.2">
+1.2</a>&nbsp;&nbsp;6.4</h3>
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li>Added hardware and command to switch mimic output from 4V to 10V, this enables using some more generic switches that are designed for 
+higher voltages.
+<div class="p"><!----></div>
+</li>
+
+<li>
+Added hardware to suppoprt RS232 and RS485 serial interfaces, only one of which can be active at any time.
+<div class="p"><!----></div>
+</li>
+
+<li>
+Added minimal support in firmware to configure the serial interface and access it from the Gateway over http.
+<div class="p"><!----></div>
+</li>
+</ol>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Overview</h2>
+
+
+<div class="p"><!----></div>
+What is a WebBrick? It is a network connected control and automation product designed around the principle 
+of 'local control - global intelligence'. This means that most of the time control is handled locally but a 
+system as a whole can be made more intelligent through the use of some central control
+(for example the H2M8 WebBrick Gateway) that provides the global intelligence. i.e. Lights for a room are a local issue, 
+but heating is more of an overall control issue. This also means that you are
+not dependant on a single control system for the complete system, you can always switch on the lights 
+in this room while someone is making changes to a global control system.
+
+<div class="p"><!----></div>
+Control can be done through a WebBrick's web interface, through its physical inputs or using remote commands.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/home.png">
+
+<center>Figure 1: Example of WebBrick Home Page</center>
+</center>
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.1">
+2.1</a>&nbsp;&nbsp;History</h3>
+
+<div class="p"><!----></div>
+WebBrick started life as a bespoke project and in that incarnation there are 50-100 of them installed handling
+tasks from building security to heating control, the largest setup uses 15+ WebBrick to manage a single house.
+The latest incarnation (WebBrick6) is a commercial project with added facilities.
+The V6 WebBrick has an added IO board which provides screw terminals for all connections. It also has 4 Mains switching 
+triac’s and 2 Double pole changeover relays as well. We can also produce bespoke versions of the IO board
+for specific uses.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc2.2">
+2.2</a>&nbsp;&nbsp;The Version 6.4 WebBrick</h3>
+
+<div class="p"><!----></div>
+The V6.4 WebBrick has the following connections:
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li>8 Digital Outputs available as a combination of TTL and Open Collector drives, with an option for 8 more on bespoke 
+developments. 
+In the default configuration 4 digital outputs are connected to mains triac’s and can handle up to 500W 
+per channel with a maximum of 1500W across all 4 channels. 2 Of the Open collector outputs are connected to double pole 
+changeover relays. 4 channels are available as TTL outputs.
+<div class="p"><!----></div>
+</li>
+
+<li>
+8 Mimic outputs.  These are available at TTL level are used to indicate the state of the WebBrick outputs.
+The main functions of these mimics is to drive indicator LEDs found on push buttons. They are PWM modulated so that the
+brightness can be modified for the on and off phases. The internal analogue and digital outputs can be configured to set 
+the mimics to the on or off brightness(xx) levels or they can be directly controlled from a system external to the WebBrick.
+<div class="p"><!----></div>
+</li>
+
+<li>
+12 Digital Trigger Inputs, TTL level - These can be treated as de-bounced push-buttons or toggle [MK] style inputs.  
+The actual trigger point can be the rising edge, falling edge or both. All inputs have weak pullups so that 
+switches can be connected with no further components involved.
+<div class="p"><!----></div>
+</li>
+
+<li>
+4 Analogue Outputs 0-10V. When the output level is changed, a new target value is set, these outputs 
+adjust the output value over a time period (Fade Rate). Fade Rate is adjustable and can be as short as 200mS for full range 
+change or as long as 50 Seconds.
+<div class="p"><!----></div>
+</li>
+
+<li>
+4 Analogue Inputs This is a 0-5V input, high impedance, care must be taken not to exceed 5V on this pin, 
+the web interface displays 0-100.
+<div class="p"><!----></div>
+</li>
+
+<li>
+One Wire Bus for up to 5 off Dallas DS18B20 temperature sensors.
+<div class="p"><!----></div>
+</li>
+
+<li>
+RJ45 connection for 10Mb/s Ethernet
+<div class="p"><!----></div>
+</li>
+
+<li>
+12V power connection
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+Note that the Rotary Encoder connections from the pre 6.2 WebBrick have been incorporated into standard Digital Inputs, up to
+6 rotary encoders can be supported.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Architecture Description</h2>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;Hardware</h3>
+
+
+<div class="p"><!----></div>
+The WebBrick V6 is based around the PIC 18F6x22 chip and a NetMedia SitePlayer  to create 
+both HTTP and UDP command channels. The base 8 digital outputs are buffered through a Open collector 
+drivers that can handle 12V 500mA drive with reasonable protection.
+
+<div class="p"><!----></div>
+Some provision is made for input protection from excessive voltage by a combination of a current limiting
+resistor and the clamp on the PIC chip inputs, edge triggered inputs are de-bounced in software.
+
+<div class="p"><!----></div>
+WebBrick uses several properties of the SitePlayer:
+
+<div class="p"><!----></div>
+
+<ul>
+<li>SitePlayer can send commands to the PIC ship from its own web interface.
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+SitePlayer can send commands to the PIC chip received over HTTP and UDP.
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+The WebBrick can get the SitePlayer to send a UDP packet, the contents of which are 
+managed by the PIC chip.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;Software Architecture</h3>
+
+
+<div class="p"><!----></div>
+The WebBrick is based around a configurable state machine, this is driven by a variety
+of triggers. The triggers can be generated by digital inputs, analogue inputs, temperature sensors
+and network command. These state machines are configured on what to do when they receive a trigger, this
+can be as simple as switch an output on or may involve changing the current scene and sending a network
+message to the home gateway.
+Although there 
+are direct output control commands, in general operation the user configures the inputs to perform 
+<em>actions</em> on outputs.
+
+<div class="p"><!----></div>
+<em>actions</em> can be activated by:
+
+<div class="p"><!----></div>
+
+<ul>
+<li>Physical input pins, for example taking digital input 0 low momentarily would set the actions configured for 
+state engine 0 in motion.  There is a de-bounce time on these circuits.
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+HTTP request. 
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+Analogue or temperature inputs above or below configured thresholds.
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+UDP packet
+<div class="p"><!----></div>
+</li>
+
+<li>
+
+<div class="p"><!----></div>
+Scheduled Event
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.3">
+3.3</a>&nbsp;&nbsp;WebBrick Indicator LEDs</h3>
+
+
+<div class="p"><!----></div>
+	The WebBrick has three indicators, which can been seen through the top translucent window.  They are:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li>Red This indicator shows that the power to the process control and web server chips is healthy.
+<div class="p"><!----></div>
+</li>
+
+<li>Green This indicator shows that the web server chip is seeing a network link
+<div class="p"><!----></div>
+</li>
+
+<li>Blue This is the WebBrick heartbeat, it blinks a lot, it has different blinks at start-up, but once
+				a WebBrick is running it will settle to a 1 sec blink rate. see section below
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.4">
+3.4</a>&nbsp;&nbsp;WebBrick Start-Up</h3>
+
+
+<div class="p"><!----></div>
+When power is applied to the WebBrick, the SitePlayer chip and the PIC chip will start.
+
+<div class="p"><!----></div>
+It is important that any WebBrick has deterministic behaviour, therefore there is a settling period
+before the configuration details from the EEPROM are transferred to the SitePlayer and hence the outside world.
+
+<div class="p"><!----></div>
+The sequence is:
+
+<div class="p"><!----></div>
+
+<ul>
+<li> Power applied to WebBrick
+<div class="p"><!----></div>
+</li>
+
+<li> Internal web server  boots
+<div class="p"><!----></div>
+</li>
+
+<li> PIC boots waits 1-2 seconds for web server to settle
+<div class="p"><!----></div>
+</li>
+
+<li> PIC starts to transfer configuration to web server, this takes about 3 seconds
+<div class="p"><!----></div>
+</li>
+
+<li> If the PIC contains an IP address definition, this is set into the web server.  
+        	Just before this point the WebBrick will have the 
+		default address of 10.100.100.100.
+<div class="p"><!----></div>
+</li>
+
+<li> Operational Status set to 'Normal Operation' Interrupts enabled
+<div class="p"><!----></div>
+</li>
+
+<li> One Wire Bus searched for temperature sensors
+<div class="p"><!----></div>
+</li>
+
+<li> At 30 seconds after power up the internal real time clock is read, it is checked once a minute thereafter.
+<div class="p"><!----></div>
+</li>
+
+<li> Schedules are evaluated to see if any actions need to be executed.  i.e. 
+		if the WebBrick is started at 10 o'clock and there is a scheduled action at 9 o'clock 
+		this action will be executed.  Therefore if a WebBrick was controlling a central heating
+		system it would recover from a power failure and carry on where it left off.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.5">
+3.5</a>&nbsp;&nbsp;WebBrick Heartbeat</h3>
+
+<div class="p"><!----></div>
+A LED connected to the PIC chip is used as a Heartbeat to show that the system is working.
+It switches on and off at approx 1 second intervals with an equal off and on time once the 
+WebBrick has completed its startup.
+This LED is driven from the main program loop in the PIC chip.
+
+<div class="p"><!----></div>
+If it stops flashing then the software has encountered an error, this would be a very dire state and if you ever see it
+you should let us know.  We've only ever seen this happen with very noisy power supplies. 
+
+<div class="p"><!----></div>
+During start-up the Heartbeat will flash quickly.  If the factory reset  button is held in
+at power-up the Heartbeat will remain on for two seconds before starting the load defaults and normal start-up operations.
+
+<div class="p"><!----></div>
+[Future functionality] If the web interface is logged in then the LED will flash 
+faster spending more time on and less time off, if the web home page has its controls disabled it will flash
+slower spending more time off than on. [Not yet implemented]
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Web Interface</h2>
+
+
+<div class="p"><!----></div>
+The built in web interface provides a set of pages that control and monitor the WebBrick, these are described here. 
+Generally on the web interface if an item is clickable it will be highlighted and change colour when 
+the mouse cursor runs over it. The highlight will only be active for most areas when the UI is logged in.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;Logged in</h3>
+
+<div class="p"><!----></div>
+	The default configuration of a WebBrick has no password for the <em>control web pages.  You'll
+	need a password for the configuration and installer pages.  A password can be set for 
+        the <em>control pages in which case the controls on the home page are hidden.  The default passwords
+        are 'password' for the configuration pages and 'installer' for all areas.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;All Pages</h3>
+All the web pages have a banner section that contains the WebBrick logo, the node name and number, 
+the current time, current operational state (with an indication on whether it is logged in). 
+This banner may go Red if the last command received by the PIC chip was invalid.
+
+<div class="p"><!----></div>
+Under this section are a set of links that select other web pages.  Some of these links are hidden
+until the WebBrick validates them, i.e 'Configure Server' is only visible once logged in.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.3">
+4.3</a>&nbsp;&nbsp;Triggers</h3>
+The various inputs channels can generate triggers events that can then cause action on the outputs and/or a network
+events to be sent. The configuration details for a trigger include a action a target channel  and additional action
+dependant parameters.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.4">
+4.4</a>&nbsp;&nbsp;Home</h3>
+The home page or landing page shows the current state of the outputs and has a set of controls that can
+be clicked to make changes to the outputs. The controls will be hideen if the level 1 password has been
+set and you are not curently logged in.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="Images/home.png">
+
+<center>Figure 2: WebBrick Standard Home Page</center>
+</center>
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Section</td><td width="474">Description</td></tr>
+<tr><td>1</td><td width="474">The first section shows the state of the Digital Outputs, 
+note that you will have to refresh the page for the current status.</td></tr>
+<tr><td>2</td><td width="474">The second section shows the state of the analogue inputs, outputs and temperature sensors.</td></tr>
+<tr><td>3</td><td width="474">The Digital Input trigger buttons are named as per their configuration.  Note that Digital inputs that 
+have no action are treated as Monitors only and are not displayed as buttons.
+Pressing these  buttons creates an event as if the physical button had been
+operated.  This is useful for both remote control and confirming that a button does as you intended.</td></tr>
+<tr><td>4</td><td width="474">The Analogue table gives 8 buttons for each analogue output channel to set the Analogue outputs to any one of the 8 SetPoints.
+The buttons are labelled with the value of the setpoint.</td></tr>
+<tr><td>5</td><td width="474">Finally there are buttons to set a specific scene.</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.5">
+4.5</a>&nbsp;&nbsp;Schedules</h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg3">
+</a> <center><img src="Images/schedules.jpg">
+
+<center>Figure 3: WebBrick Schedules Page</center>
+</center>
+<div class="p"><!----></div>
+This page shows the current scheduled triggers and if logged in you can click on an entry to configure a scheduled event.
+The configuration for a schedule entry consists of the days on which it is to happen and the time at which it should happen. 
+When the correct day and time occurs the targetted channel will be actioned, this could be a single output channel or one of 
+the scenes.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg4">
+</a> <center><img src="Images/schedule.jpg">
+
+<center>Figure 4: WebBrick Schedule configuration Page</center>
+</center>
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.6">
+4.6</a>&nbsp;&nbsp;Scenes</h3>
+
+
+<div class="p"><!----></div>
+<a name="tth_fIg5">
+</a> <center><img src="Images/Scenes.jpg">
+
+<center>Figure 5: WebBrick Scenes Page</center>
+</center>
+<div class="p"><!----></div>
+This page shows the current setting of configured scenes, if logged in you can click on an entry and reconfigure a scene.
+A scene consists of an setting for each analogue and digital output channel, this setting may be ignore in which case 
+no change is made to the relevant output channel. For digital channels
+the options are:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li><b>Ignore</b> Do nothing to this output when the scene is selected
+<div class="p"><!----></div>
+</li>
+
+<li><b>Off</b> Switch OFF this output when the scene is selected
+<div class="p"><!----></div>
+</li>
+
+<li><b>On</b> Switch ON this output when the scene is selected
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+For analogue channels it is the any of the preset points or Ignore. 
+
+<div class="p"><!----></div>
+If a scene is triggered by a local event this will have an action associated with it, this action is used on all digital
+channels that are not Ignore or Off and for analogue channels that are not being Ignored. The result of this is that
+you can perform any action on the scene such as Dwell to bring a scene on for a time period.
+
+<div class="p"><!----></div>
+Note that from 6.3 onwards, scenes may be in two banks, 0-7 and 8-11.  This allows scenes to be used in two areas, for example
+a major and minor room.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg6">
+</a> <center><img src="Images/Scene.jpg">
+
+<center>Figure 6: WebBrick Scene configuration Page</center>
+</center>
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc4.6.1">
+4.6.1</a>&nbsp;&nbsp;Scenes with Digital Inputs</h4>
+
+
+<div class="p"><!----></div>
+ At H2M8 we've found that the following configuration gives a great deal of flexibility, usability when using scenes.
+
+<div class="p"><!----></div>
+ Consider a 'major' and 'minor' room, or a through room with related areas, the organize the buttons thus:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li><b>RoomMajOff</b> - <em>Action:ON Scene:0</em>
+<div class="p"><!----></div>
+</li>
+
+<li><b>RoomMajNext</b> - <em>Action:ON Scene:Last i.e. up to 7</em>
+<div class="p"><!----></div>
+</li>
+
+<li><b>RoomMinOff</b> - <em>Action:ON Scene:8</em>
+<div class="p"><!----></div>
+</li>
+
+<li><b>RoomMinNext</b> - <em>Action:ON Scene:11</em>
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+ Now organise the scenes and Mimic outputs thus 
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg7">
+</a> <center><img src="Images/SceneMimics.png">
+
+<center>Figure 7: WebBrick Scene configuration Page</center>
+</center>
+<div class="p"><!----></div>
+Note that the mimics help the user to see where they are in the sequence, thus
+
+<div class="p"><!----></div>
+	
+<ul>
+<li><b>Off Mimic - OFF, Next Mimic - ON</b> <em>Must be at the off, or begining of the sequence </em> 
+		Only option is to press the 'Next' button, indicated because it is more bright.
+<div class="p"><!----></div>
+</li>
+
+<li><b>Off Mimic - ON, Next Mimic - ON</b> <em>Must be somewhere mid sequence </em>
+		Options 'Next' and 'Off' are valid.
+<div class="p"><!----></div>
+</li>
+
+<li><b>Off Mimic - ON, Next Mimic - OFF</b> <em>Must be at the off, or begining of the sequence </em>
+		Only option is 'Off' since the end of the sequence has been reached.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.7">
+4.7</a>&nbsp;&nbsp;Configuration</h3>
+From this page you can see the current settings of the various inputs and outputs, 
+if logged in you can click to change the settings. You can change the names of inputs and 
+outputs and change the trigger settings for the inputs. You can also change the length of the 
+Dwells, adjust the analogue presets and alter the lower and upper threshold triggers for the temperature
+sensors and analogue inputs.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg8">
+</a> <center><img src="Images/configuration.jpg">
+
+<center>Figure 8: WebBrick Configuration Home Page</center>
+</center>
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Section</td><td width="474">Description</td></tr>
+<tr><td>Digital Outputs</td><td width="474">The first section shows the names of digital outputs. </td></tr>
+<tr><td>Digital Inputs</td><td width="474">The third section shows the configuration of the digital inputs. The Name column header can be
+clicked to rename the channels and each row can be clicked to reconfigure the trigger.</td></tr>
+<tr><td>Analogue Outputs</td><td width="474">The fourth section shows the Analogue outputs and by clicking the Name header the channels can be renamed.</td></tr>
+<tr><td>Analogue Inputs</td><td width="474">The fifth section shows the Analogue inputs. By clicking the Name header the channels can be renamed and 
+by clicking on an entry the high or low threshold triggers can be configured.</td></tr>
+<tr><td>Temperature Inputs</td><td width="474">The sixth section shows the temperature inputs. By clicking tha Name header the channels can be renamed and 
+by clicking on an entry the high or low threshold triggers can be configured.</td></tr>
+<tr><td>Dwell Times</td><td width="474">The seventh section shows the value's for the dwell times formatted into seconds, minutes, hours etc.</td></tr>
+<tr><td>Analogue presets</td><td width="474">The final section shows the value's for the analogue presets.</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.8">
+4.8</a>&nbsp;&nbsp;Digital Inputs</h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg9">
+</a> <center><img src="Images/digitalin.jpg">
+
+<center>Figure 9: WebBrick Digital In configuration page</center>
+</center>
+<div class="p"><!----></div>
+The digital inputs can be configured to select the trigger target and whether to send a UDP packet. 
+If you require no local action select action None from the action drop down box, 
+if you do not require a UDP packet select none from the UDP type drop down box. 
+A UDP Type of Remote is reserved for future enhancements.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.9">
+4.9</a>&nbsp;&nbsp;Naming channels</h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg10">
+</a> <center><img src="Images/NameDigitalOut.jpg">
+
+<center>Figure 10: WebBrick Name digital outputs page</center>
+</center>
+<div class="p"><!----></div>
+All input and output channels can be renamed to give them meaningful names for the use they are put to. 
+Clicking on a Naming link will show a page similar to this where you can change the names for a whole group and then save it.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.10">
+4.10</a>&nbsp;&nbsp;Thresholds</h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg11">
+</a> <center><img src="Images/AnalogueThresh.jpg">
+
+<center>Figure 11: WebBrick Analogue threshold configuration page</center>
+</center>
+<div class="p"><!----></div>
+The analogue inputs and temperature sensors can be configured with high and low thresholds, on selecting the entry from the main screen you will be presented with a form like this where you enter the threshold value and the trigger details.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.11">
+4.11</a>&nbsp;&nbsp;Advanced</h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg12">
+</a> <center><img src="Images/advanced.png">
+
+<center>Figure 12: WebBrick Advanced Page</center>
+</center>
+<div class="p"><!----></div>
+The advanced page allows you to see the WebBrick software version and IP address it also lets you view the Status and configuration as XML. 
+A manual command input menu entry is displayed which will prompt you to login if not currently logged in. 
+The level 2 password can also be changed.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.12">
+4.12</a>&nbsp;&nbsp;XmlStatus</h3>
+
+This is a link to the XML status page from the WebBrick. This is intended to be accessed by central controllers to get status detail.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.13">
+4.13</a>&nbsp;&nbsp;XmlConfiguration</h3>
+
+This is the link to the XML page that describes the full configuration of the WebBrick.
+This is intended to be accessed by central controllers to get configuration information.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.14">
+4.14</a>&nbsp;&nbsp;Manual Commands</h3>
+
+
+<div class="p"><!----></div>
+Here you can use the command syntax described later in this document.
+Please be careful with these commands.  The WebBrick has error checking, but you as a user may issue commands that cause unexpected operation.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.15">
+4.15</a>&nbsp;&nbsp;Configure Server</h3>
+
+The Configure server page lets you set the time, Node name and IP address and Rotary encoder step, analogue fade rate.
+These are displayed as three separate groups, clicking Save only saves the group the Save button belongs to.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg13">
+</a> <center><img src="Images/ConfigureServer.jpg">
+
+<center>Figure 13: WebBrick Configure Server Page</center>
+</center>
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.16">
+4.16</a>&nbsp;&nbsp;Login</h3>
+
+
+<div class="p"><!----></div>
+<a name="tth_fIg14">
+</a> <center><img src="Images/login.jpg">
+
+<center>Figure 14: WebBrick Login Page</center>
+</center>
+<div class="p"><!----></div>
+The login page allows you to enter a password to enable changing the WebBrick configuration. The
+login times out 5 minutes after the last command that changes the configuration. Attempts to make
+changes when login has timed out will result in the command being ignored and an error condition displayed. 
+The WebBrick has 3 passwords which give different levels of access. 
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Level</td><td width="474">Description</td></tr>
+<tr><td>1</td><td width="474">password is normally blank and enables the control buttons on the home page.</td></tr>
+<tr><td>2</td><td width="474">password default is "password" and enables general reconfiguration.</td></tr>
+<tr><td>3</td><td width="474">password default is &#239;nstaller" and enables reconfiguration.</td></tr></table>
+
+
+<div class="p"><!----></div>
+To change a password you have to be logged in to at least the level the password applies to.
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Command Structure</h2>
+
+
+<div class="p"><!----></div>
+The WebBrick has a command interface that accepts command strings, these can be generated
+by the Web interface and can also be sent to the WebBrick over the network. For network delivery
+the commands can be sent using an HTTP URL with the command encoded in the parameters or a UDP transmission,
+the HTTP use is preferable as you get an indication of whether the command was received at the WebBrick.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.1">
+5.1</a>&nbsp;&nbsp;General</h3>
+
+All commands start with a 2 character identifier, and are followed by any required parameters and terminated 
+by a colon (':') character after the parameters, 
+which means end-command, each parameter to a command is terminated by a semi-colon (;). in this document 
+items in is a user parameter 
+and should be replaced with real world values. Generally the first character within the 2 character 
+identifier identifies the command group and the second identifies the entity type. No extra blank spaces should
+be inserted into the command as unexpected things may happen or the command be rejected.
+
+<div class="p"><!----></div>
+These commands can be sent to the WebBrick in two ways:
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li> By encoding the parameters into 
+	an HTTP URL and accessing that URL
+<div class="p"><!----></div>
+</li>
+
+<li> or by sending a UDP packet to the WebBrick with a 
+	correct Siteplayer header on it for delivery to the PIC chip.
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+The embedded UI uses the 
+HTTP URL approach and it is recommended that this approach is used for external systems. If you want
+to use UDP packets look at the python code in wbUdp.py for details.
+
+<div class="p"><!----></div>
+The HTTP URL to be used is http://ip Address/cfg.spi?com=commandString
+Where ip address is the WebBricks IP address or host name.
+and commandString is one of the command strings documented here. Note some commands will
+need you logged in for them to be processed.
+
+<div class="p"><!----></div>
+To make it easier to understand the command strings the first character is generally used as follows:
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.1.1">
+5.1.1</a>&nbsp;&nbsp;command groups</h4>
+
+<table>
+<tr><td>1st Letter</td><td width="474">Command Group</td></tr>
+<tr><td>C</td><td width="474">Configure</td></tr>
+<tr><td>S</td><td width="474">Set</td></tr>
+<tr><td>N</td><td width="474">Name</td></tr>
+<tr><td>D</td><td width="474">Digital</td></tr>
+<tr><td>A</td><td width="474">Analogue</td></tr>
+<tr><td>I</td><td width="474">Infra Red</td></tr>
+<tr><td>T</td><td width="474">Thresholds</td></tr></table>
+
+
+<div class="p"><!----></div>
+And the second character generally identifies the target channel type, as follows:
+
+      <h4><a name="tth_sEc5.1.2">
+5.1.2</a>&nbsp;&nbsp;entity type</h4>
+
+<table>
+<tr><td>2nd Letter</td><td width="474">entity type</td></tr>
+<tr><td>D</td><td width="474">Digital input</td></tr>
+<tr><td>A</td><td width="474">Analogue Output</td></tr>
+<tr><td>I</td><td width="474">Analogue input</td></tr>
+<tr><td>O</td><td width="474">Digital Output</td></tr>
+<tr><td>T</td><td width="474">Temperature</td></tr>
+<tr><td>C</td><td width="474">Scene</td></tr>
+<tr><td>R</td><td width="474">Serial comms or rotary encoder</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.1.3">
+5.1.3</a>&nbsp;&nbsp;Trigger Configuration</h4>
+
+
+A lot of the commands take a sequence of parameters referred to as a Trigger sequence, this 
+defines what is to happen when a trigger event occurs, for example a digital input or 
+a temperature threshold being crossed. 
+
+<div class="p"><!----></div>
+The sequence of parameters is:
+
+<div class="p"><!----></div>
+ADSTItargetChn; SetPointNr; actionType; DwellNr; UDPType; AssociatedValue [; OptValue]:
+
+<div class="p"><!----></div>
+Where:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Parameter</td><td width="474">Description</td></tr>
+<tr><td>ADSTI</td><td width="474">is a single character that identifies whether the target channel is an 
+analogue output(A), a digital output (D), a Scene (S), a Temperature sensor (T), or Infra Red Send</td></tr>
+<tr><td>targetChn</td><td width="474">is the channel number or Scene being targeted</td></tr>
+<tr><td>actionType</td><td width="474">is one of the values from the Action table (range 0-15) In the case of a Scene this
+is used as the action for all analogue channels that are not marked to be ignored and for digital 
+channels marked for On in the scene configuration.</td></tr>
+<tr><td>DwellNr</td><td width="474">is a dwell number and is ignored if the actionType is not a dwell. Note for DT command dwell 
+is passed in seconds and not as a dwell index.</td></tr>
+<tr><td>SetPointNr</td><td width="474">is a setpoint number and is ignored if the target channel is not analogue, Note a Scene is
+not an analogue channel and the SetPoint is taken from the Scene.</td></tr>
+<tr><td>UDPType</td><td width="474">identifies what UDP packet type is to be sent</td></tr>
+<tr><td>AssociatedValue</td><td width="474">is a number associated with the action, if the UDPType is Remote
+then this is a target WebBrick node. In the case of threshold adjustments then this is the new threshold
+or an adjustment value for the threshold</td></tr>
+<tr><td>OptValue</td><td width="474">is an optional reserved value.</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.1.4">
+5.1.4</a>&nbsp;&nbsp;Actions</h4>
+Each trigger can cause one of the following actions to be performed on an output channel.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Nr</td><td>Action</td><td width="474">Description</td></tr>
+<tr><td>0</td><td>None</td><td width="474">no action</td></tr>
+<tr><td>1</td><td>Off</td><td width="474">switch off</td></tr>
+<tr><td>2</td><td>On</td><td width="474">switch digital channels on or an analogue channel to a setpoint.</td></tr>
+<tr><td>3</td><td>Momentary</td><td width="474">Switch a channel on for a small time period circa 200mS.</td></tr>
+<tr><td>4</td><td>Toggle</td><td width="474">Turn an on channel off and an off channel on. For analogue channels if the current setting is greater than 0 it is deemed to be on.</td></tr>
+<tr><td>5</td><td>Dwell</td><td width="474">Switch a channel on for a configured time period.</td></tr>
+<tr><td>6</td><td>Dwell-Can</td><td width="474">If a channel is Off Switch the channel on for a configured time period. 
+If the channel is already On then switch the channel Off immediately.</td></tr>
+<tr><td>7</td><td>Next</td><td width="474">Move a channel to its next higher state, for analogue channels this is to the next set point, for digital channels this is equivalent to a toggle. If the target is any Scene change the current scene at the web brick up by one.</td></tr>
+<tr><td>8</td><td>Prev</td><td width="474">Reverse of Next, Down Setpoint, Toggle, Previous Scene.</td></tr>
+<tr><td>9</td><td>SetLowThreshold</td><td width="474">Change the low threshold for one of the analogue input or temperature sensor</td></tr>
+<tr><td>10</td><td>SetHighThreshold</td><td width="474">Change the high threshold for one of the analogue input or temperature sensor</td></tr>
+<tr><td>11</td><td>AdjustLowThreshold</td><td width="474">Move the low threshold for one of the analogue input or temperature sensor</td></tr>
+<tr><td>12</td><td>AdjustHighThreshold</td><td width="474">Move the high threshold for one of the analogue input or temperature sensor</td></tr>
+<tr><td>13</td><td>SendIR</td><td width="474">Send a command over the Infra Red emitter, RC5 only, the target RC5 channel is the command code 
+and associated value is the RC5 address.</td></tr>
+<tr><td>14</td><td>Up</td><td width="474">Take a channel up a step, generally used for analogue outputs.</td></tr>
+<tr><td>15</td><td>Down</td><td width="474">Take a channel down a step, generally used for analogue outputs.</td></tr></table>
+
+
+<div class="p"><!----></div>
+Notes
+
+<ul>
+<li> Toggle, On and Off actions all override a current Dwell command.
+<div class="p"><!----></div>
+</li>
+
+<li> A Dwell command issued during a current Dwell period will reset the Dwell time.
+<div class="p"><!----></div>
+</li>
+
+<li> A Dwell Cancel command issued during a current Dwell period will end the dwell. A Dwell Cancel issued 
+outside a Dwell period will switch the output on for the Dwell time.
+<div class="p"><!----></div>
+</li>
+
+<li> At the end of an analogue dwell the output will return to the level prior to the dwell, this 
+is useful for setting lights
+to a low level and bringing them high on some trigger, e.g. security PIR.
+<div class="p"><!----></div>
+</li>
+
+<li> Channel numbers are zero based for the internal commands.
+<div class="p"><!----></div>
+</li>
+
+<li> Scenes are in two banks, one bank of 8 and one bank of 4, when performing Next and Prev Scene the scene change 
+stays within the bank that the trigger definition identifies by selecting one of the scenes within the chosen bank.
+<div class="p"><!----></div>
+</li>
+
+<li> String parameters cannot contain any of the characters '&amp;
+<div class="p"><!----></div>
+</li>
+
+<li> Analogue channels go up and down setpoints with Next/Prev and step the level the rotary step value with Up/Down &amp;
+<div class="p"><!----></div>
+</li>
+
+<li> Some commands are meaningless with some outputs, where possible reasonable actions are chosen. i.e. for digital 
+channels Next/Prev/Up/Down are treated as a toggle command<br />
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.2">
+5.2</a>&nbsp;&nbsp;Command summary</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.2.1">
+5.2.1</a>&nbsp;&nbsp;Static configuration commands</h4>
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Command</td><td width="474">Function</td></tr>
+<tr><td>ND</td><td width="474">Name digital Input</td></tr>
+<tr><td>NO</td><td width="474">Name digital output</td></tr>
+<tr><td>NI</td><td width="474">Name analogue input</td></tr>
+<tr><td>NA</td><td width="474">Name analogue output</td></tr>
+<tr><td>NT</td><td width="474">Name temperature sensor</td></tr>
+<tr><td>NN</td><td width="474">Name node</td></tr>
+<tr><td>CD</td><td width="474">Configure digital input</td></tr>
+<tr><td>CI</td><td width="474">Configure analogue input</td></tr>
+<tr><td>CT</td><td width="474">Configure temperature input</td></tr>
+<tr><td>CS</td><td width="474">Configure set point</td></tr>
+<tr><td>CW</td><td width="474">Configure dwell</td></tr>
+<tr><td>CR</td><td width="474">Configure serial interface.</td></tr>
+<tr><td>CE</td><td width="474">Configure scheduled event</td></tr>
+<tr><td>CC</td><td width="474">Configure a scene</td></tr>
+<tr><td>SN</td><td width="474">Set node number</td></tr>
+<tr><td>SF</td><td width="474">Set fade rate</td></tr>
+<tr><td>SM</td><td width="474">Set mimic brightness levels for on and off signals, and fade rate</td></tr>
+<tr><td>CM</td><td width="474">Configure mimic channels for analogue and/or digital outputs</td></tr>
+<tr><td>ST</td><td width="474">Set Time</td></tr>
+<tr><td>SD</td><td width="474">Set Date</td></tr>
+<tr><td>SR</td><td width="474">Set rotary encoder step</td></tr>
+<tr><td>SI</td><td width="474">Set Internet address</td></tr>
+<tr><td>SA</td><td width="474">Set IP address with verified MAC address; the !WebBrick sets its IP address to the specified value only if its 48-bit MAC address matches that supplied.  This command can be used with UDP broadcasts to set IP addresses when several WebBricks on a network have the same initial IP address.</td></tr>
+<tr><td>SP</td><td width="474">Set password for indicated security level</td></tr>
+<tr><td>SO</td><td width="474">Set option on (1) or Off (0) (Use with care: currently deprecated, and not reflected in XML configuration)</td></tr>
+<tr><td>IR</td><td width="474">Enable infrared receive</td></tr>
+<tr><td>IT</td><td width="474">Enable infrared transmit</td></tr>
+<tr><td>IA</td><td width="474">Sets the RC5 Infrared address for receiving</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.2.2">
+5.2.2</a>&nbsp;&nbsp;Dynamic status setting commands</h4>
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Command</td><td width="474">Function</td></tr>
+<tr><td>DI</td><td width="474">Trigger digital input</td></tr>
+<tr><td>DO</td><td width="474">Set digital output</td></tr>
+<tr><td>DT</td><td width="474">Invoke a trigger event action using the supplied parameters. The parameters are a full trigger definition as can
+be attached a local event source, i.e. digital input, but are acted upon when received. Note dwell is passed in seconds and not as a dwell index.</td></tr>
+<tr><td>DM</td><td width="474">Set one or more mimic outputs to specified levels</td></tr>
+<tr><td>DA</td><td width="474">Requests web brick to send a small number of UDP attention packets within a few seconds (currently: one immediately, and one more within a second).  This is used for WebBrick discovery.  (cf. factory reset causes attention packets to be sent every few seconds for a minute.)</td></tr>
+<tr><td>AA</td><td width="474">Set analogue output to one of the setpoints or to an absolute level.</td></tr>
+<tr><td>SC</td><td width="474">Set scene</td></tr>
+<tr><td>SS</td><td width="474">Set operational state</td></tr>
+<tr><td>TA</td><td width="474">Modify dynamic threshold for analogue input</td></tr>
+<tr><td>TT</td><td width="474">Modify dynamic threshold for temperature sensor</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.2.3">
+5.2.3</a>&nbsp;&nbsp;Miscellaneous WebBrick control commands</h4>
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Command</td><td width="474">Function</td></tr>
+<tr><td>LG</td><td width="474">Login to security level associated with password</td></tr>
+<tr><td>RT</td><td width="474">Re scan 1-wire bus for new devices</td></tr>
+<tr><td>RU</td><td width="474">Refresh web user interface data</td></tr>
+<tr><td>RS</td><td width="474">Reboot Siteplayer, PIC chip delays a while and then rebuilds the UI data.</td></tr>
+<tr><td>RB</td><td width="474">Reboot PIC</td></tr>
+<tr><td>IS</td><td width="474">Sends an RC5 infrared command (channel) over a configured infrared emitter</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.3">
+5.3</a>&nbsp;&nbsp;Commands</h3>
+
+<div class="p"><!----></div>
+All command are listed here.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.1">
+5.3.1</a>&nbsp;&nbsp;Analogue output control</h4>
+
+
+AAchn;[Snnnn]  Set Analogue output setpoint or absolute
+
+<div class="p"><!----></div>
+Set an analogue output to a specific level.
+chn is the analogue output channel number. If the output value is Snn then nn is the setpoint,
+otherwise nn is the output level as an absolute value of between 0-100%. 
+
+<div class="p"><!----></div>
+e.g.
+AA1;S1:
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.2">
+5.3.2</a>&nbsp;&nbsp;Configure Scene</h4>
+
+CCnr;[NFI][NFI][NFI][NFI][NFI][NFI][NFI][NFI]; [ISnn]; [ISnn]; [ISnn]; [ISnn]:
+
+<div class="p"><!----></div>
+Configure a scene. A scene consists of optional settings for all the digital and analogue channels. Any channel
+may be marked as Ignore (do not change). Digital channels also be marked as On or Off, whilst analogue channels
+can be given a set point. The first group [NFI] is for the digital channels and is repeated as many times 
+as required to cover the digital channels where a change is required, i.e. if you only want to modify 
+digital channels 0, 1, 2 then you only need list 3 entries. If you want to only affect channel 8 (or 16) then
+you must send all the preceding ignore's (I). Similarly for the analogue channels where each later entry is
+optional if you have already specified the required changes.
+
+<div class="p"><!----></div>
+e.g.
+CC0;NFNFNFNF;I;S1;S2;S3:
+CC1;NF:
+CC3;NF;S0;S1;S2;S3:
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.3">
+5.3.3</a>&nbsp;&nbsp;Configure Digital Input</h4>
+
+CDchn; ADStargetChn; sp; actionType; dwell; udpType; AssociatedValue [; OptValue [; Options]]:
+
+<div class="p"><!----></div>
+Configure one of the digital inputs.
+chn is the digital input channel number from 0 to 7 (or more). Remaining parameters are a Trigger Sequence.
+Options is a set of flags that controls the digital input event generation.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Bit</td><td>Value</td><td width="474">Description</td></tr>
+<tr><td>0</td><td>1</td><td width="474">generate trigger event on rising edge, i.e. 0v to 5v transition.</td></tr>
+<tr><td>1</td><td>2</td><td width="474">generate trigger event on falling edge (Default) i.e. 5v to 0v transition, a normally open switch is pressed.</td></tr>
+<tr><td>2</td><td>4</td><td width="474">This input and the next is connected to a rotary encoder, when the rotary encoder is turned 'down' this trigger is actioned</td></tr>
+<tr><td>3</td><td>8</td><td width="474"></td></tr>
+<tr><td>4</td><td>16</td><td width="474"></td></tr>
+<tr><td>5</td><td>32</td><td width="474"></td></tr>
+<tr><td>6</td><td>64</td><td width="474"></td></tr>
+<tr><td>7</td><td>128</td><td width="474"></td></tr></table>
+
+To create the option value add the required Value's from the above table together.
+You can set both rising and falling edge flags and this is useful if you have a latching switch of some sort, 
+i.e. standard MK light switch.
+
+<div class="p"><!----></div>
+e.g.
+CD7;A1;2;2;0;1;1:
+Configure Digital in 7 to target analogue output 1. setpoint 2, action On(2), dwell (0) ignored, UDP
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.4">
+5.3.4</a>&nbsp;&nbsp;Configure scheduled event</h4>
+
+CEchn; Days; hours; Min; ADStargetChn; sp; actionType; dwell; udpType; AssociatedValue;
+
+<div class="p"><!----></div>
+Configure scheduled event.
+chn is event number, currently 16 scheduled events are catered for. Days is a set of day numbers 
+from 0-6 to identify which days the event occurs on, e.g. "06" is Sunday and Saturday. hours (0-23) 
+and min (0-59) identifies the time within the day when it occurs. 
+The remaining parameters constitute a Trigger set as described else where,
+
+<div class="p"><!----></div>
+e.g.
+CE6;12345;12;30;A1;2;2;0;1;1:
+Configure event 6, at 12:30 on Mon to Fri to target analogue output 1. setpoint 2, action On(2), dwell (0) ignored, UDP. 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.5">
+5.3.5</a>&nbsp;&nbsp;Configure Analogue Input</h4>
+
+CIchn; L - H; Threshold; ADStargetChn; sp; actionType; dwell; udpType; AssociatedValue;
+
+<div class="p"><!----></div>
+Configure one of the analogue inputs.
+L or H identify whether this is setting a High or Low threshold and Threshold is the analogue threshold
+as a value from 0-100%. The low level hardware is 0-5V but so as to avoid issues when some signal
+conditioning is added the input is scaled.
+
+<div class="p"><!----></div>
+e.g.
+CI0;L;20;A1;2;2;0;1;1:
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.6">
+5.3.6</a>&nbsp;&nbsp;Configure Mimics</h4>
+
+CMADsource; mimicChn:
+
+<div class="p"><!----></div>
+Configure mimic channels for one or more analogue and/or digital outputs.
+
+<div class="p"><!----></div>
+      A target indicates an analogue output number target for a which a mimic channel is specified
+
+<div class="p"><!----></div>
+      D target indicates an digital output number target for a which a mimic channel is specified
+
+<div class="p"><!----></div>
+      mimicChn indicates a mimic channel number that will be associated with the corresponding 
+      analogue or digital output, to break the connection between a channel and a mimic use a mimic channel
+      number of 15.
+
+<div class="p"><!----></div>
+Pairs of outputs and corresponding mimic channels may be repeated for each association that is 
+required to be specified. (Or, a separate command may be used for each.)
+
+<div class="p"><!----></div>
+The default setting is that Digital outputs 0 to 7 are associated with mimic output 0-7. The off level and
+on level can be reconfigured with the SM command.
+
+<div class="p"><!----></div>
+e.g.
+CMA0;0;A1;1;A2;2;A3;3:
+target mimics 0 to 3 from analogue 0 to 3.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.7">
+5.3.7</a>&nbsp;&nbsp;Configure Preset point</h4>
+
+CSchn; val
+
+<div class="p"><!----></div>
+Configure one of the set points (Preset point) used for the analogue outputs.
+chn is the setpoint number and val is the setpoint value in the range 0-100%. The low level hardware 
+generates 0-10V but this may be passed through some signal conditioning to suit the application.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.8">
+5.3.8</a>&nbsp;&nbsp;Configure Temperature Sensor</h4>
+
+CTchn; L - H; Threshold; ADtargetChn; sp; actionType; dwell; udpType; AssociatedValue;
+
+<div class="p"><!----></div>
+Configure one of the temperature inputs.
+L or H identify whether this is setting a High or Low threshold and Threshold is the temperature threshold
+as a decimal temperature between -50 and +150 degrees Celsius
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.9">
+5.3.9</a>&nbsp;&nbsp;Configure Dwell</h4>
+
+CW<i>[0-3];DwellValue</i>:
+
+<div class="p"><!----></div>
+There are 4 Dwell values that may be set, 0-3.
+DwellValue is a number between 2 and 32767, it is measured in 'near seconds'.
+Dwell is measured in more or less seconds.
+Note that it is the transition between 1 and 0 that marks the end of a Dwell countdown, 
+therefore a Dwell value of 10 really gives a Dwell of between 9 and 10 seconds, depending on
+when it was started.
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.10">
+5.3.10</a>&nbsp;&nbsp;Do Attention</h4>
+
+DA
+
+<div class="p"><!----></div>
+Request the WebBrick to send 1 or 2 attention packets, command is generally sent using UDP and broadcast
+to all WebBricks on the network.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.11">
+5.3.11</a>&nbsp;&nbsp;Trigger Digital input</h4>
+
+DIchn
+
+<div class="p"><!----></div>
+Trigger input, generates a trigger just as if digital input chn had been triggered.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.12">
+5.3.12</a>&nbsp;&nbsp;Do Mimic</h4>
+
+DMmimicChn; mimicLevel
+
+<div class="p"><!----></div>
+Set one or more mimic channels to a set level. The mimic channel and level can be repeated to send more than one
+request in a single command. This overrides the values set by any recent output change targeted to the mimics
+at the WebBricks.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.13">
+5.3.13</a>&nbsp;&nbsp;Switch Digital output</h4>
+
+DOchn;NFTD[; dwell]:
+
+<div class="p"><!----></div>
+Set digital output. Sets the state of one of the digital outputs.
+chn is the channel number to operate.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Action</td><td width="474">Description</td></tr>
+<tr><td>N</td><td width="474">On</td></tr>
+<tr><td>F</td><td width="474">Off</td></tr>
+<tr><td>T</td><td width="474">Toggle</td></tr>
+<tr><td>D</td><td width="474">Dwell</td></tr></table>
+
+
+<div class="p"><!----></div>
+If Dwell is specified then this can either be a DwellNumber 0-3 or if greater than 3 is a dwell in seconds.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.14">
+5.3.14</a>&nbsp;&nbsp;Trigger from External</h4>
+
+DT; ADStargetChn; sp; actionType; dwell; udpType; AssociatedValue]:
+
+<div class="p"><!----></div>
+The packet contains trigger configuration which is actioned on receipt and not stored for later use. This
+enables an external source to do what an internally generated event can do. 
+
+<div class="p"><!----></div>
+NOTE: One variation the dwell is provided as a value in seconds and not as a dwell index.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.15">
+5.3.15</a>&nbsp;&nbsp;Factory Reset</h4>
+
+FR  Configuration Factory reset.
+
+<div class="p"><!----></div>
+FR1  Full Factory reset.
+
+<div class="p"><!----></div>
+Perform a factory reset of the WebBrick, the base version only resets user configuration, the later version also resets 
+all options and the IP address (Unless IP address locked at Factory).
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.16">
+5.3.16</a>&nbsp;&nbsp;InfraRed Address</h4>
+
+IAaddress:
+
+<div class="p"><!----></div>
+Sets the RC5 infra red address to be recognised. The command values 1-8 are mapped to generating digital triggers, 
+i.e. another soft key input.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.17">
+5.3.17</a>&nbsp;&nbsp;InfraRed On Off</h4>
+
+IRNF:
+
+<div class="p"><!----></div>
+Switch on/off infra red reception, uses Digital input 11 and disables any other use for this connection.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Action</td><td width="474">Description</td></tr>
+<tr><td>N</td><td width="474">On</td></tr>
+<tr><td>F</td><td width="474">Off</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.18">
+5.3.18</a>&nbsp;&nbsp;InfraRed Send</h4>
+
+ISaddress; channel:
+
+<div class="p"><!----></div>
+Sends the IR command using RC5 and the address (0-31) and channel (0-63) given. Allows a remote system
+to send RC5 infra red commands.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.19">
+5.3.19</a>&nbsp;&nbsp;InfraRed emitter</h4>
+
+ITNF:
+
+<div class="p"><!----></div>
+Switch on/off infra red transmission. Uses DigOut 7 and disables any other use for this connection.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Action</td><td width="474">Description</td></tr>
+<tr><td>N</td><td width="474">On</td></tr>
+<tr><td>F</td><td width="474">Off</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.20">
+5.3.20</a>&nbsp;&nbsp;Login</h4>
+
+LG; password  
+
+<div class="p"><!----></div>
+Try to login to the WebBrick to enable the command interface. Up to 3 passwords may be set
+Level 1 allows access to the Home page controls, its default is blank so the WebBrick
+automatically enters this state.
+Level 2 is for reconfiguration
+Level 3 is full reconfiguration access for installers.
+Note Login times out 5 minutes after the last valid configuration command (Level 3 is 1 Hour timeout). 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.21">
+5.3.21</a>&nbsp;&nbsp;Name Analogue Output</h4>
+
+NAchn; nameStr:
+
+<div class="p"><!----></div>
+Give a name to an analogue output, chn is the channel number from 0 to max analogue outputs-1.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.22">
+5.3.22</a>&nbsp;&nbsp;Name Digital Input</h4>
+
+NDchn; nameStr:
+
+<div class="p"><!----></div>
+Give a name to a digital input, chn is the channel number from 0 to max digital inputs-1.
+The name string cannot contain any of the characters '&amp;
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.23">
+5.3.23</a>&nbsp;&nbsp;Name Analogue Input</h4>
+
+NIchn; nameStr:
+
+<div class="p"><!----></div>
+Give a name to an analogue input, chn is the channel number from 0 to max analogue inputs-1.
+The name string cannot contain any of the characters '&amp;
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.24">
+5.3.24</a>&nbsp;&nbsp;Name Node</h4>
+
+
+NNNodeName:
+
+<div class="p"><!----></div>
+Give a name to the WebBrick node.
+NodeName is limited to 10 characters  
+The name string cannot contain any of the characters '&amp;
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.25">
+5.3.25</a>&nbsp;&nbsp;Name Digital Output</h4>
+
+NOchn; nameStr:
+
+<div class="p"><!----></div>
+Give a name to digital output, chn is the channel number from 0 to max digital outputs-1.
+The name string cannot contain any of the characters '&amp;
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.26">
+5.3.26</a>&nbsp;&nbsp;Name Temperature sensor</h4>
+
+NTchn; nameStr:
+
+<div class="p"><!----></div>
+Give a name to a temperature input, chn is the channel number from 0 to max temperature inputs-1.
+The name string cannot contain any of the characters '&amp;
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.27">
+5.3.27</a>&nbsp;&nbsp;Reboot</h4>
+
+RB  Reboot.
+
+<div class="p"><!----></div>
+Hardware reboot/reset of the PIC chip and Siteplayer.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.28">
+5.3.28</a>&nbsp;&nbsp;Reboot</h4>
+
+RS  Reboot of Siteplayer.
+
+<div class="p"><!----></div>
+Hardware reboot/reset of the Siteplayer.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.29">
+5.3.29</a>&nbsp;&nbsp;Re scan 1 Wire</h4>
+
+RT  Re scan 1 wire bus.
+
+<div class="p"><!----></div>
+Scan the one wire bus for new sensors.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.30">
+5.3.30</a>&nbsp;&nbsp;Refresh User Interface</h4>
+
+RU  Refresh User Interface.
+
+<div class="p"><!----></div>
+Resends all data from the PIC chip to the Siteplayer, for use if the PIC chip and Siteplayer are out of step.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.31">
+5.3.31</a>&nbsp;&nbsp;Set IP Address</h4>
+
+Set Internet protocol address
+SIn; n; n; n:
+
+<div class="p"><!----></div>
+Where each n is an element of the IP address.
+
+<div class="p"><!----></div>
+SAm; m; m; m; m; m; n; n; n; n:
+
+<div class="p"><!----></div>
+Where each m is an element of the network MAC address.
+Where each n is an element of the IP address.
+This is to enable a bunch of WebBricks to be added to a network, identified and addresses set by a discovery process.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.32">
+5.3.32</a>&nbsp;&nbsp;Set Scene</h4>
+
+SCnr:
+
+<div class="p"><!----></div>
+Set the output channels to match a specific scene. The result is the equivalent of issuing On, Off or SetScene 
+for any channel not marked as Ignore. NOTE there is a slight difference when a trigger is used to set a scene
+in that instead of the ON action for digital channels marked as On and the analogue channels being sent 
+the action from the trigger will be sent i.e. Dwell, some possible actions will not make sense.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.33">
+5.3.33</a>&nbsp;&nbsp;Set Date</h4>
+
+SDyears; mon; date  
+
+<div class="p"><!----></div>
+Set Date for the WebBrick. Not currently implemented or used.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.34">
+5.3.34</a>&nbsp;&nbsp;Set FadeRate</h4>
+
+SFrate  Set Fade rate
+
+<div class="p"><!----></div>
+Set the rate at which the analogue channels are adjusted to meet the desired output value. 
+The smaller the number the quicker the analogue output channel swings.
+
+<div class="p"><!----></div>
+With a setting of 1 the analogue will swing full range in approx 200mS, with a value of 255 the swing
+full range will take circa 50 seconds.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.35">
+5.3.35</a>&nbsp;&nbsp;Set Mimic</h4>
+
+SMoffLevel; onLevel; fadeRate:
+
+<div class="p"><!----></div>
+Set Mimic high and low level and the fade rate between them. These high and low values are used
+when connected as mimics for analogue and digital outputs, by use of an off level that is not quite off 
+we have a seek light in the dark. The fade rate controls the speed that the mimic shifts from one level to
+the next, the next level could be selected by the DM command. The final optional parameter sets the mimic 
+output to low voltage (approx 4V) or high voltage (approx 10.5V).
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.36">
+5.3.36</a>&nbsp;&nbsp;Set NodeNumber</h4>
+
+SNNodeNumber:
+
+<div class="p"><!----></div>
+Set node number
+NodeNumber should be between 1-254, 0 is reserved for 'new' WebBricks that will be configured by
+a remote server before they go into production.
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.37">
+5.3.37</a>&nbsp;&nbsp;Set options flag</h4>
+
+Set an option flag value, some are bit mapped and others just on/off.
+SOnum; value:
+
+<div class="p"><!----></div>
+Options control some small bits of a WebBrick's operation.
+Most options are not intended for general use and are undocumented.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Option</td><td width="474">Description</td></tr>
+<tr><td>1</td><td width="474">Manages UDP event transmission.</td></tr></table>
+
+
+<div class="p"><!----></div>
+UDP event transmission option.
+
+<table>
+<tr><td>Bit</td><td>Value</td><td width="474">Description</td></tr>
+<tr><td>0</td><td>1</td><td width="474">Enable sending temperature changes.</td></tr>
+<tr><td>1</td><td>2</td><td width="474">Enable analogue input changes.</td></tr>
+<tr><td>2</td><td>4</td><td width="474">Enable analogue output changes.</td></tr>
+<tr><td>3</td><td>8</td><td width="474">Enable Infra red reception UDP packets.</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.38">
+5.3.38</a>&nbsp;&nbsp;Set password</h4>
+
+Set a password.
+SPlevel; new password:
+
+<div class="p"><!----></div>
+level is the password level number 1-3. password is the new password to set. If the same password
+is set at multiple levels then login using that password will set itself to the highest of the 
+levels using that password string. If Level 1 password is blank the WebBrick will default to being
+logged in at level 1 at start and after login timeout. This enables the Home page controls.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.39">
+5.3.39</a>&nbsp;&nbsp;Rotary Encoder Step</h4>
+
+Configure rotary encoder.
+SRchn;Steps:
+
+<div class="p"><!----></div>
+Steps should be between 2-254, Analogue outputs are set in the raw range 0-1023, where 1023 is 5V, 
+Steps controls how far the output is
+indexed 'up' or 'down' for each step turn of the rotary encoder. 
+There is currently only a single rotary encoder and chn should be 0.
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.40">
+5.3.40</a>&nbsp;&nbsp;Set Operating Mode</h4>
+
+Set operational state
+SSToD:
+
+<div class="p"><!----></div>
+ToD is a value between 0-255 that lets the WebBrick know a bit about its operating environment, 
+the current recognised values are:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Value</td><td width="474">Description</td></tr>
+<tr><td>0</td><td width="474">This locks out any commands from the WebBrick holding any outputs at their current state (any Dwell in progress will complete).</td></tr>
+<tr><td>1</td><td width="474">Startup state.</td></tr>
+<tr><td>2</td><td width="474">This is normal operation.</td></tr>
+<tr><td>3</td><td width="474">This is 'quiescent' operation where analogue outputs are set or returned to set point 1 after any Dwell. (Will be set by parameter later)</td></tr></table>
+
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.41">
+5.3.41</a>&nbsp;&nbsp;Set Time</h4>
+
+STdd; hh; mm  Set Time
+
+<div class="p"><!----></div>
+Set the WebBrick clock. dd is day number from 0-6. hh and mm are the 24 hour time. The WebBrick will
+send out starting packets until the clock is set.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.42">
+5.3.42</a>&nbsp;&nbsp;Adjust Analogue Input Threshold</h4>
+
+TAchn; l - HB; Threshold;
+
+<div class="p"><!----></div>
+Configure the active threshold on one of the analogue inputs. This does not update the persistent configuration
+only the active configuration.
+L or H or B identify whether this is setting a High or Low or Both threshold and Threshold is the analogue threshold
+as a value from 0-100%. The low level hardware is 0-5V but so as to avoid issues when some signal
+conditioning is added the input is scaled.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc5.3.43">
+5.3.43</a>&nbsp;&nbsp;Adjust Temperature Sensor Threshold</h4>
+
+TTchn; l - HB; Threshold;
+
+<div class="p"><!----></div>
+Configure the active threshold on one of the temperature sensors. This does not update the persistent configuration
+only the active configuration.
+L or H or B identify whether this is setting a High or Low or Both threshold and Threshold is the temperature threshold
+as a decimal temperature between -50 and +150 to 1 decimal place degrees Celsius. 
+i.e. these are valid 50, 43.3, -43, -54.9. These are not valid 34.95, -43.12.
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc6">
+6</a>&nbsp;&nbsp;IO Board</h2>
+
+The V6 webbrick comes with an IO board that provides screw terminal access to all connections other than the 
+network cable. It also provides 4 switched mains outputs and 2 double pole changeover relay outputs.
+
+<div class="p"><!----></div>
+Layout diagram In here.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.1">
+6.1</a>&nbsp;&nbsp;Mains Switching</h3>
+
+The mains outputs are digital channels 1 to 4 and can each switch up to 500W, with a maximum of 1500W for the four channels.
+There is a 6.3 Amp fuse in the unit that will blow if you excede this loading. These are zero voltage switched and intended 
+for simple on off actions. To handle dimming use the analogue outputs connected to external dimmers.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.2">
+6.2</a>&nbsp;&nbsp;Relays</h3>
+
+Digital channels 4 and 5 are connected to relays that provide a doubel pole changeover capability and are rated for 4A at 230V. 
+Due to internal spacing these should not be used for low voltage applications if the mains switching capability is 
+used on the Triacs.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc6.3">
+6.3</a>&nbsp;&nbsp;Connections</h3>
+
+
+<div class="p"><!----></div>
+The IO board has a total of 6 connectors on it, 2 are 9 way and 4 are 12 way. The 9 way connectors are used for the 
+mains outputs and the 12 way for inputs and low voltage outputs.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg15">
+</a> <center><img src="Images/TopOverlay.png">
+
+<center>Figure 15: WebBrick IO connectors</center>
+</center>
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector X1</td><td width="197">Relay connections</td></tr>
+<tr><td>Pin 1</td><td width="197">Mains Triac 0</td></tr>
+<tr><td>Pin 2</td><td width="197">Mains Triac 1</td></tr>
+<tr><td>Pin 3</td><td width="197">Mains Triac 2</td></tr>
+<tr><td>Pin 4</td><td width="197">Mains Triac 3</td></tr>
+<tr><td>Pin 5</td><td width="197">Mains In</td></tr>
+<tr><td>Pin 6</td><td width="197">Relay1 NO1</td></tr>
+<tr><td>Pin 7</td><td width="197">Relay1 C1</td></tr>
+<tr><td>Pin 8</td><td width="197">Relay1 NC1</td></tr>
+<tr><td>Pin 9</td><td width="197">Mains Earth</td></tr></table>
+
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector X2</td><td width="197">Triac/Mains and more Relay connections</td></tr>
+<tr><td>Pin 1</td><td width="197">Relay1 NO2</td></tr>
+<tr><td>Pin 2</td><td width="197">Relay1 C2</td></tr>
+<tr><td>Pin 3</td><td width="197">Relay1 NC2</td></tr>
+<tr><td>Pin 4</td><td width="197">Relay2 NO1</td></tr>
+<tr><td>Pin 5</td><td width="197">Relay2 C1</td></tr>
+<tr><td>Pin 6</td><td width="197">Relay2 NC1</td></tr>
+<tr><td>Pin 7</td><td width="197">Relay2 NO2</td></tr>
+<tr><td>Pin 8</td><td width="197">Relay2 C2</td></tr>
+<tr><td>Pin 9</td><td width="197">Relay2 NC2</td></tr></table>
+
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector U1</td><td width="197"></td></tr>
+<tr><td>Pin 1</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 2</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 3</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 4</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 5</td><td width="197">Digital In 7</td></tr>
+<tr><td>Pin 6</td><td width="197">Digital In 6</td></tr>
+<tr><td>Pin 7</td><td width="197">Digital In 5</td></tr>
+<tr><td>Pin 8</td><td width="197">Digital In 4</td></tr>
+<tr><td>Pin 9</td><td width="197">Digital In 3</td></tr>
+<tr><td>Pin 10</td><td width="197">Digital In 2</td></tr>
+<tr><td>Pin 11</td><td width="197">Digital In 1</td></tr>
+<tr><td>Pin 12</td><td width="197">Digital In 0</td></tr></table>
+
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector U2</td><td width="197"></td></tr>
+<tr><td>Pin 1</td><td width="197">Analogue In 0</td></tr>
+<tr><td>Pin 2</td><td width="197">Analogue In 1</td></tr>
+<tr><td>Pin 3</td><td width="197">Analogue In 2</td></tr>
+<tr><td>Pin 4</td><td width="197">Analogue In 3</td></tr>
+<tr><td>Pin 5</td><td width="197">Digital Input 8 - may be labelled Digital Monitor 1</td></tr>
+<tr><td>Pin 6</td><td width="197">Digital Input 9 - may be labelled Digital Monitor 2</td></tr>
+<tr><td>Pin 7</td><td width="197">Digital Input 10 - may be labelled Digital Monitor 3</td></tr>
+<tr><td>Pin 8</td><td width="197">Digital Input 11 - may be labelled Digital Monitor 4&amp; IR In</td></tr>
+<tr><td>Pin 9</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 10</td><td width="197">1 Wire data bus</td></tr>
+<tr><td>Pin 11</td><td width="197">1 Wire 5V Supply</td></tr>
+<tr><td>Pin 12</td><td width="197">0V-Digital Ground</td></tr></table>
+
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector U3</td><td width="197"></td></tr>
+<tr><td>Pin 1</td><td width="197">Open Collector Digital 0</td></tr>
+<tr><td>Pin 2</td><td width="197">Open Collector Digital 1</td></tr>
+<tr><td>Pin 3</td><td width="197">Open Collector Digital 2</td></tr>
+<tr><td>Pin 4</td><td width="197">Open Collector Digital 3</td></tr>
+<tr><td>Pin 5</td><td width="197">Special Connection A</td></tr>
+<tr><td>Pin 6</td><td width="197">Special Connection B</td></tr>
+<tr><td>Pin 7</td><td width="197">0V-Digital Ground</td></tr>
+<tr><td>Pin 8</td><td width="197">12V Supply In</td></tr>
+<tr><td>Pin 9</td><td width="197">Digital 4</td></tr>
+<tr><td>Pin 10</td><td width="197">Digital 5</td></tr>
+<tr><td>Pin 11</td><td width="197">Digital 6</td></tr>
+<tr><td>Pin 12</td><td width="197">Digital 7 &amp; IR Out</td></tr></table>
+
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Connector U4</td><td width="197"></td></tr>
+<tr><td>Pin 1</td><td width="197">Mimic 0</td></tr>
+<tr><td>Pin 2</td><td width="197">Mimic 1</td></tr>
+<tr><td>Pin 3</td><td width="197">Mimic 2</td></tr>
+<tr><td>Pin 4</td><td width="197">Mimic 3</td></tr>
+<tr><td>Pin 5</td><td width="197">Mimic 4</td></tr>
+<tr><td>Pin 6</td><td width="197">Mimic 5</td></tr>
+<tr><td>Pin 7</td><td width="197">Mimic 6</td></tr>
+<tr><td>Pin 8</td><td width="197">Mimic 7</td></tr>
+<tr><td>Pin 9</td><td width="197">Analogue Out 0</td></tr>
+<tr><td>Pin 10</td><td width="197">Analogue Out 1</td></tr>
+<tr><td>Pin 11</td><td width="197">Analogue Out 2</td></tr>
+<tr><td>Pin 12</td><td width="197">Analogue Out 3</td></tr></table>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc7">
+7</a>&nbsp;&nbsp;Xml Structure</h2>
+
+
+<div class="p"><!----></div>
+A WebBrick can serve up two Xml files, one of these (WbStatus.xml) provides the current status of dynamic information, i.e.
+current output state and the other (WBCfg.xml) contains the complete WebBrick configuration.
+
+<div class="p"><!----></div>
+The element names are chosen to identify the commands used to modify attributes within the PIC chip.
+
+<div class="p"><!----></div>
+The XML is intended to be consumed by other computer software more than used to display to the end user in its raw form. If
+you try and look at it in a normal text editor you will find some very long line lengths.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.1">
+7.1</a>&nbsp;&nbsp;Trigger Encoding,XML</h3>
+    When a trigger sequence is sent out from the webbrick it is encoded into 3 bytes encoded as 
+    follows.
+
+<div class="p"><!----></div>
+    
+<ol type="1">
+<br />ConfigByte1
+    This uses the following Bit fields
+        
+<ol type="a">
+<br />Bits 0-3 This is the action to be performed. See section in Commands on Actions for values.
+<br />Bits 4-5 This is the choice of Dwell time 0-3.
+<br />Bits 6-7 This is status of the UDP send, We now have three types of UDP packet that can be sent, see section on UDP for full details.
+            
+<ol type="i">
+<br />0 No UDP packet will be sent in response to a input trigger
+<br />1 General UDP Packet, see packet contents for further details.
+<br />2 Remote command UDP Packet will be sent.
+<br />3 'Alarm' UDP packet will be generated.</ol></ol>
+<br />ConfigByte2
+
+<div class="p"><!----></div>
+    This uses the following bit fields.
+        
+<ol type="a">
+<br />Bit 7 If this bit is set then the target channel is analogue and the following analogue 
+            format applies.</ol>
+        Analogue format.
+        
+<ol type="a">
+<br />Bit 7 bit is set
+<br />Bits 0-3 This is the setpoint to be used in analogue commands
+<br />Bits 4-6 This is the analogue channel on which the action is to be performed.</ol>
+        Non analogue format.
+        
+<ol type="a">
+<br />Bit 7 bit is clear
+<br />Bit 6 If Clear then it is a digital channel, if set then it is a Scene.
+<br />Bits 0-3 This is the digital channel or scene number.
+<br />Bits 4-5 Reserved for other possible options, keep as 0.</ol>
+<br />ConfigByte3
+    This is the remote node to be triggered for remote actions. It will be set in all
+    UDP packets so can be used for other purposes when type is General or Alarm.
+<br />ConfigByte4
+    This is a reserved byte not yet used.</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.2">
+7.2</a>&nbsp;&nbsp;WbStatus.xml</h3>
+
+
+<div class="p"><!----></div>
+    
+<table>
+<tr><td>Element</td><td>Description</td></tr>
+<tr><td>WebbrickStatus</td><td>Overall Element in WbStatus.xml</td></tr>
+<tr><td>SN</td><td>Node number</td></tr>
+<tr><td>Error</td><td>Response to last command</td></tr>
+<tr><td>Context</td><td>Operational State</td></tr>
+<tr><td>LoginState</td><td>Login level</td></tr>
+<tr><td>DI</td><td>Digital input state</td></tr>
+<tr><td>DO</td><td>Digital output state</td></tr>
+<tr><td>Clock</td><td>Current webbrick clock</td></tr>
+<tr><td>Date</td><td>Not implemented</td></tr>
+<tr><td>Time</td><td>Current webbrick time</td></tr>
+<tr><td>Day</td><td>Current webbrick day of week</td></tr>
+<tr><td>OWbus</td><td>One wire bus status</td></tr>
+<tr><td>Tmps</td><td>Temperature elements</td></tr>
+<tr><td>Tmp</td><td>Temperature id nn values</td></tr>
+<tr><td>AOs</td><td>Analogue output elements</td></tr>
+<tr><td>AO</td><td>Analogue output id nn values</td></tr>
+<tr><td>AIs</td><td>Analogue input elements</td></tr>
+<tr><td>AI</td><td>Analogue input id nn values</td></tr></table>
+
+
+<div class="p"><!----></div>
+For example of using this see wb6Status.py in the python API or wb6Status.php in the PHP API.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.1">
+7.2.1</a>&nbsp;&nbsp;Error</h4>
+The element contents are 0 or an error code if the last webbrick command was invalid.
+
+<div class="p"><!----></div>
+    
+<table>
+<tr><td>Value</td><td>Description</td></tr>
+<tr><td>0</td><td>No Error</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.2">
+7.2.2</a>&nbsp;&nbsp;Context</h4>
+Operating context.
+
+<div class="p"><!----></div>
+    
+<table>
+<tr><td>Value</td><td>Description</td></tr>
+<tr><td>0</td><td>Startup</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.3">
+7.2.3</a>&nbsp;&nbsp;LoginState</h4>
+Login state.
+
+<div class="p"><!----></div>
+    
+<table>
+<tr><td>Value</td><td>Description</td></tr>
+<tr><td>0</td><td>Logged out</td></tr>
+<tr><td>1</td><td>controls enabled</td></tr>
+<tr><td>2</td><td>configuration</td></tr>
+<tr><td>3</td><td>installer</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.4">
+7.2.4</a>&nbsp;&nbsp;DI</h4>
+Digital input state, bit mapped integer where bit 0 is the current state of digital input 0 (when using a zero base). 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.5">
+7.2.5</a>&nbsp;&nbsp;DO</h4>
+Digital output state, bit mapped integer where bit 0 is the current state of digital output 0 (when using a zero base). 
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.6">
+7.2.6</a>&nbsp;&nbsp;Clock</h4>
+Contains the current time as known by the WebBrick, the XML includes full date but this is not implemented within the
+system at present. The element Date within Clock contains date string and Time contains the time in 24 hour format.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.7">
+7.2.7</a>&nbsp;&nbsp;OWBus</h4>
+Contains the status of the one wire bus. The value of 255 shows no sensors detected and a small integer is a bit mapped 
+value with a bit for each temperature sensor.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.8">
+7.2.8</a>&nbsp;&nbsp;Tmps</h4>
+Contains one entry for each possible temperature sensor.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.9">
+7.2.9</a>&nbsp;&nbsp;Tmp</h4>
+Contains an id attribute, the current low threshold and high thresholds as attributes and the 
+current temperature reading. Note these are in 16ths of a degree so convert to float/real number and 
+divide by 16 to get value.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.10">
+7.2.10</a>&nbsp;&nbsp;AO</h4>
+Contains the current analogue output value for an analogue output channel, this is a number from 0-100 where 100
+is 10V output.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.11">
+7.2.11</a>&nbsp;&nbsp;AI</h4>
+Contains an id attribute, the current low threshold and high thresholds as attributes and the 
+current analogue reading. Note these are in the range 0 - 100 where 100 is 5V at the terminal.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.2.12">
+7.2.12</a>&nbsp;&nbsp;Sample wbStatus.xml</h4>
+The following is a sample copy of a webbrick Xml status file.
+
+<div class="p"><!----></div>
+
+<pre>&lt;?xml&nbsp;version="1.0"&nbsp;encoding="ISO-8859-1"?&#62;
+&lt;WebbrickStatus&nbsp;Ver="6.1.614"&#62;
+&lt;Error&#62;0&lt;/Error&#62;
+&lt;Context&#62;2&lt;/Context&#62;
+&lt;LoginState&#62;3&lt;/LoginState&#62;
+
+&lt;DI&#62;0&lt;/DI&#62;
+&lt;DO&#62;0&lt;/DO&#62;
+&lt;Clock&#62;
+&lt;Date&#62;0/0/0&lt;/Date&#62;&nbsp;
+&lt;Time&#62;12:54:52&lt;/Time&#62;
+&lt;Day&#62;3&lt;/Day&#62;
+&lt;/Clock&#62;
+
+&lt;OWBus&#62;1&lt;/OWBus&#62;
+&lt;Tmps&#62;
+&lt;Tmp&nbsp;id="1"&nbsp;lo="-800"&nbsp;hi="384"&#62;283&lt;/Tmp&#62;
+&lt;Tmp&nbsp;id="2"&nbsp;lo="-800"&nbsp;hi="1600"&#62;0&lt;/Tmp&#62;
+&lt;Tmp&nbsp;id="3"&nbsp;lo="-800"&nbsp;hi="1600"&#62;0&lt;/Tmp&#62;
+&lt;Tmp&nbsp;id="4"&nbsp;lo="-800"&nbsp;hi="1600"&#62;0&lt;/Tmp&#62;
+&lt;Tmp&nbsp;id="5"&nbsp;lo="-800"&nbsp;hi="1600"&#62;0&lt;/Tmp&#62;
+&lt;/Tmps&#62;
+
+&lt;AOs&#62;
+&lt;AO&nbsp;id="0"&#62;0&lt;/AO&#62;
+&lt;AO&nbsp;id="1"&#62;0&lt;/AO&#62;
+&lt;AO&nbsp;id="2"&#62;0&lt;/AO&#62;
+&lt;AO&nbsp;id="3"&#62;0&lt;/AO&#62;
+&lt;/AOs&#62;
+&lt;AIs&#62;
+&lt;AI&nbsp;id="0"&nbsp;lo="0"&nbsp;hi="100"&#62;1&lt;/AI&#62;
+&lt;AI&nbsp;id="1"&nbsp;lo="0"&nbsp;hi="100"&#62;0&lt;/AI&#62;
+&lt;AI&nbsp;id="2"&nbsp;lo="0"&nbsp;hi="100"&#62;0&lt;/AI&#62;
+&lt;AI&nbsp;id="3"&nbsp;lo="0"&nbsp;hi="100"&#62;0&lt;/AI&#62;
+&lt;/AIs&#62;
+&lt;/WebbrickStatus&#62;
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc7.3">
+7.3</a>&nbsp;&nbsp;WbCfg.xml</h3>
+
+
+<div class="p"><!----></div>
+    
+<table>
+<tr><td>Element</td><td>Description</td></tr>
+<tr><td>WebbrickConfig</td><td>Overall Element in WbStatus.xml</td></tr>
+<tr><td>NN</td><td>Node Name</td></tr>
+<tr><td>SN</td><td>Node number</td></tr>
+<tr><td>SRs</td><td>Rotary encoder elements</td></tr>
+<tr><td>SR</td><td>Rotary encoder step value</td></tr>
+<tr><td>IR</td><td>Infra red address received by webbrick on IR reception.</td></tr>
+<tr><td>SF</td><td>Analogue fade rate</td></tr>
+<tr><td>CDs</td><td>digital input elements</td></tr>
+<tr><td>CD</td><td>digital id nn input</td></tr>
+<tr><td>Trg</td><td>Trigger setting</td></tr>
+<tr><td>TrgL</td><td>Low threshold and trigger setting</td></tr>
+<tr><td>TrgH</td><td>High threshold and trigger setting</td></tr>
+<tr><td>CCs</td><td>Scene elements</td></tr>
+<tr><td>CC</td><td>Scene id nn settings</td></tr>
+<tr><td>CWs</td><td>Dwell elements</td></tr>
+<tr><td>CW</td><td>Dwell id nn setting</td></tr>
+<tr><td>CSs</td><td>Set point elements</td></tr>
+<tr><td>CS</td><td>Set point id nn </td></tr>
+<tr><td>CTs</td><td>Temperature elements</td></tr>
+<tr><td>CT</td><td>Temperature input id nn value,name,thresholds</td></tr>
+<tr><td>CIs</td><td>Analogue input elements</td></tr>
+<tr><td>CI</td><td>Analogue input id nn value,name,thresholds</td></tr>
+<tr><td>CEs</td><td>Scheduled event elements</td></tr>
+<tr><td>CE</td><td>Scheduled event id nn </td></tr>
+<tr><td>NOs</td><td>Digital output elements</td></tr>
+<tr><td>NO</td><td>Digital output id nn name </td></tr>
+<tr><td>NMs</td><td>Monitor input elements</td></tr>
+<tr><td>NAs</td><td>Analogue output elements</td></tr>
+<tr><td>NA</td><td>Analogue output id nn name </td></tr>
+<tr><td>MM</td><td>Mimic configuration</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.1">
+7.3.1</a>&nbsp;&nbsp;WebbrickConfig</h4>
+Contains the firmware version number
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.2">
+7.3.2</a>&nbsp;&nbsp;NN</h4>
+Contains the configured node name.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.3">
+7.3.3</a>&nbsp;&nbsp;SI</h4>
+Contains the IP address and MAC address of the webbrick.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.4">
+7.3.4</a>&nbsp;&nbsp;SN</h4>
+Contains the configured webbrick node number.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.5">
+7.3.5</a>&nbsp;&nbsp;SR</h4>
+Contains attributes id and the Value for the rotary step value.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.6">
+7.3.6</a>&nbsp;&nbsp;SF</h4>
+Contains the fade rate counter, this controls how fast the analogue channels fade up and down.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.7">
+7.3.7</a>&nbsp;&nbsp;CDs</h4>
+Container element for all the digital input channel elements.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.8">
+7.3.8</a>&nbsp;&nbsp;CD</h4>
+Configuration details for a digital input. Contains an id, the name and the options for the input and a nested trigger
+element. See start of section for trigger details.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.9">
+7.3.9</a>&nbsp;&nbsp;CCs</h4>
+Container element for all the scene elements.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.10">
+7.3.10</a>&nbsp;&nbsp;CS</h4>
+Configuration details for a scene. Contains an id attribute and controls for the digital outputs and analogue outputs.
+The Dm attribute identifies which digital channels are affected by this scene and Ds for those channels whether to 
+switch the channel off or on. Am identifies which analogue channels are affected and Av the set points for those 
+channels. Note when a scene is selected by a trigger the trigger action will override the On action here, so that 
+a scene can be dwelled etc. If the scene says Off then Off it goes.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.11">
+7.3.11</a>&nbsp;&nbsp;CWs</h4>
+Container element for all the dwell values.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.12">
+7.3.12</a>&nbsp;&nbsp;CW</h4>
+Contain the configured dwell values in seconds.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.13">
+7.3.13</a>&nbsp;&nbsp;CSs</h4>
+Container element for all the analogue set point values.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.14">
+7.3.14</a>&nbsp;&nbsp;CS</h4>
+Contains each of the set point values in the range 0-100.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.15">
+7.3.15</a>&nbsp;&nbsp;CTs</h4>
+Container element for all the temperature sensor configuration.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.16">
+7.3.16</a>&nbsp;&nbsp;CT</h4>
+Contains an id and a name for a temperature sensor and an embedded trigger along with the threshold
+at which it occurs. TrgL is the low threshold amd TrgH is the high threshold for the sensor. Threshold
+values are in 16ths of a degree.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.17">
+7.3.17</a>&nbsp;&nbsp;CIs</h4>
+Container element for all the analogue input configuration.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.18">
+7.3.18</a>&nbsp;&nbsp;CI</h4>
+Contains an id and a name for an analogue channel and embedded triggers along with the threshold
+at which they occurs. TrgL is the low threshold amd TrgH is the high threshold for the sensor. Threshold
+values are in the range 0-100.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.19">
+7.3.19</a>&nbsp;&nbsp;CEs</h4>
+Container element for all the scheduled event configuration.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.20">
+7.3.20</a>&nbsp;&nbsp;CE</h4>
+Each element contains an id, Days, Hours, Minutes attribute. The Days attribute is bit mapped for days 0-6
+and identifies on which days of the week the event occurs. The embedded Trg element is the action to perform.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.21">
+7.3.21</a>&nbsp;&nbsp;NOs</h4>
+Container element for all the digital output elements.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.22">
+7.3.22</a>&nbsp;&nbsp;NO</h4>
+Each element contains an id and a name for a digital output.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.23">
+7.3.23</a>&nbsp;&nbsp;NAs</h4>
+Container element for all the analogue output elements.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.24">
+7.3.24</a>&nbsp;&nbsp;NA</h4>
+Each element contains an id and a name for a analogue output.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.25">
+7.3.25</a>&nbsp;&nbsp;IR</h4>
+Contains the Infra red RC5 address recognised by the webbrick.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.26">
+7.3.26</a>&nbsp;&nbsp;MM</h4>
+Contains the current mimic settings. The 'lo' and 'hi' attributes are the off an on mimic settings, this value
+is in the range 0-63. The 'dig' attribute is a 32 bit number with 4 bits for each digital output that maps the 
+output channel to a mimic, as there are only 8 mimics a channel number greater than 7 is basically No Mimic. 
+The 'an' attribute provides the same mapping for the analogue outputs. Finally the 'fr' attribute controls
+how fast the mimics fade from one setting to the next.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc7.3.27">
+7.3.27</a>&nbsp;&nbsp;Sample wbCfg.xml</h4>
+The following is a sample copy of a webbrick Xml config file.
+
+<div class="p"><!----></div>
+
+<pre>&lt;?xml&nbsp;version="1.0"&nbsp;encoding="ISO-8859-1"?&#62;
+&lt;WebbrickConfig&nbsp;Ver="6.1.614"&#62;
+&lt;NN&#62;Documen&lt;/NN&#62;
+&lt;SI&nbsp;ip="10.100.100.101"&nbsp;mac="00:03:75:0F:83:99"/&#62;
+&lt;SN&#62;25&lt;/SN&#62;
+&lt;SRs&#62;
+&lt;SR&nbsp;id="0"&nbsp;Value="8"/&#62;
+&lt;SR&nbsp;id="1"&nbsp;Value="8"/&#62;
+&lt;/SRs&#62;
+&lt;SF&#62;4&lt;/SF&#62;
+&lt;CDs&#62;
+&lt;CD&nbsp;id="0"&nbsp;Name="Door"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="1"&nbsp;Name="Stair&nbsp;Lgt"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="1"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="2"&nbsp;Name="Lounge"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="2"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="3"&nbsp;Name="Bath&nbsp;Floor"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="3"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="4"&nbsp;Name="Kitch&nbsp;Flr"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="4"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="5"&nbsp;Name="Gar&nbsp;Door"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="5"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="6"&nbsp;Name="Boost"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="6"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="7"&nbsp;Name="Spare"&nbsp;Opt="2"&#62;
+&lt;Trg&nbsp;B1="68"&nbsp;B2="7"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="8"&nbsp;Name="Sw-9"&nbsp;Opt="3"&#62;
+&lt;Trg&nbsp;B1="64"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="9"&nbsp;Name="Sw-10"&nbsp;Opt="3"&#62;
+&lt;Trg&nbsp;B1="64"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="10"&nbsp;Name="Sw-11"&nbsp;Opt="3"&#62;
+&lt;Trg&nbsp;B1="64"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;CD&nbsp;id="11"&nbsp;Name="Sw-12"&nbsp;Opt="3"&#62;
+&lt;Trg&nbsp;B1="64"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CD&#62;
+&lt;/CDs&#62;
+&lt;CCs&#62;
+&lt;CC&nbsp;id="0"&nbsp;Dm="255"&nbsp;Ds="85"&nbsp;Am="15"&nbsp;Av="9302"/&#62;
+&lt;CC&nbsp;id="1"&nbsp;Dm="255"&nbsp;Ds="170"&nbsp;Am="0"&nbsp;Av="0"/&#62;
+&lt;CC&nbsp;id="2"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="15"&nbsp;Av="10039"/&#62;
+&lt;CC&nbsp;id="3"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="15"&nbsp;Av="0"/&#62;
+&lt;CC&nbsp;id="4"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="0"&nbsp;Av="0"/&#62;
+&lt;CC&nbsp;id="5"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="0"&nbsp;Av="0"/&#62;
+&lt;CC&nbsp;id="6"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="0"&nbsp;Av="0"/&#62;
+&lt;CC&nbsp;id="7"&nbsp;Dm="0"&nbsp;Ds="0"&nbsp;Am="0"&nbsp;Av="0"/&#62;
+&lt;/CCs&#62;
+&lt;CWs&#62;
+&lt;CW&nbsp;id="0"&#62;30&lt;/CW&#62;
+&lt;CW&nbsp;id="1"&#62;2&lt;/CW&#62;
+&lt;CW&nbsp;id="2"&#62;60&lt;/CW&#62;
+&lt;CW&nbsp;id="3"&#62;3600&lt;/CW&#62;
+&lt;CW&nbsp;id="4"&#62;300&lt;/CW&#62;
+&lt;CW&nbsp;id="5"&#62;600&lt;/CW&#62;
+&lt;CW&nbsp;id="6"&#62;900&lt;/CW&#62;
+&lt;CW&nbsp;id="7"&#62;1200&lt;/CW&#62;
+&lt;/CWs&#62;
+&lt;CSs&#62;
+&lt;CS&nbsp;id="0"&#62;0&lt;/CS&#62;
+&lt;CS&nbsp;id="1"&#62;14&lt;/CS&#62;
+&lt;CS&nbsp;id="2"&#62;28&lt;/CS&#62;
+&lt;CS&nbsp;id="3"&#62;42&lt;/CS&#62;
+&lt;CS&nbsp;id="4"&#62;57&lt;/CS&#62;
+&lt;CS&nbsp;id="5"&#62;71&lt;/CS&#62;
+&lt;CS&nbsp;id="6"&#62;85&lt;/CS&#62;
+&lt;CS&nbsp;id="7"&#62;100&lt;/CS&#62;
+&lt;/CSs&#62;
+&lt;CTs&#62;
+&lt;CT&nbsp;id="0"&nbsp;Name="Zone&nbsp;1"&#62;
+&lt;TrgL&nbsp;Lo="-800"&nbsp;B1="2"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;TrgH&nbsp;Hi="384"&nbsp;B1="1"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;/CT&#62;
+&lt;CT&nbsp;id="1"&nbsp;Name="Zone&nbsp;2"&#62;
+&lt;TrgL&nbsp;Lo="-800"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="1600"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CT&#62;
+&lt;CT&nbsp;id="2"&nbsp;Name="Hot&nbsp;Water"&#62;
+&lt;TrgL&nbsp;Lo="-800"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="1600"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CT&#62;
+&lt;CT&nbsp;id="3"&nbsp;Name="External"&#62;
+&lt;TrgL&nbsp;Lo="-800"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="1600"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CT&#62;
+&lt;CT&nbsp;id="4"&nbsp;Name="Spare"&#62;
+&lt;TrgL&nbsp;Lo="-800"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="1600"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CT&#62;
+&lt;/CTs&#62;
+&lt;CIs&#62;
+&lt;CI&nbsp;id="0"&nbsp;Name="Water&nbsp;Lev"&#62;
+&lt;TrgL&nbsp;Lo="0"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;TrgH&nbsp;Hi="100"&nbsp;B1="0"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="165"/&#62;
+&lt;/CI&#62;
+&lt;CI&nbsp;id="1"&nbsp;Name="Salt&nbsp;Lev"&#62;
+&lt;TrgL&nbsp;Lo="0"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="100"&nbsp;B1="0"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CI&#62;
+&lt;CI&nbsp;id="2"&nbsp;Name="Wind"&#62;
+&lt;TrgL&nbsp;Lo="0"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="100"&nbsp;B1="0"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CI&#62;
+&lt;CI&nbsp;id="3"&nbsp;Name="Rain&nbsp;Gaug"&#62;
+&lt;TrgL&nbsp;Lo="0"&nbsp;B1="192"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;TrgH&nbsp;Hi="100"&nbsp;B1="0"&nbsp;B2="0"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CI&#62;
+&lt;/CIs&#62;
+&lt;CEs&#62;
+&lt;CE&nbsp;id="0"&nbsp;Days="127"&nbsp;Hours="8"&nbsp;Mins="59"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="1"&nbsp;Days="127"&nbsp;Hours="9"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="2"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="3"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="4"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="5"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="6"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="7"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="8"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="9"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="10"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="11"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="12"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="13"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="14"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;CE&nbsp;id="15"&nbsp;Days="0"&nbsp;Hours="0"&nbsp;Mins="0"&#62;
+&lt;Trg&nbsp;B1="0"&nbsp;B2="64"&nbsp;B3="0"&nbsp;B4="0"/&#62;
+&lt;/CE&#62;
+&lt;/CEs&#62;
+&lt;NOs&#62;
+&lt;NO&nbsp;id="0"&nbsp;Name="Boiler"/&#62;
+&lt;NO&nbsp;id="1"&nbsp;Name="Hot&nbsp;Water"/&#62;
+&lt;NO&nbsp;id="2"&nbsp;Name="Sec&nbsp;Light"/&#62;
+&lt;NO&nbsp;id="3"&nbsp;Name="Garage"/&#62;
+&lt;NO&nbsp;id="4"&nbsp;Name="Up&nbsp;Lights"/&#62;
+&lt;NO&nbsp;id="5"&nbsp;Name="Down&nbsp;Ligh"/&#62;
+&lt;NO&nbsp;id="6"&nbsp;Name="Heat&nbsp;Flr"/&#62;
+&lt;NO&nbsp;id="7"&nbsp;Name="Spare"/&#62;
+&lt;/NOs&#62;
+&lt;NAs&#62;
+&lt;NA&nbsp;id="0"&nbsp;Name="HallWay"/&#62;
+&lt;NA&nbsp;id="1"&nbsp;Name="External"/&#62;
+&lt;NA&nbsp;id="2"&nbsp;Name="Master&nbsp;Be"/&#62;
+&lt;NA&nbsp;id="3"&nbsp;Name="Library"/&#62;
+&lt;/NAs&#62;
+&lt;MM&nbsp;lo="2"&nbsp;hi="63"&nbsp;dig="1985229328"&nbsp;an="-1"&nbsp;fr="8"/&#62;
+&lt;/WebbrickConfig&#62;
+</pre>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc8">
+8</a>&nbsp;&nbsp;Setting the IP address</h2>
+
+<div class="p"><!----></div>
+In this section we deal with setting the IP address.
+
+<div class="p"><!----></div>
+The site player has been given a default IP address of 10.100.100.100 so it initially
+starts on 10.100.100.100. The IP address
+can also be set by the PIC chip configuration to overide this value.
+
+<div class="p"><!----></div>
+The IP address may also of been set to another value at factory and then locked down, to change it the unit
+will need returning to factory.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.1">
+8.1</a>&nbsp;&nbsp;Setting the IP address using Web Interface</h3>
+
+<div class="p"><!----></div>
+To set the IP address you need to be logged into the WebBrick.  This is done by selecting the login page , 
+from the menu and then entering the level 2 or 3 password into the login field.
+
+<div class="p"><!----></div>
+Select the Configure server and enter the new IP address into the correct 4 boxes and then click Save.
+
+<div class="p"><!----></div>
+See section on Configure Server in Web Interface section.
+
+<div class="p"><!----></div>
+If you are not sure what IP address the device is using, run either the accompanying WebBrickMon application which is a windows
+application and can be run directly from the CD or use the python wbMonitor program. Both of these should pick up UDP events
+being sent by the webBrick and display them. The IP address is listed after the time stamp on the Windows application.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.2">
+8.2</a>&nbsp;&nbsp;Setting the IP address using Python</h3>
+There is a python fragment setIp.py that can be edited and used to set the IP address, it needs the MAC address and new 
+IP address installing in it. It is only intended to be used where the WebBrick is on its default of 10.100.100.100, 
+possibly with other new WebBricks. This is the basis of the home gateway Discovery activity.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc8.3">
+8.3</a>&nbsp;&nbsp;Setting the IP address using WebBrickMon</h3>
+WebBrickMon is a standalone windows application that is on the distribution CD, it's primary purpose is for use in 
+initial setup to locate your webbrick on your local network. It communicates with a webbrick to set the IP address
+using broadcast messages and therefore can work when you caannot access the web interface.
+
+<div class="p"><!----></div>
+When the monitor is started you will see something similar to this:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> <center><img src="Images/WebBrickMon.png">
+</center>
+<div class="p"><!----></div>
+The top section shows UDP events coming from the webbrick, if your network is capable of connecting to the IP
+address listed in the events then just use your web browser to connect to the IP address. If your system uses 
+different IP address ranges then enter aa new IP address in the box at the bottom labelled WebBrickAddress and
+click SET. The monitor will then wait for the next NewNode event and change its webbrick address. You should then
+see the IP address in the events change.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> <center><img src="Images/WebBrickMon2.png">
+</center>
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc9">
+9</a>&nbsp;&nbsp;UDP Output</h2>
+
+
+<div class="p"><!----></div>
+Any trigger (Digital, analogue threshold, temperature threshold, scheduled event, Infra Red receive) 
+can be configured to send a 
+UDP packet with a configured type indicator, one of General, Remote, Alarm. Output channels also send UDP packets 
+to indicate a change has occured this can be used to confirm the operation of remote commands.
+
+<div class="p"><!----></div>
+The UDP packet format is the same on most occasions (exception being unconfigured node) 
+although some fields may not be used and may contain garbage data.
+
+<div class="p"><!----></div>
+The UDP Packet Format is formed as follows:
+
+<div class="p"><!----></div>
+	
+<table>
+<tr><td>Field</td><td width="474">Description</td></tr>
+<tr><td>Len (byte)</td><td width="474">The overall size of the UDP packet.</td></tr>
+<tr><td>udpType (byte)</td><td width="474">The packet type one of the characters 'A', 'G', 'R'.</td></tr>
+<tr><td>Source 0-1 (2bytes)</td><td width="474">These are two characters to identify the Udp source see later table.</td></tr>
+<tr><td>srcChannel (byte)</td><td width="474">The channel/event index.</td></tr>
+<tr><td>tgtChannel (byte)</td><td width="474">The target channel when sending remote commands, if the target channel type is analogue
+			then the top bit is set, i.e. values are 128+channel.</td></tr>
+<tr><td>action (byte)</td><td width="474">The action being triggered (low 4 bits), includes Dwell number (high 4 bits).</td></tr>
+<tr><td>fromNodeNr (byte)</td><td width="474">Source webrick number 1-253.</td></tr>
+<tr><td>toNodeNr (byte)</td><td width="474">Target webrick number for remote commands.</td></tr>
+<tr><td>setPointNr (byte)</td><td width="474">Where relevant for packet type.</td></tr>
+<tr><td>curValH (byte)</td><td width="474">High byte of any value being sent</td></tr>
+<tr><td>curValL (byte)</td><td width="474">Low byte of any value being sent</td></tr></table>
+
+
+<div class="p"><!----></div>
+The UDP Packet Types are:
+
+<div class="p"><!----></div>
+	
+<table>
+<tr><td>Type</td><td width="474">Description</td></tr>
+<tr><td>G</td><td width="474">General format UDP Packet generated</td></tr>
+<tr><td>R</td><td width="474">Remote action format UDP Packet generated</td></tr>
+<tr><td>A</td><td width="474">Alarm format UDP Packet generated</td></tr></table>
+
+
+<div class="p"><!----></div>
+The UDP Packet Sources are:
+
+<div class="p"><!----></div>
+	
+<table>
+<tr><td>Code</td><td width="474">Description</td></tr>
+<tr><td>Ta</td><td width="474">Low analogue threshold trigger</td></tr>
+<tr><td>TA</td><td width="474">High analogue threshold trigger</td></tr>
+<tr><td>Td</td><td width="474">Trigger from remote DI command</td></tr>
+<tr><td>TD</td><td width="474">Trigger from local digital input</td></tr>
+<tr><td>Tt</td><td width="474">Low temperature threshold trigger</td></tr>
+<tr><td>TT</td><td width="474">High temperature threshold trigger</td></tr>
+<tr><td>TS</td><td width="474">Trigger from scheduled event</td></tr>
+<tr><td>TR</td><td width="474">Trigger from infra red remote control</td></tr>
+<tr><td>TX</td><td width="474">Trigger from external source, i.e. H2M8 WebBrick Gateway</td></tr>
+<tr><td>IR</td><td width="474">infra red remote control</td></tr>
+<tr><td>AI</td><td width="474">New analogue input value 0-100</td></tr>
+<tr><td>AO</td><td width="474">New analogue output value 0-100</td></tr>
+<tr><td>CT</td><td width="474">Current temperature in 1/16ths degree</td></tr>
+<tr><td>DO</td><td width="474">Digital output/monitor state.</td></tr>
+<tr><td>NN</td><td width="474">Unconfigured node.</td></tr>
+<tr><td>SS</td><td width="474">Node starting, clock not set.</td></tr>
+<tr><td>AT</td><td width="474">Atention button pressed on webbrick, AKA Factory Reset button.</td></tr>
+<tr><td>AA</td><td width="474">Dicovery triggered response, Alert.</td></tr>
+<tr><td>CC</td><td width="474">Configuration changed.</td></tr></table>
+
+
+<div class="p"><!----></div>
+Further details on each packet follow.
+
+<div class="p"><!----></div>
+Trigger
+
+
+
+
+
+
+
+
+
+
+<div class="p"><!----></div>
+For this packet format:
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li> i) the srcChannel identifies the channel number or scheduled event number. In the case of the monitor
+inputs this is the monitor number + number of digital inputs. In a later revision of the firmware the monitor inputs will
+just be other digital inputs and can be a normal trigger. In the case of external source this will be zero.
+<div class="p"><!----></div>
+</li>
+
+<li> ii) the tgtChannel is the remote webrick node number from the trigger configuration
+<div class="p"><!----></div>
+</li>
+
+<li> iii) udpType is from the trigger configuration
+<div class="p"><!----></div>
+</li>
+
+<li> iv)action is from the trigger configuration action and dwell number if the trigger type is analogue
+<div class="p"><!----></div>
+</li>
+
+<li> v) fromNodeNr is my node number
+<div class="p"><!----></div>
+</li>
+
+<li> vi) toNodeNr is from the trigger configuration and is only relevant when the udpType is 'R' remote.
+<div class="p"><!----></div>
+</li>
+
+<li> vii) SetPointNr comes from trigger configuration.
+<div class="p"><!----></div>
+</li>
+
+<li> viii) CurValH is not used.
+<div class="p"><!----></div>
+</li>
+
+<li> ix) CurValL is used for local digital inputs and is an estimate of the number of times the input is triggered
+	in the last second.<br />
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+Analogue values
+
+<div class="p"><!----></div>
+For this packet format:
+
+<ol type="1">
+<li> i) the srcChannel identifies the analogue channel number
+<div class="p"><!----></div>
+</li>
+
+<li> ii) the tgtChannel is not used
+<div class="p"><!----></div>
+</li>
+
+<li> iii) udpType is 'G' General
+<div class="p"><!----></div>
+</li>
+
+<li> iv) action is not used
+<div class="p"><!----></div>
+</li>
+
+<li> v) fromNodeNr is my node number
+<div class="p"><!----></div>
+</li>
+
+<li> vi) toNodeNr is not used
+<div class="p"><!----></div>
+</li>
+
+<li> vii) SetPointNr is not used
+<div class="p"><!----></div>
+</li>
+
+<li> viii) CurValH is not used.
+<div class="p"><!----></div>
+</li>
+
+<li> ix) CurValL is the new value for the input or output in the range 0-100.<br />
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+Digital/Monitor State
+
+<div class="p"><!----></div>
+For this packet format:
+
+<ol type="1">
+<li> i) the srcChannel identifies the digital output channel number.
+<div class="p"><!----></div>
+</li>
+
+<li> ii) the tgtChannel is not used
+<div class="p"><!----></div>
+</li>
+
+<li> iii) udpType is 'G' General
+<div class="p"><!----></div>
+</li>
+
+<li> iv) action is either DINACTIONON or DINACTIONOFF
+<div class="p"><!----></div>
+</li>
+
+<li> v) fromNodeNr is my node number
+<div class="p"><!----></div>
+</li>
+
+<li> vi) toNodeNr is not used
+<div class="p"><!----></div>
+</li>
+
+<li> vii) SetPointNr is not used
+<div class="p"><!----></div>
+</li>
+
+<li> viii) CurValH is not used.
+<div class="p"><!----></div>
+</li>
+
+<li> ix) CurValL is not used.<br />
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+Node starting
+
+<div class="p"><!----></div>
+For this packet format:
+
+<ol type="1">
+<li> i) fromNodeNr is my node number
+<div class="p"><!----></div>
+</li>
+</ol>
+All other fields are not used.<br />
+
+<div class="p"><!----></div>
+Unconfigured
+
+<div class="p"><!----></div>
+For this packet format the payload does not follow the standard format, the first 6 bytes of the payload are 
+the MAC address of the network interface.<br />
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc10">
+10</a>&nbsp;&nbsp;WebBrick and Python</h2>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.1">
+10.1</a>&nbsp;&nbsp;Introduction</h3>
+
+<div class="p"><!----></div>
+Python is a very useful langauge. it can be used by almost anyone and allows for a full range of programming 
+from simple scripting to full on object orientated programming. oh2m8 Ltd.have used Python to implement 
+the interface service between the webbrick and ITunes (Apple).
+
+<div class="p"><!----></div>
+For the WebBrick we provide a number of Python resources, these fall into the following catergories:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Class Libraries</td><td width="474">These allow the user to create programs that interact with WebBricks
+				using routines that have been fully tested and debugged.  This allows
+				the programmer to get on with building the automation they desire rather
+				than getting bogged down in the details of network protocols.</td></tr>
+<tr><td>Utilities</td><td width="474">These allow for common operatios such as uploading and downloading
+				WebBrick configuration files.</td></tr>
+<tr><td>Example Code</td><td width="474">This allows people to quickly build on some of the ideas we already had and
+				implemented.</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.2">
+10.2</a>&nbsp;&nbsp;Class Libraries</h3>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.3">
+10.3</a>&nbsp;&nbsp;wb6.py the WebBrick class library</h3>
+
+
+<div class="p"><!----></div>
+This python module provides basic commands that can be sent to a WebBrick.
+
+<div class="p"><!----></div>
+To import this library use the following in your code:
+
+<div class="p"><!----></div>
+
+<pre>&nbsp;import&nbsp;wb6&nbsp;
+</pre>
+
+<div class="p"><!----></div>
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+<div class="p"><!----></div>
+wb6.DigOn( '10.100.100.100', 3 )
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.4">
+10.4</a>&nbsp;&nbsp;Functions implemented by wb class</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.1">
+10.4.1</a>&nbsp;&nbsp;getStatusXml</h4>
+getStatusXml(adrs)
+
+<div class="p"><!----></div>
+Retrieve the Xml blob that describes the current status of the addressed WebBrick
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.2">
+10.4.2</a>&nbsp;&nbsp;getConfigXml</h4>
+getConfigXml(adrs)
+
+<div class="p"><!----></div>
+Retrive the Xml blob that describes the current configuration of the addressed WebBrick
+adrs is the Ip address/Dns Name of the WebBrick being targetted.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.3">
+10.4.3</a>&nbsp;&nbsp;DigTrigger</h4>
+DigTrigger(adrs, chn) 
+
+<div class="p"><!----></div>
+Generate a digital trigger on a digital input
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.4">
+10.4.4</a>&nbsp;&nbsp;DigOn</h4>
+DigOn(adrs, chn)
+
+<div class="p"><!----></div>
+Set a digital On
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.5">
+10.4.5</a>&nbsp;&nbsp;DigOff</h4>
+DigOff(adrs, chn)
+
+<div class="p"><!----></div>
+Set a digital Off
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.6">
+10.4.6</a>&nbsp;&nbsp;DigToggle</h4>
+DigToggle(adrs,chn)
+
+<div class="p"><!----></div>
+Toggle a digital Off
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.7">
+10.4.7</a>&nbsp;&nbsp;DigDwell</h4>
+DigDwell(adrs,chn,DwellNr)
+
+<div class="p"><!----></div>
+Set a digital channel on for Dwell Time
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+    DwellNr is the dwell number
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.8">
+10.4.8</a>&nbsp;&nbsp;AnOutSp</h4>
+AnOutSp(adrs,chn,sp) 
+
+<div class="p"><!----></div>
+Set an analogue channel to preset sp.
+
+<div class="p"><!----></div>
+        adrs is the Ip address/Dns Name of the WebBrick being targetted.
+        chn is the channel on the webBrick being targetted
+        sp is the preset number
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.9">
+10.4.9</a>&nbsp;&nbsp;AnOutPercent</h4>
+AnOutPercent(adrs,chn,val)
+
+<div class="p"><!----></div>
+Set an analogue channel to a specific per-cent level.
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    chn is the channel on the webBrick being targetted
+    val is a value 0-100 where 100 if 10V output
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.10">
+10.4.10</a>&nbsp;&nbsp;Send</h4>
+Send(adrs,cmd)
+
+<div class="p"><!----></div>
+Send a specific WebBrick command.
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    cmd is the command to be sent, see the section on Commands.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.11">
+10.4.11</a>&nbsp;&nbsp;GetXml</h4>
+result = GetXml(adrs,xmlName)
+
+<div class="p"><!----></div>
+Retrieve a specific Xml blob from a webBrick.
+
+<div class="p"><!----></div>
+    adrs is the Ip address/Dns Name of the WebBrick being targetted.
+    xmlName The name of the Xml blob, currently xmlStatus.xml and xmlCfg.xml.
+    result the return value is the Xml if the parameters are valid
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.12">
+10.4.12</a>&nbsp;&nbsp;wbUdpEvents.py</h4>
+
+This is a class that captures and delivers Udp events to an event target. To use this you create an event
+target derived from wbUdpEvents.udpPacket for the events to be delivered to and pass this when you create 
+wbUdpEvents.wbUdpEvents. 
+
+<div class="p"><!----></div>
+wbMonitor is an example using this, See under Python Utilities.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.13">
+10.4.13</a>&nbsp;&nbsp;wbXmlEvent.py</h4>
+
+
+<div class="p"><!----></div>
+This is a class that builds upon wbUdpEvents to turn the UDP events from a webbrick into an Xml format, another example of an
+Event target for wbUdpEvents.  wbXmlEventTest.py (see under Python Utilities) uses this class.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.14">
+10.4.14</a>&nbsp;&nbsp;WebBrickConfig.py</h4>
+
+
+<div class="p"><!----></div>
+This class contains methods to read a WebBrick XML configuration file, and convert them into WebBrick configuration commands.
+There is a command interface to this class that uses it to save and restore configuration to/from disk. 
+See under Python Utilities.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.15">
+10.4.15</a>&nbsp;&nbsp;wbStatus.py</h4>
+
+
+<div class="p"><!----></div>
+This class retrieves a copy of the current WebBrick Status that can then be asked for specific details. Note
+the object reads and caches the values, so you get a current snapshot. To get updated values create a new object.
+There is no point retrieveing tha values at more a 1 second interval and it is recommended that you do as much as possible
+with a single retrieved snapshot.
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li> wbStatus(adrs) Construct a wbStatus object.
+        adrs is the Ip address/Dns Name of the WebBrick from which the status should be retrieved.
+<div class="p"><!----></div>
+</li>
+
+<li> digOutState = digOutState(chn) return current status of a digital output.
+         chn the digital output channel number.
+         result One of True or False for On or Off.
+<div class="p"><!----></div>
+</li>
+
+<li> digInState = digInState(chn) return current status of a digital input or monitor input (channels 8-11).
+         chn the digital input channel number.
+         result One of True or False for On or Off.
+<div class="p"><!----></div>
+</li>
+
+<li> anOutVal = anOutVal(chn) return current setting of an analogue output channel.
+         chn the analogue output channel number.
+         result 0-100 where 100 is an output of 10V
+<div class="p"><!----></div>
+</li>
+
+<li> anInVal = anInVal(chn) return current level of an analogue input channel.
+         chn the analogue input channel number.
+         result 0-100 where 100 is an input of 5V
+<div class="p"><!----></div>
+</li>
+
+<li> tempVal = tempVal(chn) return current temperature.
+         chn the analogue input channel number.
+         result a signed temperature value multipled by 16, temperarure resolution is to 1/16 of a degree celcius.
+<div class="p"><!----></div>
+</li>
+
+<li> getTime = getTime() return current time at webBrick.
+         result The time as a formatted string.
+<div class="p"><!----></div>
+</li>
+
+<li> getHour = getHour() return current hour at webBrick.
+         result The hour in 24 hour format 0-23
+<div class="p"><!----></div>
+</li>
+
+<li> getMinute = getMinute() return current minute at webBrick.
+         result The minute as 0-59
+<div class="p"><!----></div>
+</li>
+
+<li> getSecond= getSecond() return current second at webBrick.
+         result The second as 0-59
+<div class="p"><!----></div>
+</li>
+
+<li> getDay = getDay() return current day at webBrick.
+         result The day as a number 0-6 for Sunday through to Saturday.
+<div class="p"><!----></div>
+</li>
+
+<li> getVersion = getVersion() return firmware version for WebBrick.
+         result String version number.
+<div class="p"><!----></div>
+</li>
+
+<li> getOpState = getOpState() return operational state of webBrick.
+         result See comnmand section for values.
+<div class="p"><!----></div>
+</li>
+
+<li> getLoginState = getLoginState() return login level at webBrick.
+         result 0-3.
+<div class="p"><!----></div>
+</li>
+
+<li> getLastError = getLastError() return result of last command to webbrick.
+         result 0 was no error.
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.4.16">
+10.4.16</a>&nbsp;&nbsp;wbCurrentCfg.py</h4>
+
+This class retrieves a copy of the current WebBrick configuration that can then be asked for specific details.
+Not yet implemented.
+
+<div class="p"><!----></div>
+
+<ol type="1">
+<li> wbCfg(adrs) Construct a wbCfg object
+        adrs is the Ip address/Dns Name of the WebBrick from which the configuration should be retrieved.
+<div class="p"><!----></div>
+</li>
+
+<li> NodeName = NodeName()Retrive node name
+<div class="p"><!----></div>
+</li>
+
+<li> NodeNumber = NodeNumber()Retrive node number
+<div class="p"><!----></div>
+</li>
+</ol>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.5">
+10.5</a>&nbsp;&nbsp;Python Utilities</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.5.1">
+10.5.1</a>&nbsp;&nbsp;wbMonitor.py</h4>
+
+Uses wbUdpEvents to display received webbrick events.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.5.2">
+10.5.2</a>&nbsp;&nbsp;wbXmlEventTest.py</h4>
+
+Uses wbXmlEvent to display received webbrick events as Xml blobs.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.5.3">
+10.5.3</a>&nbsp;&nbsp;WbCfg.py</h4>
+
+
+<div class="p"><!----></div>
+This program is used to configure a WebBrick from a configuration file and to save there configuration. It uses the 
+class WebBrickConfig.
+
+<div class="p"><!----></div>
+Usage wbCfg.py prog [options] WbAdrs
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>option</td><td>option parameters</td><td width="474">Description</td></tr><tr><td></td></tr>
+<tr><td>-d,-display</td><td></td><td width="474">Display WebBrick configuration (default)</td></tr>
+<tr><td>-s,-save</td><td>(fileName)</td><td width="474">save webbrick configuration</td></tr>
+<tr><td></td><td>fileName</td><td width="474">name of file to save configuration to.</td></tr>
+<tr><td>-u,-update</td><td>(fileName)</td><td width="474">Update WebBrick configuration</td></tr>
+<tr><td></td><td>fileName</td><td width="474">name of file to read configuration from.</td></tr>
+<tr><td>-p,-password</td><td>(password)</td><td width="474">Access password</td></tr>
+<tr><td></td><td>password</td><td width="474">Access password, default password.</td></tr>
+<tr><td>-t,-trace</td><td></td><td width="474">Trace operation</td></tr></table>
+
+
+<div class="p"><!----></div>
+You should note that during configuration we set the operating state - to '1' (startup) to disable 
+all the functions of the WebBrick.We do this to ensure that there are no extraneous actions or 
+commands in progress that would interrupt or corrupt the configuration process.
+
+<div class="p"><!----></div>
+The save format at present is the wbCfg.xml format.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc10.6">
+10.6</a>&nbsp;&nbsp;Python Examples</h3>
+
+<div class="p"><!----></div>
+There are some Python examples that you can use to generate the command packets that WebBricks will respond to.  
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.6.1">
+10.6.1</a>&nbsp;&nbsp;wbDigOut.py</h4>
+
+
+<div class="p"><!----></div>
+This program turns a single digital channel on off or toggles it.
+
+<div class="p"><!----></div>
+usage:  python wbDigOut.py ipAdrs channel action
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc10.6.2">
+10.6.2</a>&nbsp;&nbsp;wbExcercise.py</h4>
+
+
+<div class="p"><!----></div>
+This program just repeatadly toggles all the digital channel in turn. If you have LEDs attached to the outputs you will
+get a NightRider type scan.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc11">
+11</a>&nbsp;&nbsp;WebBrick and PHP</h2>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc11.1">
+11.1</a>&nbsp;&nbsp;Introduction</h3>
+
+<div class="p"><!----></div>
+PHP is a web application langauge that allows you to mix business logic and user interface logic in a single file, this file
+is processed on a web server to mix fixed and variable parts of the user interface. http://www.php.net
+
+<div class="p"><!----></div>
+For the WebBrick we provide a number of PHP resources, these fall into the following catergories:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Libraries</td><td width="474">These allow the user to create programs that interact with WebBricks
+				using routines that have been fully tested and debugged.  This allows
+				the programmer to get on with building the user interface they desire rather
+				than getting bogged down in the details of network protocols.</td></tr>
+<tr><td>Example Code</td><td width="474">This allows people to quickly build on some of the ideas we already had and
+				implemented.</td></tr></table>
+
+
+<div class="p"><!----></div>
+THESE PHP resources are not actively maintained and are provided AS IS with no support, they are similar to the python
+code so refer to the python section for details. Your PHP will need to have an XML parser as part of it's install for the
+status and configuration classes to work.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc11.2">
+11.2</a>&nbsp;&nbsp;Libraries</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.2.1">
+11.2.1</a>&nbsp;&nbsp;wb.php basic comms libray</h4>
+
+
+<div class="p"><!----></div>
+This php module provides basic communication with the WebBrick and is mainly intended to be a building block.
+
+<div class="p"><!----></div>
+To use this library use the following in your code:
+
+<div class="p"><!----></div>
+
+<pre>&nbsp;include("../API/wb.php")&nbsp;;
+</pre>
+
+<div class="p"><!----></div>
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+<div class="p"><!----></div>
+wbSendCmd( '10.100.100.100', 'DO3;N' )
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.2.2">
+11.2.2</a>&nbsp;&nbsp;wb6.php the WebBrick 6 library</h4>
+
+
+<div class="p"><!----></div>
+This module provides basic commands that can be sent to a WebBrick.
+
+<div class="p"><!----></div>
+To import this library use the following in your code:
+
+<div class="p"><!----></div>
+
+<pre>&nbsp;include("../API/wb6.php")&nbsp;;
+</pre>
+
+<div class="p"><!----></div>
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+<div class="p"><!----></div>
+wb6DigOn( '10.100.100.100', 3 )
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.2.3">
+11.2.3</a>&nbsp;&nbsp;wb6Status.php</h4>
+
+
+<div class="p"><!----></div>
+This class retrieves a copy of the current WebBrick Status that can then be asked for specific details. Note
+the object reads and caches the values, so you get a current snapshot. To get updated values use the load method.
+There is no point retrieveing tha values at more a 1 second interval and it is recommended that you do as much as possible
+with a single retrieved snapshot.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.2.4">
+11.2.4</a>&nbsp;&nbsp;wb6Cfg.php</h4>
+
+This class retrieves a copy of the current WebBrick configuration that can then be asked for specific details.
+
+<div class="p"><!----></div>
+Trigger results are returned as an asociative array with some of the following parameters in it, refer to commands 
+section for details on these values.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>attribute name</td><td width="474">Description</td></tr>
+<tr><td>Name</td><td width="474">channel name</td></tr>
+<tr><td>Value</td><td width="474">threshold value</td></tr>
+<tr><td>Hours</td><td width="474">scheduled time</td></tr>
+<tr><td>Minutes</td><td width="474">scheduled time</td></tr>
+<tr><td>Days</td><td width="474">scheduled days</td></tr>
+<tr><td>actionNr</td><td width="474">action type number</td></tr>
+<tr><td>action</td><td width="474">action type string</td></tr>
+<tr><td>dwell</td><td width="474">dwell number</td></tr>
+<tr><td>UDPRemNr</td><td width="474">UDP packet type number</td></tr>
+<tr><td>UDPRem</td><td width="474">UDP packet type string</td></tr>
+<tr><td>RemNode</td><td width="474">target remote node.</td></tr>
+<tr><td>typeNr</td><td width="474">channel type number</td></tr>
+<tr><td>type</td><td width="474">channel type string</td></tr>
+<tr><td>setPoint</td><td width="474">setpoint number</td></tr>
+<tr><td>pairChn</td><td width="474">target channel number</td></tr></table>
+
+
+<div class="p"><!----></div>
+Scene results are returned as an asociative array with the following parameters in it.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>attribute name</td><td width="474">Description</td></tr>
+<tr><td>Digitalnn</td><td width="474">Ignore - On - Off</td></tr>
+<tr><td>Analoguenn</td><td width="474">Ignore - SetPointmm</td></tr></table>
+
+where nn is a channel number and mm is a setpoint number.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc11.3">
+11.3</a>&nbsp;&nbsp;PHP Examples</h3>
+
+<div class="p"><!----></div>
+There is a PHP example that you can modify to produce your own central user interface.  
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.3.1">
+11.3.1</a>&nbsp;&nbsp;PanelLib.php</h4>
+
+
+<div class="p"><!----></div>
+This provides a library of code for a user interface panel that is capable of displaying details from one or more 
+webBricks and issuing commands to them. This uses an Xml file standard.xml to define a user interface that consists 
+of a number of columns that contain status information and/or commands.
+
+<div class="p"><!----></div>
+The xml file has a top level element called status with a single attribute cols that specifies the number of columns on the
+display. There are then a set of elements called item. Each item has a Type element and typically a channel number and an
+IP address to identify the webbrick and the data to access from it. Each entry may also contain a Trig element that is used to
+specify a command to be issued.
+
+<div class="p"><!----></div>
+item Type may be one of:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>type</td><td width="474">Description</td></tr>
+<tr><td>Header</td><td width="474">generates a text of Cols width.</td></tr>
+<tr><td>Temp</td><td width="474">displays a temperature.</td></tr>
+<tr><td>inAnalogue</td><td width="474">displays an analogue input value.</td></tr>
+<tr><td>Analogue</td><td width="474">displays an analogue output.</td></tr>
+<tr><td>Switch</td><td width="474">displays a digital output state.</td></tr>
+<tr><td>Monitor</td><td width="474">displays a monitor state.</td></tr></table>
+
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc11.3.2">
+11.3.2</a>&nbsp;&nbsp;standard.php</h4>
+
+
+<div class="p"><!----></div>
+This is the start page for the standard panel.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc12">
+12</a>&nbsp;&nbsp;Applications</h2>
+
+<div class="p"><!----></div>
+Here we provide some examples of use of the WebBrick. The great thing with the WebBrick is that a single device can
+provide more than one activity. For example PIRs, can trigger video recording at all times. Can switch lights at night. 
+Sound warning tones. In typical monitoring systems you need multiple devices because they do not interlink.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.1">
+12.1</a>&nbsp;&nbsp;Heating</h3>
+
+<div class="p"><!----></div>
+The notes in this section mostly consider that a WebBrick is taking the whole controller role.  Of course it's possible to
+add extra global intelligence using a general purpose host computer, for example the H2M8 WebBrick Gateway.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.1.1">
+12.1.1</a>&nbsp;&nbsp;Thresholds as set points</h4>
+
+
+<div class="p"><!----></div>
+	In the WeBrick architecture we use temperature sensors rather than thermostats.  We do this for a variety of reasons:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li>Controls - there are no external controls for a temperature sensor.  This means that it can be sited
+		where it both makes sense and is convenient.  For example under a kitchen worktop or directly bonded to a heated
+		floor.
+<div class="p"><!----></div>
+</li>
+
+<li>Accuracy and repeatability - Old fashioned bi-metal strip thermostats close at one temperature and open at another.
+		Adjusting the set-point is a mechanical operation.  Whereas the sensors we use have resolution to 0.1 deg C and an accuracy
+		of 0.5 deg C.
+<div class="p"><!----></div>
+</li>
+
+<li>Remote Control - Using sensors to read the temperature means that the actions on thresholds are defined within the
+		WebBrick.  Therefore the set points can be adjusted on a web page
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+	With version 6.1 of the WebBrick it is now possible to control thresholds as an action.  Actions can be triggered from Digital Inputs
+	and from Schedules.  We can also raise actions from multiple temperature sensors, so we can create zones and frost-stat functionality.
+
+<div class="p"><!----></div>
+	Therefore if we build a heating control scheme using WebBricks we can schedule changes of set-points using thresholds.  We can also
+	create <em>Boost</em> buttons that increase set-points.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.1.2">
+12.1.2</a>&nbsp;&nbsp;Modern Combi boiler, single Zone</h4>
+
+<div class="p"><!----></div>
+These generally have power applied all the time which is used to provide hot water and the central heating
+is controlled by a mixture of a thermostat and timed events. In this case we would use scheduled events to
+control the triacs and relays.  For example the output a triac feeding a relay that is controlled by one
+of the temperature sensors using under and over thresholds. In effect the triac replaces the time switch
+and the relay replaces the standard thermostat. The great benefits of this are:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li> that the control can then be 
+		overridden by local buttons for boost (e.g. Dwell 1 hour on boiler output)
+<div class="p"><!----></div>
+</li>
+
+<li> the use of a Home gateway system can use its calendar to switch heating off when home is empty.
+<div class="p"><!----></div>
+</li>
+
+<li> a home gateway can access local weather feeds to adjust switch on times dependant on temperature forecasts.
+<div class="p"><!----></div>
+</li>
+
+<li> using the home gateway the home owner can control and make changes whilst away from the house, e.g. going home early.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.1.3">
+12.1.3</a>&nbsp;&nbsp;Two zone heating system</h4>
+In this case we drive the boiler off a mains triac that is driven from a schedule entry. And drive two 
+zone valves off the two relay outputs, these are triggered by high and low thresholds on two 
+temperature sensors. Advantages are as for single Zone.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.1.4">
+12.1.4</a>&nbsp;&nbsp;Electric under floor heating</h4>
+These are great ways of heating floors for things like bathrooms but electricity is not the cheapest
+heating source if over used.
+So it would be nice for them to come on for timed periods and be able to boost at other times. 
+In this case a single output can control the power to
+the floor controller, this can be switched by timed events for getting up time and a push button to boost 
+it at other times.
+
+<div class="p"><!----></div>
+Note it is not always best to chain Triac based controllers so if the underfloor heating controller
+uses a Triac we recommend using a Relay to power the floor from the WebBrick. Also underfloor heating 
+can need power greater than the abilities of the onboard Triacs so an external relay is a good idea.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.1.5">
+12.1.5</a>&nbsp;&nbsp;Air conditioning</h4>
+Controlled by an external relay as the power consumption of these is higher than can be handled directly.
+Control by a mix of time schedules and temperature thresholds.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.2">
+12.2</a>&nbsp;&nbsp;Outside lighting/Security Lighting</h3>
+This could be as simple as lighting that is timed to come on at dusk until dawn or it could be controlled
+by PIR sensors that switch on all the lighting around a house. The PIR sensors may not necessarily be on the same 
+WebBrick as the lights. For example on a big building there may be lights on all 4 sides of the building driven by 
+different webBricks, on sensing movement on one side you may bring that side up to full brightness and all the other
+sides to half brightness.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.3">
+12.3</a>&nbsp;&nbsp;Internal lighting</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.3.1">
+12.3.1</a>&nbsp;&nbsp;Night Lights</h4>
+Especially with the very young and very old it is great to have some low level lighting around a house at 
+night, modern LEDs are very good for this drawing very little power. For one or two devices they can be 
+switched directly from the digital outputs for heavier loads 3 in series with a resistor can be driven 
+from a 12V supply and the open collector driver. If the power supply for a WebBrick is a sealed lead acid (SLA) battery
+then this could also provide power for the LED lights so that they stay on during power cuts. With the low power
+requirements the system could stay running off a 7 Amp Hour SLA battery for hours if not days.
+
+<div class="p"><!----></div>
+Maplin (www.maplin.co.uk) 12V 7Ah battery (MG47B) £25, Charger (LL30H) £13.
+TLC-direct (www.tlc-direct.co.uk) 12V 6AH battery £10+VAT
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.3.2">
+12.3.2</a>&nbsp;&nbsp;Dimming lights</h4>
+For this: use dimmers that accept a 0-10V DC control voltage and wire these to the analogue outputs
+from the WebBrick. For example the soundlab G018VA 4 channel dimmer can handle 4 channels of 5A each 
+(Max 16A for the Unit).
+(See also section on Outside World).
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.4">
+12.4</a>&nbsp;&nbsp;Alarm Monitoring</h3>
+By connecting dry contacts from fire and burglar alarms to the WebBrick monitor inputs the WebBrick
+in association can display the state of the alarm on a central display.The home gateway could then 
+send SMS or email messages to alert the home owner. E.g. via www.textanywhere.com.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.4.1">
+12.4.1</a>&nbsp;&nbsp;Water sensors</h4>
+In the case of property in low lying areas water sensors could be installed in basements and under 
+floor voids and configured to generate alarms.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.5">
+12.5</a>&nbsp;&nbsp;Household services</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.5.1">
+12.5.1</a>&nbsp;&nbsp;Water softener</h4>
+A sensor could be added to a water softener to detect low salt levels and alert the household through a central
+display, especially useful when the device is installed in a basement where it is easily forgotten!
+
+<div class="p"><!----></div>
+Capacitive sensors are particularly useful for sensing salt levels where the softener has GRP or plastic side walls.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.6">
+12.6</a>&nbsp;&nbsp;Home Cinema</h3>
+A home cinema setup can include more than just the audio and video equipment, you may 
+also have (for example) roller screens and blackout curtains.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc12.7">
+12.7</a>&nbsp;&nbsp;Access control</h3>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.7.1">
+12.7.1</a>&nbsp;&nbsp;Entry gates and doors</h4>
+With the use of RF remote systems connected to a WebbRick control of electric gates and garage doors can be handled
+through a single system, the WebBrick. You can open gates and doors from the house before braving the elements to get 
+access to your car and can then close them from the car as you leave the premises. When video is used as well you can 
+open doors from work when your cleaner arrives as you will get a message when the door bell is pushed, you then check the 
+camera system verify the identity and let release the front door.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc12.7.2">
+12.7.2</a>&nbsp;&nbsp;Camera systems</h4>
+A PIR trigger can be set up to start a camera system recording video images which are made available to you on a web interface.
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc13">
+13</a>&nbsp;&nbsp;Interfacing to the outside world</h2>
+
+
+<div class="p"><!----></div>
+Here we deal with the basic principles of getting the WebBrick to control and listen to the outside world.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc13.1">
+13.1</a>&nbsp;&nbsp;Basics</h3>
+
+<div class="p"><!----></div>
+The WebBrick treats the Digital Inputs as push to make inputs.  There is a software option that can allow
+the use on off switches.
+
+<div class="p"><!----></div>
+To action, the push button should ground the input, pullups are enabled at the PIC chip.  
+In out test applications we use CAT5e cable and have runs of up to 100m between the WebBrick 
+and the switches, use a twisted pair for each input to reduce noise pickup.  We have seen 
+pickup cause problems, in our case we grounded unused cores which cured the issues.
+
+<div class="p"><!----></div>
+The outputs at Digital Output Low (DOL) are TTL and should be treated as such, they have enough current 
+sourcing to drive two LEDs and a Solid State Relay.  In our test applications we drive 
+one LED and an SSR simultaneously.
+
+<div class="p"><!----></div>
+The outputs at Digital Output High (DOH) are open collector capable of sinking 500mA, this means 
+the device being switched is connected to a supply rail and the outputs go low on activation to 
+switch on the device. Do not use more than 12v as the supply to the device.
+
+<div class="p"><!----></div>
+The monitor inputs have no pullups are very sensitive, so if not connected to anything or 
+connected to a source that does not actively drive high or low tie down to 0V with a 4.7K resistor. 
+Valid input range is 0-5V
+
+<div class="p"><!----></div>
+The analogue outputs are buffered and provide a 0-10V output good enough to drive a pair of LEDs. 
+The User interface is
+calibrated as 0-100% so 10% corresponds to 1V unless some other signal conditioning is inserted.
+Do NOT try to drive an LED and an opto isolator at the same time, the forward drop on the LED's will 
+be different and the results not much fun (you could use separate resistors to drive each).
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc13.2">
+13.2</a>&nbsp;&nbsp;Cabling</h3>
+
+
+<div class="p"><!----></div>
+The webBrick has been designed to use standard CAT 5 networking or structured cabling. CAT 5 cable has consists of 
+4 pairs of wires in a single sheath.
+These are colour coded with the first colour being the main colour and the later being just narrow stripes:
+
+<div class="p"><!----></div>
+    
+<ul>
+<li> Brown with White and White with Brown.
+<div class="p"><!----></div>
+</li>
+
+<li> Green with White and White with Green.
+<div class="p"><!----></div>
+</li>
+
+<li> Orange with White and White with Orange.
+<div class="p"><!----></div>
+</li>
+
+<li> Blue with White and White with Blue.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+To reduce any possible interference the pairs should be used properly with a pair for each 
+input or output. Even when multiple inputs are run on the same cable do not use a single ground wire and multiple
+input wires, use a ground wire for each input wire. Similarly for outputs.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc13.3">
+13.3</a>&nbsp;&nbsp;Digital Inputs</h3>
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.3.1">
+13.3.1</a>&nbsp;&nbsp;Digital Input Characteristics</h4>
+	
+
+<div class="p"><!----></div>
+		Before looking at the components that can be connected to a WebBrick is useful to look at the timing and voltage characteristics
+		of the Digital inputs:
+
+<div class="p"><!----></div>
+		    
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> 		    <center>		    <img src="Images/DigitalInChar.png">
+		    </center>
+<div class="p"><!----></div>
+		    		The diagram shows an example of a simple pushbutton connected between a Digital Input and WebBrick Ground.
+
+<div class="p"><!----></div>
+		Whilst the button is open, the voltage on the Digital Input will measure near 5V (typically 4.9). When the button
+		is pressed this will fall to zero or near zero (anything below 0.6V is considered zero).
+
+<div class="p"><!----></div>
+		Note that in the diagram we have represented some switch bounce.  The WebBrick has internal
+		debouncing of around 20mS.
+
+<div class="p"><!----></div>
+		Because the WebBrick is designed to be used with a range of input devices, it has an option that sets when the state engine
+		get triggered:
+
+<div class="p"><!----></div>
+			
+<dl compact="compact">
+ <dt><b><b>Rising Edge</b></b></dt>
+	<dd> Option is set to 1</dd>
+ <dt><b><b>Falling Edge</b></b></dt>
+	<dd> Option is set to 2 - this is the default behaviour</dd>
+ <dt><b><b>Both Edges</b></b></dt>
+	<dd> Option is set to 3</dd>
+</dl>
+
+<div class="p"><!----></div>
+		    
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> 		    <center>		    <img src="Images/DigitalIn.jpg">
+		    </center>
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.3.2">
+13.3.2</a>&nbsp;&nbsp;Switches</h4>
+	For real use, we've found that push buttons with integral LEDs not only look good, but can be very practical.
+
+<div class="p"><!----></div>
+	A background glow is helpful for locating the button in the dark.
+
+<div class="p"><!----></div>
+	We either use a 10K resistor to provide a 'background' glow for the 'Off' condition and a 330ohm or 1k resistor 
+	from the corresponding digital output to confirm the 'On' condition.
+
+<div class="p"><!----></div>
+	<i>Note</i>  It is quite possible to use simple toggle switches with the WebBrick.  However it
+	is likely that you'll want to trigger the state engine on both the 'close' and 'open' action.  In this case the option value should
+	be set to '3'.  See the section on Digital Input Characteristics for more detail.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.3.3">
+13.3.3</a>&nbsp;&nbsp;PIR Passive Infra Red sensors</h4>
+	
+	These typically have a dry contact that closes for a period of time on detection of movement and can be
+	connected to a WebBrick input.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.3.4">
+13.3.4</a>&nbsp;&nbsp;Light sensor</h4>
+	
+	These can also be connected to a digital input unless you have a type that provides a voltage dependant on
+	the light level then it should be connected to an analogue input.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.3.5">
+13.3.5</a>&nbsp;&nbsp;Security switches</h4>
+	
+	Magnetic reed relays for door and window detection. These are typically used for burglar alarms but can just as easily be
+	used to connect to WebBricks.
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.4">
+13.4</a>&nbsp;&nbsp;Digital Outputs</h3>
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.4.1">
+13.4.1</a>&nbsp;&nbsp;Driving LEDs</h4>
+	
+
+<div class="p"><!----></div>
+	LEDs are now affordable for just about every kind of use and available in all sorts of colours and power.  
+	Therefore its worth a section here describing how they can be used with the WebBrick.
+
+<div class="p"><!----></div>
+	For simple indication purposes a 300R resistor in series with the TTL level digital outputs will give 
+	sufficient current for a standard 3/5mm LED.  There is still sufficient drive to operate solid state 
+	relays. 
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.5">
+13.5</a>&nbsp;&nbsp;Open Collector Outputs</h3>
+	
+
+<div class="p"><!----></div>
+		These can sink up 500mA on a channel with a limit of 800mA across all 8 outputs at any one time.
+
+<div class="p"><!----></div>
+		We have also found that modern high brightness white LEDs make very good night lighting that can be switched from
+		a WebBrick using the Open collector driver.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.5.1">
+13.5.1</a>&nbsp;&nbsp;Solid state relays</h4>
+
+<div class="p"><!----></div>
+	We've been using the Crydom EZ240D5 solid state relays to great effect.  These can be connected directly to 
+	the Digital outputs with no other components.
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.6">
+13.6</a>&nbsp;&nbsp;Analogue Inputs</h3>
+
+<div class="p"><!----></div>
+		These can be used to interface anything that provides a 0-5V output or can be set to produce a 0-5V input. 
+		You could also connect an ordinary potentiometer to this input. You should not exceed 5V but higher voltages 
+		could be reduced using a two resistor potential divider.
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.7">
+13.7</a>&nbsp;&nbsp;Analogue Outputs</h3>
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.7.1">
+13.7.1</a>&nbsp;&nbsp;Dimmers</h4>
+	
+
+<div class="p"><!----></div>
+	Any dimmer that accepts a 0-10V control signal can be connected to the analogue outputs.
+
+<div class="p"><!----></div>
+	We have used the Velleman K8003 kits now replaced by the K8064.
+
+<div class="p"><!----></div>
+	CPC have some 4 channel dimmers.
+	
+<pre>http://cpc.farnell.com/jsp/endecaSearch/partDetail.jsp?SKU=DP26289&amp;N=411
+</pre>
+	
+<pre>http://cpc.farnell.com/jsp/endecaSearch/partDetail.jsp?SKU=DP27530&amp;N=411
+</pre>
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.8">
+13.8</a>&nbsp;&nbsp;Mains Outputs</h3>
+	
+
+<div class="p"><!----></div>
+		These are zero voltage switched triacs and can handle loads up to 500W, with a total of 1500W across all 4. 
+		They should be able to drive all types of load. Note that there is an internal 6.3A fuse. 
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.9">
+13.9</a>&nbsp;&nbsp;Relay Outputs</h3>
+	
+
+<div class="p"><!----></div>
+		These are Double pole changeover relays. Particularly useful for curtain motors and other drapery controls.  These are rated at 2A 
+		per contact.
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.10">
+13.10</a>&nbsp;&nbsp;Rotary encoder</h3>
+	
+
+<div class="p"><!----></div>
+		This is a 3 wire device with a common connection and two signal wires that is used to adjust analogue output 0.
+
+<div class="p"><!----></div>
+	     <h3><a name="tth_sEc13.11">
+13.11</a>&nbsp;&nbsp;Using Temperature Sensors</h3>
+	
+     <h3><a name="tth_sEc13.12">
+13.12</a>&nbsp;&nbsp;Temperature Sensors</h3>
+
+<div class="p"><!----></div>
+	Here we deal with the basic principles of using the temperature sensors.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.12.1">
+13.12.1</a>&nbsp;&nbsp;Hardware</h4>
+
+<div class="p"><!----></div>
+	The temperature sensors are accessed using the DALLAS one wire interface protocol with the master
+	functionality handled by the PIC chip. The Webbrick6 supports up to 5 DS18B20 temperature sensors. 
+	These sensors have a 64 bit address that 
+	can be used to uniquely identify them and they can read to a resolution below 0.1 degrees C.
+
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.12.2">
+13.12.2</a>&nbsp;&nbsp;Software</h4>
+
+<div class="p"><!----></div>
+	Every second, an attempt is made to read the temperature from one of the sensors and update 
+	the status and values. At start up and on command (RT manual command) the bus will be scanned for new devices. 
+	When a new sensor is found it is read to see whether it has been tagged previously, if it 
+	is untagged or the tag corresponds to a currently active sensor then a new tag number is 
+	generated and stored within the sensor. When a web brick is switched on these tags 
+	keep the sensors in the same order within the temperature table. The values are all 
+	available in the status XML. [NOTE this will change now we have room to store the device
+	addresses in the WebBrick]
+
+<div class="p"><!----></div>
+	When a successful reading is taken it is recorded. Temperature sensor 1 will be tested 
+	against the Low and High trigger threshold. If the value is outside these values then 
+	the relevant triggers are processed, these are identical to the digital input trigger configuration.
+
+<div class="p"><!----></div>
+		
+<div class="p"><!----></div>
+		
+<div class="p"><!----></div>
+			
+<div class="p"><!----></div>
+			
+<div class="p"><!----></div>
+					
+<div class="p"><!----></div>
+	      <h4><a name="tth_sEc13.12.3">
+13.12.3</a>&nbsp;&nbsp;Installing</h4>
+	So as to get sensors to display in your desired order in the list of temperatures. You should connect them one at a time
+	with the first sensor getting tagged to display in 1st row and each subsequent being in subsequent rows.
+	After connecting a sensor issue manual command RT and wait for each it to register before adding the next sensor.
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc14">
+14</a>&nbsp;&nbsp;Temperature Sensors</h2>
+
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> <center><img src="Images/TempSensorPic.png">
+</center>
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc14.1">
+14.1</a>&nbsp;&nbsp;WebBricks and Temperature Sensors</h3>
+
+<div class="p"><!----></div>
+We supply and recommend Dallas DS18B20 temperature sensors.  These are connected to the 1 Wire bus on the WebBrick
+within the following limits:
+
+<div class="p"><!----></div>
+	
+<ul>
+<li>Cable: Cat 5E cable is recommended for temperature sensor connections.  OH2M8 supply
+	  		temperature sensors with 2M Cat 5E pre-attached.
+<div class="p"><!----></div>
+</li>
+
+<li>Bus Length:  We recommend a maximum bus length of 90M for a single sensor and 50M for multiple sensors.
+	  			Maximum spur length 2M.
+<div class="p"><!----></div>
+</li>
+
+<li>Unused cores: We recommend that unused cores are connected to ground.  In particular the brown core
+	  			should be connected to ground.
+<div class="p"><!----></div>
+</li>
+
+<li>Sensor Accuracy: Is within 0.5 Deg C.
+<div class="p"><!----></div>
+</li>
+
+<li>Sensor Resolution: Is 0.125 Deg C, although this is less than the accuracy of the temperature sensor
+	  				it is very useful for determination of whether a temperature is rising or falling
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc14.2">
+14.2</a>&nbsp;&nbsp;Connections</h3>
+
+<div class="p"><!----></div>
+The following connections should be made:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> <center><img src="Images/TempSensor.png">
+</center>
+<div class="p"><!----></div>
+	
+<ul>
+<li>Brown-White: +5V
+<div class="p"><!----></div>
+</li>
+
+<li>Blue-White: Data
+<div class="p"><!----></div>
+</li>
+
+<li>Blue: Ground
+<div class="p"><!----></div>
+</li>
+
+<li>Brown: Ground, this core is not connected to the temperature sensor,
+	  		grounding this core satisfies the EMC conditions of CE marking.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+Note that multiple temperature sensors are connected in parallel.
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc15">
+15</a>&nbsp;&nbsp;Power Requirements</h2>
+
+
+<div class="p"><!----></div>
+ This section deals with the power budget required to run a WebBrick.
+
+<div class="p"><!----></div>
+      <h3><a name="tth_sEc15.1">
+15.1</a>&nbsp;&nbsp;Power Supply</h3>
+ 
+
+<div class="p"><!----></div>
+    WebBricks should be run from a power supply that delivers 12.6V to 18V.  12.6V is a minimum to achieve a full 0-10V range on
+    the analogue outputs.
+
+<div class="p"><!----></div>
+    A quiescent WebBrick will consume 55-60mA at 12.6V, however the WebBrick in real use will be supplying power to a range of external items
+    including:
+
+<div class="p"><!----></div>
+
+<ul>
+<li><b>LEDs</b> The WebBrick may drive up to 8 mimic LEDs, each consuming 5mA. <i>40mA</i>
+<div class="p"><!----></div>
+</li>
+
+<li><b>Relays</b> There are two relays, each using 30mA to hold the contacts closed. <i>60mA</i>
+<div class="p"><!----></div>
+</li>
+
+<li><b>Temperature Sensors</b> There may be up to 5 sensors, these are driven periodically. <i>5mA peak</i>
+<div class="p"><!----></div>
+</li>
+
+<li><b>Analogue Outputs</b> There are four buffered 0-10V outputs each capable of supplying 20mA. <i>80mA</i>
+<div class="p"><!----></div>
+</li>
+
+<li><b>General Output Drive</b> The digital outputs can each supply 5mA, although only four are presented as TTL.
+if a rotary encoder is connected it will use 2mA.  Driving the triac and open collector gates requires 2mA each. <i>40mA</i>
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+Total power budget, all outputs driven, all sensors connected 280mA.
+
+<div class="p"><!----></div>
+ 	      <h4><a name="tth_sEc15.1.1">
+15.1.1</a>&nbsp;&nbsp;Back Feed</h4>
+
+
+<div class="p"><!----></div>
+    Because the WebBrick consumes so little current, it is possible to inadvertently 
+    power it through the coils of external relays connected to 
+    the open collector outputs.  This only becomes an issue if one needs to fully power 
+    down a WebBrick. To avoid this situation we suggest
+    that the +ve side of relay coils are driven from the same power supply as drives the WebBricks.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc16">
+16</a>&nbsp;&nbsp;CE Marking</h2>
+
+<div class="p"><!----></div>
+WebBrick WB10B60 is in conformity with the essential requirements of the directive 1999/5/EC. The product has been tested
+ to the standard EN55022:1998 &#203;MC emmissions and immunity", using the limits described on EN55022 Class B CISPR22(B).
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc16.0.2">
+16.0.2</a>&nbsp;&nbsp;General Description</h4>
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc16.0.3">
+16.0.3</a>&nbsp;&nbsp;Risk - High Temperatures</h4>
+
+
+<div class="p"><!----></div>
+The WebBrick has 4 triacs each rated at 2A with an overall rating of 6.3A.  If 6.3A of 240VAC is drawn through the WebBrick
+the triacs will dissipate around 7W of heat.  There is sufficient heat sinking in the WebBrick to cope with this.  Internal temperatures
+can rise to 85 Deg C.  It is important that the WebBrick is not housed in small totally enclosed areas.  Air circulation is best when the 
+WebBrick is mounted in the vertical plane.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc16.0.4">
+16.0.4</a>&nbsp;&nbsp;Risk EMI</h4>
+
+
+<div class="p"><!----></div>
+Since the WebBrick uses a number of microprocessors, it may be prone to electromagnetic emissions if it is not installed properly.  The current
+standards are stringent and require that a typical installation radiates less that 2 nano watts of power in the RF range.
+
+<div class="p"><!----></div>
+We recommend that CAT 5/5E/6/7 type cables are used and one core of each pair is connected to ground.
+
+<div class="p"><!----></div>
+Further we suggest that you use a good quality clean 12V supply to the WebBrick to ensure that supply borne noise is radiated via the ground plane.
+
+<div class="p"><!----></div>
+It is not a requirement to connect the mains ground to the electronic ground of a WebBrick.  However, please note that if you use the triacs for 
+mains loads then the protective mains ground should be connected.  There is no internal connection between this protective ground and the 
+electronic ground.
+
+<div class="p"><!----></div>
+      <h4><a name="tth_sEc16.0.5">
+16.0.5</a>&nbsp;&nbsp;Risk Software Failures</h4>
+
+
+<div class="p"><!----></div>
+The WebBrick contains about 40K assembler code, whilst this has been thoroughly tested, 
+software errors cannot be ruled out.
+
+<div class="p"><!----></div>
+
+<b>WebBricks should not take the place of safety systems or override safety systems.&nbsp;&nbsp;</b>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc17">
+17</a>&nbsp;&nbsp;Gotchas, Futures</h2>
+
+
+
+<div class="p"><!----></div>
+Here we layout all the unimplemented features and current known bugs for version 6.0 and 6.1 Releases of the firmware
+
+<div class="p"><!----></div>
+
+<dl compact="compact">
+ <dt><b>Web Site</b></dt>
+	<dd> use community.h2m8.com for all WebBrick news.</dd>
+ <dt><b>Split Scene Banks</b></dt>
+	<dd>
+
+<div class="p"><!----></div>
+	On first power up, buttons that do a 'Next' from scene 8 onwards will actually do a next from scene 0
+	until scene 8 is selected.  The simple workaround is to press any 'off' buttons just after WebBrick power up.</dd>
+ <dt><b>Remote Actions</b></dt>
+	<dd>
+
+<div class="p"><!----></div>
+Implemented at the send side, but not yet the receive side.</dd>
+ <dt><b>Analogue 0utputs Version 6.1 onwards</b></dt>
+	<dd>
+
+<div class="p"><!----></div>
+From version 6.1 of the WebBrick we have included a diode to protect against reverse polarity at the supply rails. 
+This effectively drops the internal 12v supply rail by 0.6V.  This means that for WebBricks that are supplied with 
+12.0V or less, the top end of the analogue output drops to about 9.67V.  The simple solution is to ensure that the 
+WebBrick are supplied with a little more than 12V.  12.6-18.0V is fine.  Note that 13.6-13.8V power supplies are 
+particularly suitable for float charging sealed lead acid batteries.</dd>
+ <dt><b>Configuring Digital Inputs</b></dt>
+	<dd>
+
+<div class="p"><!----></div>
+In version 6.1 it is possible to configure things like a high threshold for a digital channel. 
+This is a meaningless configuration. It does no harm, but conversely does nothing at all.</dd>
+</dl>
+
+
+<div class="p"><!----></div>
+<a name="tth_sEcindex"></a>
+
+<h2> Index </h2>
+</em></em>
+<br /><br /><hr /><small>File translated from
+T<sub><font size="-1">E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font size="-1">T</font></sub>H</a>,
+version 3.78.<br />On 17 Oct 2007, 01:14.</small>
+</html>

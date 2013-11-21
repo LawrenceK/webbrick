@@ -1,0 +1,108 @@
+#ifndef _DATALIB_H
+#define _DATALIB_H
+
+#if _CORE==16
+ #pragma wizcpp uselib "$(FEDPATH)\libs\commlib16.c"
+ #pragma wizcpp uselib "$(FEDPATH)\libs\datalib16.c"
+ #pragma wizcpp uselib "$(FEDPATH)\libs\delays16.c"
+#else
+ #pragma wizcpp uselib "$(FEDPATH)\libs\commlib.c"
+ #pragma wizcpp uselib "$(FEDPATH)\libs\datalib.c"
+ #pragma wizcpp uselib "$(FEDPATH)\libs\delays.c"
+#endif
+
+
+ void CLRWD();
+ 
+ unsigned int pClockDataIn(unsigned char Count);
+ unsigned int ClockDataIn(char *Port,unsigned char Count,
+			   unsigned char ClockBitMask,unsigned char DataBitMask);
+ void pClockDataOut(unsigned char Count,unsigned int Data);
+ void ClockDataOut(char *Port,unsigned char Count,
+			unsigned char ClockBitMask,unsigned char DataBitMask,
+			unsigned int Data);
+ unsigned char SerialIn(char *Port,unsigned char Bit);
+ unsigned char pSerialIn();
+ unsigned char ISerialIn();
+
+ void SerialOut(char *Port,unsigned char Bit,unsigned char Transmit);
+ void pSerialOut(unsigned char Transmit);
+ 
+ unsigned char IIWrite(unsigned char Byte,unsigned char Definition);
+ unsigned char IIRead(unsigned char Definition);
+ void QuickStop();
+ 
+ void hIIInit();
+ unsigned char hIIWrite(unsigned char Byte,unsigned char Definition);
+ unsigned char hIIRead(unsigned char Definition);
+ void hQuickStop();
+
+ 
+ void IRTx(unsigned char Byte);
+ void IRRx();
+ 
+ unsigned char GetRxSize(void);
+ unsigned char GetTxSize(void);
+ void AddTx(unsigned char TxChar);
+ unsigned char WaitRx(void);
+ void SerIntHandler(void);
+ void SerIntInit(void);
+ 
+ unsigned char ReadEEData(unsigned int Addr);
+ void WriteEEData(unsigned int Addr,unsigned char Data);
+ 
+ void Tx1Wire(unsigned char v);
+ unsigned char Rx1Wire(void);
+ char ResetCheck1W(void);
+ 
+ void TransmitRC5(unsigned int data);
+ unsigned int GetRC5();
+ void RC5Rx();
+
+#pragma asmfunc GetRC5
+#pragma asmfunc TransmitRC5
+#pragma asmfunc pClockDataIn
+#pragma asmfunc ClockDataIn
+#pragma asmfunc pClockDataOut
+#pragma asmfunc ClockDataOut
+#pragma asmfunc ISerialIn
+#pragma asmfunc SerialIn
+#pragma asmfunc pSerialIn
+#pragma asmfunc SerialOut
+#pragma asmfunc pSerialOut 
+#pragma asmfunc IIWrite
+#pragma asmfunc IIRead
+#pragma asmfunc QuickStop
+#pragma asmfunc IRTx
+#pragma asmfunc IRRx 
+#pragma asmfunc GetRxSize
+#pragma asmfunc GetTxSize
+#pragma asmfunc AddTx
+#pragma asmfunc WaitRx
+#pragma asmfunc SerIntHandler
+#pragma asmfunc SerIntInit
+#pragma asmfunc ReadEEData
+#pragma asmfunc WriteEEData
+#pragma asmfunc Tx1Wire
+#pragma asmfunc Rx1Wire
+#pragma asmfunc ResetCheck1W
+
+#pragma forcequick SerIntHandler
+#pragma forcequick IRRx
+#pragma forcequick ISerialIn
+#pragma forcequick RC5Rx
+  
+ enum IIDefinition
+ {
+  IINONE=0,	// no effect
+  IISTART=1,	// Send a start bit
+  IISTOP=2,	// Generate a stop bit after the transfer
+  IIACK=4,	// Generate an ack after the transfer optherwise a nack
+  IIRESTART=8	// Send a new Start on the hardware bus
+ };
+ 
+const int SerVarSpace=8;	  // SPace used for serial variables
+extern register unsigned char IRRxVal;	  // Received byte from Infra-red port
+extern register unsigned char ISerRxValue; // Rx byte from SW int driven serial port
+extern register unsigned int  RC5Value;	  // Received byte from Infra-red port
+#endif

@@ -1,0 +1,11 @@
+PCB
+PCB Layout in EasyPC V6.0 latest Version V12
+http://www.numberone.com/easy_pc_v12.asp
+epj file defines the Gerber output
+
+Firmware
+Firmware compiled using Oshonsoft PIC Basic IDE
+http://www.oshonsoft.com/pic.html
+
+Programmed using Microchip MPLab
+

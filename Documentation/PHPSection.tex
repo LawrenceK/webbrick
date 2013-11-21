@@ -1,0 +1,137 @@
+\section{WebBrick and PHP}
+
+\subsection{Introduction}
+
+PHP is a web application langauge that allows you to mix business logic and user interface logic in a single file, this file
+is processed on a web server to mix fixed and variable parts of the user interface. http://www.php.net
+
+For the WebBrick we provide a number of PHP resources, these fall into the following catergories:
+
+\begin{tabular}{l|p{12cm}}
+    \hline
+	Libraries&These allow the user to create programs that interact with WebBricks
+				using routines that have been fully tested and debugged.  This allows
+				the programmer to get on with building the user interface they desire rather
+				than getting bogged down in the details of network protocols.\\
+    \hline
+	Example Code&This allows people to quickly build on some of the ideas we already had and
+				implemented.\\
+\end{tabular}
+
+THESE PHP resources are not actively maintained and are provided AS IS with no support, they are similar to the python
+code so refer to the python section for details. Your PHP will need to have an XML parser as part of it's install for the
+status and configuration classes to work.
+
+\subsection{Libraries}
+
+\subsubsection{wb.php basic comms libray}
+\index{wb.php}
+
+This php module provides basic communication with the WebBrick and is mainly intended to be a building block.
+
+To use this library use the following in your code:
+
+\begin{verbatim} include("../API/wb.php") ;\end{verbatim}
+
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+wbSendCmd( '10.100.100.100', 'DO3;N' )
+
+\subsubsection{wb6.php the WebBrick 6 library}
+\index{wb6.php}
+
+This module provides basic commands that can be sent to a WebBrick.
+
+To import this library use the following in your code:
+
+\begin{verbatim} include("../API/wb6.php") ;\end{verbatim}
+
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+wb6DigOn( '10.100.100.100', 3 )
+
+
+\subsubsection{wb6Status.php}
+\index{wb6Status.php}
+
+This class retrieves a copy of the current WebBrick Status that can then be asked for specific details. Note
+the object reads and caches the values, so you get a current snapshot. To get updated values use the load method.
+There is no point retrieveing tha values at more a 1 second interval and it is recommended that you do as much as possible
+with a single retrieved snapshot.
+
+
+\subsubsection{wb6Cfg.php}
+\index{wb6Cfg.php}
+This class retrieves a copy of the current WebBrick configuration that can then be asked for specific details.
+
+Trigger results are returned as an asociative array with some of the following parameters in it, refer to commands 
+section for details on these values.
+
+\begin{tabular}{l|p{12cm}}
+    attribute name&Description\\
+    \hline
+    Name&channel name\\
+    Value&threshold value\\
+    Hours&scheduled time\\
+    Minutes&scheduled time\\
+    Days&scheduled days\\
+    actionNr&action type number\\
+    action&action type string\\
+    dwell&dwell number\\
+    UDPRemNr&UDP packet type number\\
+    UDPRem&UDP packet type string\\
+    RemNode&target remote node.\\
+    typeNr&channel type number\\
+    type&channel type string\\
+    setPoint&setpoint number\\
+    pairChn&target channel number\\
+\end{tabular}
+
+Scene results are returned as an asociative array with the following parameters in it.
+
+\begin{tabular}{l|p{12cm}}
+    attribute name&Description\\
+    \hline
+    Digital\param{nn}&Ignore|On|Off\\
+    Analogue\param{nn}&Ignore|SetPoint\param{mm}\\
+\end{tabular}
+where \param{nn} is a channel number and \param{mm} is a setpoint number.
+
+\subsection{PHP Examples}
+
+There is a PHP example that you can modify to produce your own central user interface.  
+
+\subsubsection{PanelLib.php}
+\index{PanelLib.php}
+
+This provides a library of code for a user interface panel that is capable of displaying details from one or more 
+webBricks and issuing commands to them. This uses an Xml file standard.xml to define a user interface that consists 
+of a number of columns that contain status information and/or commands.
+
+The xml file has a top level element called status with a single attribute cols that specifies the number of columns on the
+display. There are then a set of elements called item. Each item has a Type element and typically a channel number and an
+IP address to identify the webbrick and the data to access from it. Each entry may also contain a Trig element that is used to
+specify a command to be issued.
+
+item Type may be one of:
+
+\begin{tabular}{l|p{12cm}}
+    type&Description\\
+    \hline
+    Header&generates a text of Cols width.\\
+    Temp&displays a temperature.\\
+    inAnalogue&displays an analogue input value.\\
+    Analogue&displays an analogue output.\\
+    Switch&displays a digital output state.\\
+    Monitor&displays a monitor state.\\
+\end{tabular}
+
+\subsubsection{standard.php}
+\index{standard.php}
+
+This is the start page for the standard panel.
+

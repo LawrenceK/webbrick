@@ -1,0 +1,99 @@
+14 Aug 2007
+Mimic/SoftSerial support.
+
+Currently Timer4 overflows at .4mS - this is 0.1us FOsc/4 *16 Prescaler * 256 PR4
+If we set PR4 to 130 we get Bit rate for 4800 Baud. And we get Minimum Mimic Freq of 75Hz.
+If we up the number of steps to 128 (Code expects power of 2 then this drops MinFreq to 37.5Hz when on or 
+off single time slot. 
+
+Need to investigate time in Mimic IRQ handler
+Identify max time in handler allowed, in machine instructions?
+
+Timer4 Interrupt every 400uS current may be every 200uS.
+Current: Fixed Interrupt overhead - Cpu+WizC =
+SerialIntHandler At 9600 Baud will interrupt at circa 1250uS (8N2)
+Mimic 21 machine cycles - some 2 word instructions. = 2.1uS
+If we do a DMX send at 250KBaud this is a byte every 48uS. (8N2) So IRQ handler for second serial needs to be tighter...
+
+24/01/2007
+Add watchdog clear in init code. fedpic simulator issues. And Siteplayer timeout on simulate
+
+Wb63. changes
+parse - ban characters, 
+parse - do RU on RS.
+Action Up and Down, 
+    for digital next/prev up/down treated as On/Off
+    for scene up/down treated as next/prev
+    analogue handle up/down as rotary step up/down
+DI option 4 - rotary encoder.
+Time sent every minute and upTime.
+Use data structure for digitals
+
+09/05
+Add sequence number into UDP packets, single byte, bumped by wb on each send.
+
+25/04
+Add IR send as possible action, channel nr may be a problem due to size. we only have 4 bits.
+Use associated value? as part of data?
+
+20/04/2006
+
+09/03/2006
+Triggers display not handling signed values (Temperature!)
+Make output type depend on Action Type.
+
+TODO js.
+Ensure webbrick handles Temperture output type.
+parse to verify action and outout type are consistant.
+
+08/03/2006
+-- PIC allows for 8 dwells and 8 setpoints.
+
+07/03/2006
+-- FadeRate called as soon as msTick > fadeRate so if adjusted down to be under msTick it does not wait until wrap..
+-- Have added an extra byte to triggers associated value not currently used.
+-- Have added 5th byte to digin, options. Currently trigger rise,fall edge.
+-- Have made analogue dwells return to last set point.
+-- Action Set Threshold and Adjust Threshold use associated value. Need to enhance lib.js as need to select target type etc.
+
+27/02/2006
+-- Re-run scheduled events at start up. (Toggle hartbeat)
+-- clock read at startup and at 30secs every minute.
+-- Mimics not optional.
+-- DI Options now in DI definition and in Xml. Optional on CD command.
+-- No Monitors. NameMonitor removed.
+-- On bad password check for level 1 blank
+-- Check IP address valid.
+-- Add parsing to handle extended trigger.
+
+Scheduled events
+Allow for repeat very hour/minute events.
+
+--------------------------------------------------
+Thoughts
+
+Over 16 bits.
+Currently 4 is channel Nr.
+3 Is SetPoint
+1 is channel type.
+2 is Dwell
+2 is UDP type.
+4 is action type.
+
+So combine action type and dwell nr.
+Combine channel type, Number and setpoint.
+
+Thoughts
+Encode Dwells with Actions in 5 bits
+11xxx Dwell Can xxx
+10xxx Dwell xxx
+00000 No Action
+00xx1 - 01xxx Others
+Combine channel, type and setpoint in 5 bits?
+000000 - 001111, 16 dig channels
+010000 - 011111, spare
+100xxx
+101xxx
+110xxx
+111xxx
+

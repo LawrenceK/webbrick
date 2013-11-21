@@ -1,0 +1,9 @@
+1) How do I build this
+You will need a copy of the Fored Wizc professional RAD tool www.fored.co.uk. There are a number of patches
+to the elements within the Wizc codebase. Webbrick firmware was built with V14.01. I cannot provide you with this
+but there is a patch file that needs applying against the wizc directory as there where a couple of bugs and some
+changes made.
+
+2) 
+
+

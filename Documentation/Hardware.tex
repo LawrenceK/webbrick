@@ -1,0 +1,45 @@
+\section{Hardware Details}
+
+Version 4.2 of the PCB uses the following parts list:
+
+
+    \begin{description}
+    \item [IC1] PIC18F452-I/P (see Gotchas for note on Silicon revision levels)
+    \item [IC2] 7805 5V Reg
+    \item [IC3] LM358 dual OP Amp, buffers and doubles PWM outputs to give 0-10V
+    \item [IC4] 2803A output buffer for 12V 500mA outputs
+    \item [Xtal] 20Mhz (could be 40Mhz later)
+    \item [Pulse Transformer]
+    \item [SitePlayer] See www.siteplayer.com for details
+    \end{description}
+
+The following connectors and connections are used:
+
+  \index{Connections}
+
+    \begin{description}
+    \item [DIN] Push button inputs, note that the PIC's internal pull-ups are ENABLED
+    \item [DOL] Digital Outputs TTL level
+    \item [DOH] Digital Outputs 12V 500mA max
+    \item [JP4] Rotary Encoder pin 1 'Up' or A, pin 2 'Down' or B.
+    \item [JP1 1] Analogue Input 0-5V
+    \item [JP1 2-5]  Monitor Input TTL Level     
+    \item [JP1 7] One Wire Bus Data \(See Also OWB below\)
+    \item [JP1 8] DMX Passthru out TTL Level \(needs MAX232 chip or direct connection to Milford Instruments board\)
+    \item [X2 1] Gnd for Analogue output
+    \item [X2 2,3] Analogue Outputs
+    \item [OWB] One Wire Bus
+    \item [V+] A useful source of +5V
+    \end{description}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{Images/WBConnections.jpg}
+\caption{WebBrick Connections}
+\end{figure}
+
+
+Note that since version 4.2 of the PCB, pull-ups for the rotary encoder are included.
+
+

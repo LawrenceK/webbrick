@@ -1,0 +1,14 @@
+Notes for Milling Dev Panel
+===========================
+
+Holes -2.6 mm at 0.3mm increments.
+
+Engraving -0.3 at 0.2mm increment
+
+Home is at the very Left Hand Bottom Corner
+
+Side Panel
+
+Holes -1.9 mm at 0.3mm increments.
+
+Home is where lines cross just on the inside of the screw columns

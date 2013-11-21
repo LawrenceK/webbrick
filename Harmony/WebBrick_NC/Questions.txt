@@ -1,0 +1,40 @@
+RegisterNativeController ??
+
+RegisterDevice parameters? and can I set the the address?
+Param1, Param2, Param3
+
+Format of sParams on HarmonyCallMethod . Is sDeviceName part of sParams.
+
+Name of plugin seems to need to start HPI_
+
+Name of DLL for native controller seems to need to match register name.
+
+
+HAPI CreateZone <component (controller name)> <zone name>
+Plugin CreateZone <zone name>
+
+HAPI SetDeviceZone <component> <device name> <zone name>
+plugin SetDeviceZone <device name> <zone name>
+
+HAPI SetDeviceAddress <component> <device name> <address string>
+plugin SetDeviceAddress <device name> <address string>
+
+HAPI SetDeviceType <component> <device name> <device type>
+plugin SetDeviceType <device name> <device type>
+
+
+
+ToDo
+----
+
+RegisterDiscretes if needed for WWB specific actions.
+
+RegisterEvent for each channel for High, Low, Activity.
+-- Can have a single device with multiple events for each input.
+
+RaiseEvent then is configured to trigger a method on a device.
+
+DimTo is a jump to to a setting
+FadeTo is ramp to a setting.
+
+How do (Registermethod and ) Use -- RegisterDiscreets differ

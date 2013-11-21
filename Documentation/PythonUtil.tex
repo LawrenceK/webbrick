@@ -1,0 +1,25 @@
+\subsection{Utilities}
+
+\begin{description}
+
+\item[WbCfg]
+
+\index{WbCfg configuration download utility}
+
+This program is used to configure a WebBrick from a configuration file.
+
+usage:  \begin{verbatim} python2 WbCfg.py <wbaddress> <wbcfgfile> \end{verbatim}
+
+The configuration file is based on the standard command structure, so to set the node number, the entry would look like:
+
+   \begin{verbatim}N23: \end{verbatim}
+
+You should note that during configuration we set the operating state - to '1' (startup) to disable 
+all the functions of the WebBrick.We do this to ensure that there are no extraneous actions or 
+commands in progress that would interrupt or corrupt the configuration process.
+
+Here's a partial example of the configuration file:
+
+\verbatiminput{PubPlay.cfg}
+
+\end{description}

@@ -1,0 +1,24 @@
+EAGLE Version 4.13 Copyright (c) 1988-2004 CadSoft
+
+Electrical Rule Check for D:/EaglePCB/projects/TouchPanel/TouchPanel/4WaySwitch.sch at 04/03/2005 19:27:01 
+
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$1G$2 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$1G$2 VCC
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$1G$3 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$1G$3 VCC
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$2G$1 RST
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$2G$2 VCC
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$2G$3 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$2G$4 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$2G$5 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin U$2G$6 VCC
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC1G$2 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC1G$3 VDD
+WARNING: Only 1 Pin on net N$52
+WARNING: No Pins on net N$57
+WARNING: Sheet 1/1, Net N$52: wire overlaps pin at (6.65 5.4)
+
+Board and schematic are consistent
+
+   12 errors
+    3 warnings

@@ -1,0 +1,1 @@
+wbFactoryTest.py factoryReset

@@ -1,0 +1,65 @@
+\subsection{wb.py the WebBrick class library}
+
+To import this library use the following in your code:
+
+\begin{verbatim} import wb \end{verbatim}
+
+To create a instance of the wb class within you application use:
+
+\begin{verbatim} myName = wb.wb() \end{verbatim}
+
+From this point you can use this instance to interact with WebBricks, for example
+if you wanted to check the status of a particular output channel you might use
+somethine like
+
+\begin{verbatim} isBoilerOn = myName.DigOutSts(ipAddr,chn) \end{verbatim}
+
+\subsubsection{Functions implemented by wb class}
+
+\begin{description}
+	\item[wb] used to instantiate class
+		\begin{verbatim} wb.wb() \end{verbatim}
+		
+	\item[DigOut] used to {\em directly} control a digital output.
+		\index{wb Class ! DigOut}
+		\begin{verbatim} DigOut(addr,chn,operand) \end{verbatim}
+		where:
+		\begin{description}
+			\item[addr(string)] is the IP address of the WebBrick
+			\item[chn(char)] is the chn to be actioned
+			\item[operand(char)] is the action, 'F' = OFF, 'N' = ON, 'D'= Dwell\[0\]
+		\end{description}
+
+	\item[DigOutSts] used to return the status of a digital output
+		\index{wb Class ! DigOutSts}
+		\begin{verbatim} result = DigOutSts(addr,chn) \end{verbatim}
+		where:
+		\begin{description}
+			\item[addr(string)] is the IP address of the WebBrick
+			\item[chn(char)] is the chn to be actioned
+			\item[result(int)] is the 0 for OFF and 1 for ON
+		\end{description}
+	
+	\item[trigger] used to activate a state engine trigger
+		\index{wb Class ! trigger}
+		\begin{verbatim} result = trigger(addr,trig) \end{verbatim}
+		where:
+		\begin{description}
+			\item[addr(string)] is the IP address of the WebBrick
+			\item[trig(char)] is the trigger to be actioned
+			\item[result(int)] is 1 for SUCCESS and 0 for FAIL
+		\end{description}
+
+	\item[getValue] used to get a value from a WebBrick
+		\index{wb Class ! get value}
+		\begin{verbatim} result = getValue(addr,name,index) \end{verbatim}
+		where:
+		\begin{description}
+			\item[addr(string)] is the IP address of the WebBrick
+			\item[name(string)] is the name of the value to get
+			\item[index(int)] is the index of the value, 0 for the first instance of a value
+			\item[result(string)] is the value
+		\end{description}
+			For a full description of value names, look at wbstatus.xml \index{wbstatus.xml}
+		
+\end{description}

@@ -1,0 +1,1922 @@
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf ./PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf	2009-04-27 14:37:02.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf	2011-05-15 09:36:52.000000000 +0100
+@@ -10,14 +10,13 @@ HasInterrupt=0
+ IntPri=0
+ Group=Data
+ nTemp=3
+-AppType=0
++AppType=1
+ LoopCall=
+ AllowMulti=0
+ UseAsm=1
+ [IOS]
+ nIO=1
+ IO0=TxRx1Wire,IO,256,-1,1
+-IO1=SerialRx,I,259,-1,1
+ [Parameters]
+ nPar=0
+ Name0=SerRate,Serial Bit Rate
+@@ -43,7 +42,7 @@ LongFileName0=
+ Name0nPar=0
+ Name0nOccur=0
+ [PublicCalls]
+-nCalls=3
++nCalls=5
+ Name0=void Tx1Wire(unsigned char v);
+ Help0=Transmit v to 1 wire interface
+ Name1=unsigned char Rx1Wire();
+@@ -53,6 +52,10 @@ vName0=RxVal
+ vHelp0=Received Value - temporary
+ Name2=char ResetCheck1W()
+ Help2=Reset bus & look for button, return 1 if found
++Name3=void OwTx1WireABit
++Help3=Transmit a single bit to the 1 wire interface
++Name4=OwRx1WireABit
++Help4=Receive a single bit from the 1 wire interface
+ [Defines]
+ nDefines=0
+ [AutoVar]
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/I2C.c ./PIXIE/APPWIZ/APPWIZ18/I2C.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/I2C.c	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/I2C.c	2011-05-15 09:36:52.000000000 +0100
+@@ -0,0 +1,279 @@
++#ifdef I2CEEUsed
++//#include "Test_Auto.h"
++#include <strings.h>
++//#define DEBUG_I2C( s, i )  fnprintf(AddTx, s, i );
++#define DEBUG_I2C( s, i )
++
++#define WRITE_ADDRESS   (i2c_busAddress)
++#define READ_ADDRESS    (i2c_busAddress | 0x01)
++#define DO_READ         ( ( i2c_flags & I2C_READ_BIT ) == I2C_READ_BIT )
++#define DO_WRITE        ( ( i2c_flags & I2C_READ_BIT ) != I2C_READ_BIT )
++#define DO_BYTEADDRESS  ( ( i2c_flags & I2C_BYTEADDRESS_BIT ) == I2C_BYTEADDRESS_BIT )
++#define DO_WORDADDRESS  ( ( i2c_flags & I2C_BYTEADDRESS_BIT ) != I2C_BYTEADDRESS_BIT )
++
++unsigned char ee1;
++unsigned char ee2;	//Temporary storage
++
++void Check_ee_State()
++{
++	if(PIR1&(1<<SSPIF))
++ 		{
++  		PIR1&= ~(1<<SSPIF);	//Clear the interrupt flag
++  		process_ee_state();
++		}
++}
++//
++//THIS IS THE STATE PROCESSING UPON RECEIVING AN INTERRUPT.
++//
++//
++//	(c) David Kerr April 2005. May be used and or modified provided this Copyright notice is displayed in the header
++//
++//	Revision History
++//	April 2005			Original coding
++//	5th August 2005		Modifications to become FED Element
++//	6th August 2005		Addition of State 6 for Reads immediately following long Writes
++//
++//	State machine processing for hardware I2C external EEPROM support
++//	for a 24LC256 EEProm (or equivalent) at address zero.
++//	Note that addressing for multiple EEProms can be  introduced by
++//	incorporating the device address into the read and write control words.
++//	If real time addressing is desired, change the control words from constants to
++//	variables and set them in the eeprom read/write routine.
++//
++//	Note that the bank write operation may not be complete until after the
++//	status here says it is done. Thiis is because of the internal write cycle
++//	in the EEProm. If another read/write occurs, the state processing does
++//	"poll acknowledge" checking per the 24LC256 data sheet until the
++//	device is ready.
++//
++void process_ee_state() 	
++{ 	
++ 	ee2=i2c_state;
++    DEBUG_I2C( "\n\rState %u", ee2 );
++    DEBUG_I2C( " SSPSTAT %x", SSPSTAT );
++    DEBUG_I2C( " SSPCON2 %x ", SSPCON2 );
++ 	i2c_state=98;	 //Failed is the default!
++ 	switch(ee2)
++ 	
++ 		{
++ 		case 1:
++ 			{
++            DEBUG_I2C( "BusAdr %x", WRITE_ADDRESS );
++ 			SSPBUF=WRITE_ADDRESS;	//Send the control word
++ 			i2c_state=2;
++            ee1 = 0;    // reset byte counter
++ 			break;
++ 			}
++ 			
++ 		case 2:
++ 			{
++ 			if((SSPCON2&(1<<ACKSTAT))==0)
++ 				{
++                if ( DO_BYTEADDRESS )
++                    {
++                    DEBUG_I2C( "DevAdr low %x", i2c_addressl );
++                    SSPBUF=i2c_addressl;	//Send the low address
++                    if ( DO_READ )
++                        {
++                        i2c_state=10;
++                        }
++                    else 
++                        {
++                        i2c_state=4;
++                        }
++                    }
++                else
++                    {
++                    DEBUG_I2C( "DevAdr High %x", i2c_addressh );
++                    SSPBUF=i2c_addressh;	//Send the high address
++                    i2c_state=3;
++                    }
++                }
++ 			else 	//We are still busy from a previous write
++ 				{	//So we must perform acknowledge polling
++                DEBUG_I2C( "Busy", 0 );
++ 				SSPCON2|=1<<SEN;	//Re-assert the start condition
++ 				SSPBUF=WRITE_ADDRESS;	//Resend the control word
++ 				i2c_state=6;
++ 				}	
++ 			break;	
++ 			}
++ 			
++ 		case 6:
++ 			{
++            DEBUG_I2C( "Res BusAdr %x", WRITE_ADDRESS );
++ 			SSPBUF=WRITE_ADDRESS;	//Resend the control word
++ 			i2c_state=2;	//Then back to "normal" state processing
++ 			break;
++ 			}
++ 				
++ 			
++ 		case 3:
++ 			{
++ 			if((SSPCON2&(1<<ACKSTAT))==0)
++ 				{
++                DEBUG_I2C( "DevAdr low %x", i2c_addressl );
++ 				SSPBUF=i2c_addressl;	//Send the low address
++ 						//At this point, read and write processing diverges
++                if ( DO_READ )
++                    {
++                    i2c_state=10;
++                    }
++                else 
++                    {
++                    i2c_state=4;
++                    }
++ 				}
++ 			else 
++            {
++                SSPCON2|=1<<PEN; //Assert the Stop condition
++            }
++ 			break;
++ 			}
++ 			
++ 		case 4:
++ 			{				//Page Write
++ 			if((SSPCON2&(1<<ACKSTAT))==0)
++ 				{
++ 				if(ee1>=i2c_bytes)
++ 					{
++ 					SSPCON2|=1<<PEN; //At the end- stop
++ 					i2c_state=5;
++ 					break;
++ 					}
++ 				
++                DEBUG_I2C( "Wr Byte %x", *(i2c_pointer+ee1) );
++ 				SSPBUF=*(i2c_pointer+ee1++); //Send the next byte
++ 				i2c_state=4;	//Override the default
++ 				}
++ 			else 
++            {
++                SSPCON2|=1<<PEN; //Assert the Stop condition
++            }
++ 			break;
++ 			}
++ 			
++ 		case 5:
++ 			{
++			//Set "all finished" flag
++            DEBUG_I2C( "Write Complete", 0 );
++#ifdef EEWriteCompleteUsed
++			EEWriteCompleteFlag|=(1<<EEWriteCompleteFlagBit);
++#endif
++   			i2c_state=0;
++ 			break;
++ 			}
++ 			
++ 		case 10:
++ 			{
++ 			if((SSPCON2&(1<<ACKSTAT))==0)
++            {
++                DEBUG_I2C( "DoStop", 0 );
++                i2c_state=11;
++ 						//Do a stop here
++ 						//because 24LC256 does not follow
++ 						//the data sheet exactly- Start here is no good!
++ 						//Stop forces the address load okay
++ 				
++// 						else is default i2c_state=98;	 //Failed!
++            }
++ 				
++ 			SSPCON2|=1<<PEN; //Assert the Stop condition
++ 			break;
++ 			}
++ 
++ 		case 11:
++ 			{
++            DEBUG_I2C( "DoStart", 0 );
++ 			SSPCON2|=1<<SEN; //Assert the start condition
++ 			i2c_state=12;
++ 			break;
++ 			}	
++ 		
++ 		case 12:
++ 			{
++            DEBUG_I2C( "BusAdr", READ_ADDRESS );
++ 			SSPBUF=READ_ADDRESS;	//Send the control word with read set
++ 			i2c_state=13;
++ 			break;
++ 			}
++ 			
++ 		case 13:
++ 			{
++ 			if((SSPCON2&(1<<ACKSTAT))==0)
++ 				{
++                DEBUG_I2C( "RecEn", 0 );
++ 				i2c_state=14;		//Have ACK- await read
++ 				SSPCON2|=1<<RCEN;	//Set Receive enable
++ 				}
++ 			else SSPCON2|=1<<PEN; //Assert the Stop condition
++ 			break;
++ 			}
++ 			
++ 		
++ 		case 14:
++ 			{
++ 			if((SSPSTAT&1)!=0)
++ 				{		//We have data!
++                DEBUG_I2C( "ByteRx", SSPBUF );
++ 				*(i2c_pointer+ee1)=SSPBUF; //Get the next byte
++ 				if(++ee1 == i2c_bytes)
++ 					{
++ 					SSPCON2|=1<<PEN; //At the end- stop with no ACK
++ 					i2c_state=16;
++ 					break;
++ 					}
++ 				SSPCON2&=~(1<<ACKDT);	   //Send ACK & and remain in the same state
++ 				SSPCON2|=1<<ACKEN;
++ 				i2c_state=15;
++ 				}
++ 			else SSPCON2|=1<<PEN; //Error. No Data. Assert the Stop condition	
++ 			break;
++ 			}
++ 		
++ 		case 15:		//ACK cycle completed
++ 			{
++            DEBUG_I2C( "RecEn", 0 );
++ 			i2c_state=14;
++ 			SSPCON2|=1<<RCEN;	//Set Receive enable for next byte
++ 			break;
++ 			}
++ 			
++ 		case 16:
++ 			{
++			//Set "all finished" flag
++            DEBUG_I2C( "Read Complete", 0 );
++#ifdef EEReadCompleteUsed
++			EEReadCompleteFlag|=(1<<EEReadCompleteFlagBit);
++#endif
++   			i2c_state=0;
++ 			break;
++ 			}
++ 			
++ 		case 98:
++ 			{
++ 				//Stopped EEProm and we finished with an error
++#ifdef EEReadFailedUsed
++            if ( DO_READ )
++            {
++ 			    EEReadFailedFlag|=(1<<EEReadFailedFlagBit);
++            }
++#endif
++#ifdef EEWriteFailedUsed
++            if ( DO_WRITE )
++            {
++ 			    EEWriteFailedFlag|=(1<<EEWriteFailedFlagBit);
++            }
++#endif
++   			i2c_state=0;
++ 			break;
++ 			}
++ 			
++ 			
++ 		}
++ 	
++ }
++
++#endif
++
++
+Binary files ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/I2CEE.bmp and ./PIXIE/APPWIZ/APPWIZ18/I2CEE.bmp differ
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/I2Cee.edf ./PIXIE/APPWIZ/APPWIZ18/I2Cee.edf
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/I2Cee.edf	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/I2Cee.edf	2011-05-15 09:36:52.000000000 +0100
+@@ -0,0 +1,87 @@
++[Main]
++Name=I2C EEPROM driver
++ShortName=I2CEE
++ASMFileName=I2C.c
++IniFileName=I2C.h
++HelpApp=
++HelpText=Uses HW MSSP for a single 24LC256 at address zero
++Icon=I2CEE.bmp
++HasInterrupt=0
++IntPri=0
++Group=Data
++nTemp=0
++AppType=0
++LoopCall=Check_ee_State
++AllowMulti=0
++UseAsm=0
++nConfig=1
++[IOS]
++nIO=2
++IO0=SCL,IO,2,3,1
++IO1=SDA,I,2,4,1
++[Parameters]
++nPar=1
++Name0=K400,Use Fast Bus (400KHz)
++Type0=3
++Default0=1
++[Interrupt]
++NLines=0
++[InComp]
++NLines=0
++[Init]
++HasInit=1
++InitCall=
++nLines=26
++Line0=unsigned char i2c_state=0;		//State for the EEPROM FSM
++Line1=unsigned char i2c_busAddress;
++Line2=unsigned char *i2c_pointer;
++Line3=unsigned int i2c_bytes;			//Byte limit for Int routine
++Line4=
++Line5=
++Line6=unsigned char i2c_addressl, i2c_addressh;	//Address in EEPROM
++Line7=unsigned char i2c_flags;		//Determines read or write
++Line8=
++Line9=
++Line10=const int ClkK=APROCFREQ/1000;
++Line11=#define SSPV (ClkK/400/4)
++Line12=#if K400==1
++Line13=>const int SSPAddV=SSPV+1;
++Line14=#else
++Line15=>const int SSPAddV=SSPV*4+1;
++Line16=#endif
++Line17=
++Line18====================
++Line19=SSPCON1=0;
++Line20=SSPCON2=0;
++Line21=SSPSTAT=0;
++Line22=SSPSTAT|=1<<SMP;   // Disable slew rate control
++Line23=SSPCON1|=1<<3;	   //Set I2C Master mode clocked
++Line24=SSPADD=SSPAddV;	   //Sets clock to 20000/(4*(SSPAddV+1)
++Line25=SSPCON1|=1<<SSPEN; //Enable the MSSP
++[Occurrences]
++nOccur=4
++Name0=EEReadComplete,Read Operation Complete,,,0
++Name1=EEWriteComplete,Write Operation Complete,,,0
++Name2=EEReadFailed,Read Operation Failed,,,0
++Name3=EEWriteFailed,Write Operation Failed,,,0
++[HookElements]
++nHooked=0
++[PublicCalls]
++nCalls=4
++Name0=void i2c_read_ba(unsigned char *busAddress, unsigned char *data, unsigned char devAddress, unsigned int len ); 
++Help0=Reads bytes at devAddress (0-255) and I2C device at busAddress
++Name1=void i2c_write_ba(unsigned char *busAddress, unsigned char *data, unsigned char devAddress, unsigned int len ); 
++Help1=Writes bytes to devAddress (0-255) and I2C device at busAddress
++Name2=void i2c_read_wa(unsigned char *busAddress, unsigned char *data, unsigned int devAddress, unsigned int len ); 
++Help2=Reads bytes at devAddress (0-65535) and I2C device at busAddress
++Name3=void i2c_write_wa(unsigned char *busAddress, unsigned char *data, unsigned int devAddress, unsigned int len ); 
++Help3=Writes bytes to devAddress (0-65535) and I2C device at busAddress
++nVars=0
++[AutoVar]
++nAVar=0
++[Defines]
++nDefines=0
++[Processors]
++nProcessors=0
++
++
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Main.c ./PIXIE/APPWIZ/APPWIZ18/Main.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Main.c	2009-04-27 14:37:02.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/Main.c	2011-05-15 09:36:52.000000000 +0100
+@@ -1,3 +1,4 @@
++//#include "debug.h"
+ //
+ // This file is automatically generated. Any changes will be overwritten when
+ // the application is regenerated
+@@ -45,10 +46,23 @@ const int QuickInt=1;
+ 
+ void Interrupt()
+ {
++#pragma asm
++    MOVWF   ISaveWREG
++    MOVFF   STATUS,ISaveSTATUS
++    MOVFF   BSR,ISaveBSR
++#pragma asmend
++
+  // Priority Interrupts first
+  // Other Interrupts
+  #pragma asmline goto UserInterrupt	; PIC Assembler - goto user interrupt
+  #pragma asmline UserIntReturn::	; Return to here after user routine
++
++#pragma asm
++    MOVFF   ISaveBSR, BSR
++    MOVF    ISaveWREG, W
++    MOVFF   ISaveSTATUS, STATUS
++    RETFIE  0
++#pragma asmend
+ }
+ 
+ //
+Binary files ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/MIMIC.bmp and ./PIXIE/APPWIZ/APPWIZ18/MIMIC.bmp differ
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Mimic.c ./PIXIE/APPWIZ/APPWIZ18/Mimic.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Mimic.c	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/Mimic.c	2011-05-15 09:36:52.000000000 +0100
+@@ -0,0 +1,131 @@
++#ifdef MimicUsed
++#include "mimic.h"
++unsigned char mimicTable[MAX_MIMIC_LEVEL];
++static unsigned char mimicLevel[MimicCount];
++static unsigned char mimicTarget[MimicCount];
++// This maps mimic numbers to there position in port E.
++#if RotateMimics == 1
++const unsigned char mimicMap[8] = {0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x01, 0x02};
++#define MIMICBIT(idx)   (mimicMap[idx])
++#else
++#define MIMICBIT(idx)   (0x01 << idx)
++#endif
++
++// **********
++// * MimicSetPwmTable( unsigned char chnBit, unsigned char newLevel )
++// * 
++// **********
++static void MimicSetPwmTable( unsigned char chnBit, unsigned char newLevel )
++{
++    // no mimic if used for debug
++    unsigned char idx;
++    unsigned char val = 0;
++    unsigned char notchnBit;
++    notchnBit = ~chnBit;
++    for ( idx = 0; idx < MAX_MIMIC_LEVEL; idx++ )
++    {
++        val += newLevel;
++        // the higher newLevel is the quicker we excede MAX_MIMIC_LEVEL
++        // and therefore more often set the bit in the map.
++        if ( val >= MAX_MIMIC_LEVEL )
++        {
++            mimicTable[idx] |= chnBit;
++            val -= MAX_MIMIC_LEVEL;
++        }
++        else
++        {
++            mimicTable[idx] &= notchnBit;
++        }
++    }
++}
++
++// called to handle fading a mimic towards its desired level.
++void FadeMimics()
++{
++    unsigned char idx;
++    for ( idx = 0; idx < MimicCount; ++idx)
++    {
++        if ( mimicLevel[idx] != mimicTarget[idx] )
++        {
++            if ( mimicLevel[idx] > mimicTarget[idx] )
++            {
++                --mimicLevel[idx];
++            }
++            else
++            {
++                ++mimicLevel[idx];
++            }
++            MimicSetPwmTable( MIMICBIT(idx), mimicLevel[idx] );
++//            UpdateMimic( 0x01 << idx, mimicLevel[idx] );
++        }
++    }
++}
++
++// Called to set the target level for a mimic when faded to.
++void SetMimicTargetLevel(unsigned char chn, unsigned char targetLevel )
++{
++    if ( targetLevel > MAX_MIMIC_LEVEL )
++    {
++        targetLevel = MAX_MIMIC_LEVEL;
++    }
++    mimicTarget[chn] = targetLevel;
++}
++
++// called to set an immediate level for a mimic.
++void SetMimicLevelNow(unsigned char chn, unsigned char targetLevel )
++{
++    if ( targetLevel > MAX_MIMIC_LEVEL )
++    {
++        targetLevel = MAX_MIMIC_LEVEL;
++    }
++    mimicTarget[chn] = targetLevel;
++    mimicLevel[chn] = targetLevel;
++    MimicSetPwmTable( MIMICBIT(chn), mimicLevel[chn] );
++}
++
++#if 0
++//#pragma asm
++module "_PwmMimicsInt"
++_PwmMimicsInt::
++        btfss PIR3,CCP5IF
++        goto MimicIntEnd
++        bcf PIR3,CCP5IF
++
++        MOVFF   FSR0L,ISaveFSR0L
++        MOVFF   FSR0H,ISaveFSR0H
++        MOVLB   mimicIndex >> 8
++        LFSR    FSR0, mimicTable
++        MOVF    mimicIndex, w, BANKED ; get current index
++        MOVFF   PLUSW0, LATE        ; update output
++        INCF    mimicIndex, f, BANKED ; update current index
++        BTFSC   mimicIndex, 6, BANKED ; have we reached 64
++        CLRF    mimicIndex, BANKED    ; reset
++
++        MOVFF   ISaveFSR0L,FSR0L
++        MOVFF   ISaveFSR0H,FSR0H
++
++MimicIntEnd:
++        return 0
++
++void PwmMimics()
++{
++//#asm
++//      MOVLB   mimicIndex >> 8
++//      LFSR    FSR0, mimicTable
++//      MOVF    mimicIndex, w, BANKED ; get current index
++//      MOVFF   PLUSW0, LATE        ; update output
++//      INCF    mimicIndex, f, BANKED ; update current index
++//      BTFSC   mimicIndex, 6, BANKED ; have we reached 64
++//      CLRF    mimicIndex, BANKED    ; reset
++//#asmend
++    if ( mimicIndex > MAX_MIMIC_LEVEL )
++    {
++        mimicIndex = 0;
++    }
++    LATE = mimicTable[mimicIndex];
++    mimicIndex++;
++}
++#endif
++
++
++#endif
+\ No newline at end of file
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Mimic.edf ./PIXIE/APPWIZ/APPWIZ18/Mimic.edf
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Mimic.edf	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/Mimic.edf	2011-05-15 09:36:52.000000000 +0100
+@@ -0,0 +1,99 @@
++[Main]
++Name=Mimic using Timer 4
++ShortName=Mimic
++ASMFileName=mimic.c
++IniFileName=mimic.h
++HelpText=Mimic using Timer 4
++Icon=Mimic.bmp
++HasInterrupt=1
++Group=CCP
++nTemp=0
++AppType=0
++LoopCall=
++AllowMulti=0
++HelpApp=
++IntPri=0
++UseAsm=0
++nConfig=1
++[IOS]
++nIO=0
++[Parameters]
++nPar=1
++Name0=RotateMimics,Mimics shift by 2 for rev 4 hardware:
++Type0=3
++Default0=0
++[Interrupt]
++NLines=20
++Line0=#ifdef MimicIntUsed
++Line1=#asm
++Line2=btfss   PIR3,TMR4IF
++Line3=goto    MimicIntEnd
++Line4=
++Line5=bcf     PIR3,TMR4IF
++Line6=MOVFF   FSR0L,ISaveFSR0L
++Line7=MOVFF   FSR0H,ISaveFSR0H
++Line8=MOVLB   mimicIndex >> 8
++Line9=LFSR    0, mimicTable
++Line10=MOVF    mimicIndex, w, BANKED
++Line11=MOVFF   PLUSW0, LATE
++Line12=INCF    mimicIndex, f, BANKED
++Line13=BTFSC   mimicIndex, 6, BANKED
++Line14=CLRF    mimicIndex, BANKED
++Line15=MOVFF   ISaveFSR0L,FSR0L
++Line16=MOVFF   ISaveFSR0H,FSR0H
++Line17=MimicIntEnd::
++Line18=#asmend
++Line19=#endif
++[Init]
++HasInit=1
++InitCall=
++nLines=7
++Line0=unsigned char register ISaveFSR0L;
++Line1=unsigned char register ISaveFSR0H;
++Line2=#define MAX_MIMIC_LEVEL  64
++Line3=extern unsigned char mimicTable[MAX_MIMIC_LEVEL];
++Line4=unsigned char mimicIndex;
++Line5====================
++Line6=
++[Occurrences]
++nOccur=0
++Name0=Compare5,Action when comparison achieved,PIR3,CCP5IF,0
++
++[HookElements]
++nHooked=1
++Name0=Timer 4
++FileName0=Timer4.edf
++LongFileName0=
++Name0Par0=EnTimer4
++Name0ParV0=1
++Name0Par1=T4_Pre
++Name0ParV1=3
++Name0Par2=T4_Post
++Name0ParV2=0
++Name0nOccur=0
++
++[PublicCalls]
++nCalls=3
++nVars=1
++vName0=mimicTable
++vHelp0=mimicTable
++Name0=UpdateMimics
++Help0=UpdateMimics
++Name1=FadeMimics
++Help1=FadeMimics
++Name2=SetMimics
++Help2=SetMimics
++
++[InComp]
++NLines=0
++Line0=Compare Module 5
++
++[AutoVar]
++nAVar=1
++Name0=PIE3,255,8,1
++
++[Defines]
++nDefines=0
++
++[Processors]
++nProcessors=0
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Misc.c ./PIXIE/APPWIZ/APPWIZ18/Misc.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Misc.c	2009-04-27 14:37:02.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/Misc.c	2011-05-15 09:36:52.000000000 +0100
+@@ -9,11 +9,13 @@ MCLREDGE	macro
+ 	  	  ElCnt=ElCnt-1
+ 	 	 endw
+ 		endm
++		module
+ InitEdge::
+ 		ElCnt=(_EdgenCopy-1)/8+1	;Edge Detector
+ 		movlw H'FF'
+ 		MCLREDGE
+ 		MRET 0
++		endmodule
+ #pragma asmend
+ #endif
+ #ifdef EdgeUsed		// %% - flag to show code repeated for each instance
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf ./PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf	2009-04-27 14:37:02.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf	2011-05-15 09:36:52.000000000 +0100
+@@ -32,13 +32,15 @@ NLines=0
+ [Init]
+ HasInit=1
+ InitCall=
+-nLines=6
++nLines=8
+ Line0=const int IRPORT=&RC5TxPort;
+-Line1=const int IRFREQ=RC5TxCarrier;
+-Line2=const int IRBIT=RC5TxBit;
+-Line3==============================
+-Line4=-------
+-Line5=RC5TxPort&=~(1<<IRBIT);
++Line1=#ifndef RC5RxUsed
++Line2=const int IRFREQ=RC5TxCarrier;
++Line3=#endif
++Line4=const int IRBIT=RC5TxBit;
++Line5==============================
++Line6=-------
++Line7=RC5TxPort&=~(1<<IRBIT);
+ [Occurrences]
+ nOccur=0
+ [HookElements]
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/SerInt.edf ./PIXIE/APPWIZ/APPWIZ18/SerInt.edf
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/SerInt.edf	2009-04-27 14:37:02.000000000 +0100
++++ ./PIXIE/APPWIZ/APPWIZ18/SerInt.edf	2011-05-15 09:36:52.000000000 +0100
+@@ -32,11 +32,11 @@ Default1=1
+ Name2=RXBUFSZ,Receive Buffer Size
+ Type2=1,3
+ Default2=32
+-List2=8,16,32,64
++List2=8,16,32,64,128
+ Name3=TXBUFSZ,Transmit Buffer Size
+ Type3=1,3
+ Default3=8
+-List3=8,16,32
++List3=8,16,32,64,128
+ Name4=DefMemAdd,Define Buffer Addresses Manually
+ Type4=3
+ Default4=0
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/AppWiz.h ./PIXIE/Libs/AppWiz.h
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/AppWiz.h	2009-04-27 14:37:00.000000000 +0100
++++ ./PIXIE/Libs/AppWiz.h	2011-05-15 09:36:51.000000000 +0100
+@@ -35,6 +35,9 @@ void SetPWM4Volts(unsigned int value);
+ void SetPWM5Volts(unsigned int value);
+ #pragma asmfunc SetPWM1Volts
+ #pragma asmfunc SetPWM2Volts
++#pragma asmfunc SetPWM3Volts
++#pragma asmfunc SetPWM4Volts
++#pragma asmfunc SetPWM5Volts
+ 
+ // Timer 0 extension
+ 
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib16.c ./PIXIE/Libs/DataLib16.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib16.c	2009-04-27 14:37:00.000000000 +0100
++++ ./PIXIE/Libs/DataLib16.c	2011-05-15 09:36:51.000000000 +0100
+@@ -496,8 +496,6 @@ endmodule
+ #asmdefine _GetSPOtoFSR0
+ 
+ #pragma asm
+-
+-
+ module "_IIRout"
+ 
+ ifndef _IIStretch
+@@ -1349,6 +1347,10 @@ ReadEEData::
+ 	else
+ 		MGETFSRSPO 3		; FSR points to EAddr
+ 	endif
++; Moved this here as we had a silly with EEADR being modified on
++; 18f452 whilst previous write active
++WaitEE:		btfsc EECON1,WR		; Pending write ?
++		bra WaitEE
+ 		movf POSTINC0,w
+ 		movwf EEADR
+ 	if EEADRH
+@@ -1357,10 +1359,10 @@ ReadEEData::
+ 	endif
+ 		bcf EECON1,7		; Clear EEPGD and CFGS bits
+   		bcf EECON1,6
+-WaitEE:		btfsc EECON1,WR		; Pending write ?
+-		bra WaitEE
++                bcf INTCON,GIEH         ; disble interrupts as per 18f452 errata
+   		bsf EECON1,RD
+ 		movf EEDATA,w
++                bsf INTCON,GIEH
+ 		movwf ACC
+   		MRET 0
+ endmodule
+@@ -1410,6 +1412,7 @@ WEEL::
+ endmodule
+ 	#pragma asmend
+ #endif
++
+ #ifdef _ResetCheck1W
+ 
+ #callfunction Delays
+@@ -1418,32 +1421,48 @@ endmodule
+ #pragma asm
+ module "_ResetCheck1W"
+ if _TxRx1WirePort&8
+- _TxRx1WireTris=_TxRx1WirePort+9	; Address of TRIS
++  _TxRx1WireTris=_TxRx1WirePort+9	; Address of TRIS
+ else
+- _TxRx1WireTris=_TxRx1WirePort+18	; Address of TRIS
++  _TxRx1WireTris=_TxRx1WirePort+18	; Address of TRIS
+ endif
++
+ ;
+-; Bus times - all given in instruction cycles
++; Bus times - all calculated in instruction cycles
+ ;
+-
++; calculate instruction time in nanoseconds
++; i.e. 200ns for a 20Mhz CPU.
+  CycnS1W=D'4000000'/(_APROCFREQ/D'1000')	
+- 
++; Reset/presence timing 
+  tRstL1W=D'500000'/CycnS1W		; Reset time (low)
+- tPresWait1W=D'150000'/CycnS1W		; Wait for device to show its present
+- tLow1W=D'3000'/CycnS1W			; Clock width
+- tRec1W=D'1000'/CycnS1W			; Recovery time
++
++ tPresWait1WSlot=D'30000'/CycnS1W	; time slot for waiting for presence
++ tPresWait1WCount=D'10'	                ; In this number of slots we should see both a low and a high.
++
++; Updated values.
++; initial pulse width
++ tStart1W=D'3000'/CycnS1W		; Clock width
++ tRec1W=D'1000'/CycnS1W		        ; Recovery time
+  tSlot1W=D'80000'/CycnS1W		; Allow 80uS slot for safety
+- tRead1W=D'4000'/CycnS1W		; Sample time after clock released
++ tRead1W=D'10000'/CycnS1W		; Sample time after clock released
++; tRead1W=D'4000'/CycnS1W		; Sample time after clock released, Original FORED value
+ 
+ ; Macro to drive or release the bus
+-  
+- Set1W	macro x
+- 	if x
+- 	 bsf _TxRx1WireTris,_TxRx1WireBit
+- 	else
+- 	 bcf _TxRx1WireTris,_TxRx1WireBit
+- 	endif
+- 	endm
++ Set1WOut	macro
++    bcf _TxRx1WireTris,_TxRx1WireBit
++ endm
++
++ Set1WIn	macro
++    bsf _TxRx1WireTris,_TxRx1WireBit
++ endm
++
++ Drive1WLow macro
++    bcf _TxRx1WirePort,_TxRx1WireBit
++ endm
++
++ Drive1WHigh macro
++    bsf _TxRx1WirePort,_TxRx1WireBit
++ endm
++
+ ;
+ ; Reset bus & look for button, return 0 
+ ; W=1  Z=0 if button found
+@@ -1452,26 +1471,30 @@ endif
+ ;
+ 
+ ResetCheck1W::
+-		bcf _TxRx1WirePort,_TxRx1WireBit	; Always set o/p low
+-		Set1W 0
++		Set1WOut
++		Drive1WLow
+ 		DELAY tRstL1W				; Reset period
+-		Set1W 1
+-		movlw 1					; Always minimum of 1
+-		addlw #tPresWait1W/D'20'
++		Drive1WHigh
++		Set1WIn
++		movlw #tPresWait1WCount                 ; maximum of 10 presence wait slots
+ 		movwf Temp
+-RCLop1W		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
++; delay first otherwise on fast CPU and long 1 wire bus the bus is still
++; low when we get here from the reset pulse.
++RCLop1W		DELAY tPresWait1WSlot                   ; wait before first sample.
++		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		bra LoFd1W
+-		DELAY 15				; 15
+ 		decfsz Temp				; 1
+ 		bra RCLop1W				; 2
+ 		clrf ACC
+ 		MRET 0
+-LoFd1W		movlw 1
+-		addlw #tPresWait1W/D'20'
+-		movwf Temp
++LoFd1W		
++; temp is already counting presence wait slots
++;                movlw 1
++;		addlw #tPresWait1W/D'20'
++;		movwf Temp
+ RCLHi1W		btfsc _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		bra HiFd1W
+-		DELAY D'15'				; 15
++		DELAY tPresWait1WSlot                   ; 30 uS
+ 		decfsz Temp				; 1
+ 		bra RCLHi1W				; 2
+ 		movlw -1
+@@ -1492,54 +1515,113 @@ Tx1Wire::
+ 		movf INDF0,w
+ 		movwf ACC			 ; Transmitted value
+ 		movlw 8
++	
+ 		movwf Temp			 ; Loop counter
+-Tx1WL1		bcf _TxRx1WirePort,_TxRx1WireBit
+-		Set1W 0				 ; 1
+-		if tLow1W>5
+-		 DELAY (tLow1W-5)		 ; Clock low time before data
++		Set1WOut
++Tx1WL1		
++		Drive1WLow			; 1
++		if tStart1W>3			; following 3 instructions.
++	 	    DELAY (tStart1W-3)		; Clock low time before data
+ 		endif
+-		rrcf ACC				 ; 1
+-		btfsc STATUS,C				 ; 1
+-		bsf _TxRx1WirePort,_TxRx1WireBit ; 1
+-		DELAY (tSlot1W-3)		 ; 1+2 Slot time (low or high)
+-		Set1W 1				 ; 1
+-		if tRec1W>5
+-		 DELAY (tLow1W-5)		 ; Recovery time
+-		endif
+-		decfsz Temp			 ; 1
+-		bra Tx1WL1			 ; 2
++		rrcf ACC			; 1
++		btfsc STATUS,C			; 1
++		Drive1WHigh			; 1, conditional
++		
++		DELAY (tSlot1W-tStart1W-1)	; Slot time (low or high)
++		Drive1WHigh			; 1, now definite high.
++		DELAY (tRec1W)			; Recovery time
++		decfsz Temp			; 1
++		bra Tx1WL1			; 2
++		Set1WIn
+ 		MRET 0
+ 
+-; Recieve 1 byte from bus, place in ACC
++; Receive 1 byte from bus, place in ACC
+ 
+ Rx1Wire::
+ 		movlw 8
+ 		movwf Temp			; Loop counter
+ 		bcf _TxRx1WirePort,_TxRx1WireBit
+-Rx1WL1		Set1W 0					; 1
+-		if tLow1W>3
+-		 DELAY (tLow1W-3)			; Clock low time 
+-		endif
+-		Set1W 1					; 2+1
++		Set1WOut				;
++Rx1WL1		
++		Drive1WLow				;
++		if tStart1W>3
++		    DELAY (tStart1W)			; Clock low time 
++        endif
++		Drive1WHigh				; 1
++		Set1WIn					; 1
++		
+ 		if tRead1W>3
+-		 DELAY (tRead1W-3)			; Delay before read
++			DELAY (tRead1W-3)		; Delay before read
+ 		endif
+-		bcf STATUS,C					; 1
++		bcf STATUS,C				; 1
+ 		btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
+-		bsf STATUS,C
+-		rrcf ACC
+-		if tSlot1W>(tLow1W+tRead1W+5)
+-		 DELAY (tSlot1W-tLow1W-tRead1W-5)	; Delay before slot end
++	
++		bsf STATUS,C				; 1
++		rrcf ACC				; 1
++		if tSlot1W>(tStart1W+tRead1W+5)
++			DELAY (tSlot1W-tStartW-tRead1W-5); Delay before slot end
+ 		endif
+-		decfsz Temp
+-		bra Rx1WL1
++; want recovery time for Read
++		Set1WOut				;
++		Drive1WHigh			        ; 1, now definite high.
++		DELAY (tRec1W)			        ; Recovery time
++		decfsz Temp				; 1
++		bra Rx1WL1				; 1
+ 		ifdef _Rx1WireUsed
+-		 bsf _Rx1WireFlag,_Rx1WireFlagBit
++			bsf _Rx1WireFlag,_Rx1WireFlagBit
+ 		endif
+ 		MRET 0
++
++//  void Tx1WireBit(unsigned char v);
++; Transmit 8 bit value in W to bus
++OwTx1WireABit::
++		
++	if _QUICKCALL==1
++	    MGETFSRSPO 1	; FSR points to Data
++	else
++	    MGETFSRSPO 3	; FSR points to Data
++	endif
++		
++	Set1WOut
++	Drive1WLow		; 1
++	if tStart1W>3		; following 3 instructions.
++	    DELAY (tStart1W-3)	; Clock low time before data
++	endif
++	movf INDF0,w
++	btfss STATUS,Z		; 1, skip if parameter is zero
++	Drive1WHigh		; 1, conditional
++	DELAY (tSlot1W-tStart1W); Slot time (low or high)
++	Drive1WHigh		; 1, now definite high.
++	DELAY (tRec1W)		; Recovery time
++	Set1WIn
++	MRET 0
++	
++// unsigned char Rx1WireBit(void);
++OwRx1WireABit::
++	clrf ACC
++	Set1WOut				;
++	Drive1WLow				;
++	DELAY (tStart1W)			; Clock low time 
++	Drive1WHigh				; 1
++	Set1WIn					; 1
++		
++	if tRead1W>2
++	    DELAY (tRead1W-2)			; Delay before read
++	endif
++	btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
++	incf ACC				; 1
++	if tSlot1W>(tStart1W+tRead1W+2)
++	    DELAY (tSlot1W-tStartW-tRead1W-2); Delay before slot end
++	endif
++	Set1WOut				;
++	Drive1WHigh			        ; 1, now definite high.
++	DELAY (tRec1W)			        ; Recovery time
++	MRET 0
++ 
+ endmodule
+ #pragma asmend
+ #endif
++
+ #ifdef _ISerialIn
+ //
+ // Interrupt driven serial interface
+@@ -1734,8 +1816,23 @@ GetRC5::
+ 	MRET 0
+ 
+ RC5Rx::
++	movlw (2*TimePerBit)/.15	; 1 Wait for up to 2bits for change
++	movwf BakStop			; 1
++	movlw ((2*TimePerBit/2)/.15)>>8	; 1 Wait for up to 2bits for change
++	movwf BakStopH			; 1
++
++Rc5WaitRx:
++	movf BakStop,w			; 1 timeout wait for start
++	iorwf BakStopH,w		; 1
++	btfsc STATUS,Z			; 2
++	goto IRError
++	decf BakStop			; 1
++	decf BakStopH			; 1
++	incfsz BakStop,w		; 1
++	incf BakStopH			; 1
+  	btfsc _IRRXPORT,_IRRXBIT	; If not receiving wait until we do
+- 	goto RC5Rx
++ 	goto Rc5WaitRx
++
+ EndOne:	btfss _IRRXPORT,_IRRXBIT	; If receiving wait for end of 1st bit
+ 	goto EndOne			; 3 - average time out of here
+ 		
+@@ -1806,7 +1903,6 @@ IRError:
+ #pragma asmend
+ #endif
+ 
+-
+ #ifdef _hIIInit
+ 
+ void hIIInit()
+@@ -1863,16 +1959,3 @@ unsigned char hIIWrite(unsigned char Byt
+  return bACKDT;
+ }
+ #endif
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib.c ./PIXIE/Libs/DataLib.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib.c	2009-04-27 14:37:00.000000000 +0100
++++ ./PIXIE/Libs/DataLib.c	2011-05-15 09:36:51.000000000 +0100
+@@ -1640,11 +1640,17 @@ module "_ResetCheck1W "
+  CycnS1W=D'4000000'/(_APROCFREQ/D'1000')	
+ 
+  tRstL1W=D'500000'/CycnS1W		; Reset time (low)
+- tPresWait1W=D'150000'/CycnS1W		; Wait for device to show its present
+- tLow1W=D'3000'/CycnS1W			; Clock width
++ tPresWait1WSlot=D'30000'/CycnS1W	; time slot for waiting for presence
++ tPresWait1WCount=D'10'	                ; In this number of slots we should see both a low and a high.
++; tPresWait1W=D'150000'/CycnS1W		; Wait for device to show its present
++ tStart1W=D'3000'/CycnS1W		; Clock width
+  tRec1W=D'1000'/CycnS1W			; Recovery time
+  tSlot1W=D'80000'/CycnS1W		; Allow 80uS slot for safety
+- tRead1W=D'4000'/CycnS1W		; Sample time after clock released
++; tRead1W=D'4000'/CycnS1W		; Sample time after clock released
++ tRead1W=D'10000'/CycnS1W		; Sample time after clock released
++;
++; Bus times - all calculated in instruction cycles
++;
+ 
+ ; Macro to drive or release the bus
+ 
+@@ -1672,24 +1678,26 @@ ResetCheck1W::
+ 		DELAY tRstL1W				; Reset period
+ 		Set1W 1
+ 		movlw 1					; Always minimum of 1
+-		addlw #tPresWait1W/D'20'
++		movlw #tPresWait1WCount                 ; maximum of 10 presence wait slots
+ 		movwf Temp
+ 		LSETPCHA ResetCheck1W
+-RCLop1W		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
++RCLop1W		DELAY tPresWait1WSlot                   ; wait before first sample.
++		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		goto LoFd1W
+-		DELAY 15				; 15
+ 		LSETPCHA ResetCheck1W
+ 		decfsz Temp				; 1
+ 		goto RCLop1W				; 2
+ 		clrf ACC
+ 		MRET 0
+-LoFd1W		movlw 1
+-		addlw #tPresWait1W/D'20'
+-		movwf Temp
++LoFd1W		
++; temp is already counting presence wait slots
++;		movlw 1
++;		addlw #tPresWait1W/D'20'
++;		movwf Temp
+ RCLHi1W		LSETPCHA ResetCheck1W
+ 		btfsc _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		goto HiFd1W
+-		DELAY D'15'				; 15
++		DELAY tPresWait1WSlot                   ; 30 uS
+ 		LSETPCHA ResetCheck1W
+ 		decfsz Temp				; 1
+ 		goto RCLHi1W				; 2
+@@ -1718,8 +1726,8 @@ Tx1Wire::
+ 		movwf Temp			 ; Loop counter
+ Tx1WL1		bcf _TxRx1WirePort,_TxRx1WireBit
+ 		Set1W 0				 ; 1
+-		if tLow1W>5
+-		 DELAY (tLow1W-5)		 ; Clock low time before data
++		if tStart1W>5
++		 DELAY (tStart1W-5)		 ; Clock low time before data
+ 		endif
+ 		rrf ACC				 ; 1
+ 		bsf STATUS,RP0			 ; 1
+@@ -1736,7 +1744,8 @@ Tx1WL1		bcf _TxRx1WirePort,_TxRx1WireBit
+ 		goto Tx1WL1			 ; 2
+ 		MRET 0
+ 
+-; Recieve 1 byte from bus, place in ACC
++
++; Receive 1 byte from bus, place in ACC
+ 
+ 		; MFORCEPAGE D'30'
+ 
+@@ -1745,8 +1754,8 @@ Rx1Wire::
+ 		movwf Temp			; Loop counter
+ 		bcf _TxRx1WirePort,_TxRx1WireBit
+ Rx1WL1		Set1W 0					; 1
+-		if tLow1W>3
+-		 DELAY (tLow1W-3)			; Clock low time
++		if tStart1W>3
++		 DELAY (tStart1W-3)			; Clock low time
+ 		endif
+ 		Set1W 1					; 2+1
+ 		if tRead1W>3
+@@ -1756,8 +1765,8 @@ Rx1WL1		Set1W 0					; 1
+ 		btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
+ 		setc
+ 		rrf ACC
+-		if tSlot1W>(tLow1W+tRead1W+5)
+-		 DELAY (tSlot1W-tLow1W-tRead1W-5)	; Delay before slot end
++		if tSlot1W>(tStart1W+tRead1W+5)
++		 DELAY (tSlot1W-tStart1W-tRead1W-5)	; Delay before slot end
+ 		endif
+ 		LSETPCHA Rx1Wire
+ 		decfsz Temp
+@@ -1768,8 +1777,63 @@ Rx1WL1		Set1W 0					; 1
+ 		 MCLEARRP _Rx1WireFlag
+ 		endif
+ 		MRET 0
++//	endmodule
++//#pragma asmend
++//#endif
++//
++//#ifdef _OwTx1WireABit
++//#callfunction Delays
++//#asmdefine _Getspo
++//
++//#pragma asm
++//module "_OwTx1WireABit"
++; Transmit 8 bit value in W to bus
++OwTx1WireABit::
++	
++	SETPCLATH 0,OwTx1WireABit
++	if _QUICKCALL==1
++		MGETFSRSPO 1		 ; FSR points to Data
++	else
++		MGETFSRSPO 3		 ; FSR points to Data
++	endif
++	bcf _TxRx1WirePort,_TxRx1WireBit
++	Set1W 0				 ; 1
++		
++	if tStart1W>3		; following 3 instructions.
++	    DELAY (tStart1W-3)	; Clock low time before data
++	endif
++	movfw 0
++	btfss STATUS,Z		; 1, skip if parameter is zero
++	bsf _TxRx1WirePort,_TxRx1WireBit ; 1
++	DELAY (tSlot1W-tStart1W); Slot time (low or high)
++	Set1W 1				 ; 1
++	DELAY (tRec1W)		; Recovery time
++	MRET 0
++	
++// unsigned char Rx1WireBit(void);
++OwRx1WireABit::
++	clrf ACC
++	bcf _TxRx1WirePort,_TxRx1WireBit
++	Set1W 0					; 1
++	if tStart1W>3
++	    DELAY (tStart1W-3)			; Clock low time
++	endif
++	Set1W 1					; 2+1
++		
++	if tRead1W>3
++	    DELAY (tRead1W-3)			; Delay before read
++	endif
++	btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
++	incf ACC				; 1
++	if tSlot1W>(tStart1W+tRead1W+2)
++	    DELAY (tSlot1W-tStartW-tRead1W-2); Delay before slot end
++	endif
++;	Set1W 1
++	DELAY (tRec1W)			        ; Recovery time
++	MRET 0
+ 	endmodule
+ #pragma asmend
++
+ #endif
+ #ifdef _ISerialIn
+ //
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib.h ./PIXIE/Libs/DataLib.h
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib.h	2009-04-27 14:37:00.000000000 +0100
++++ ./PIXIE/Libs/DataLib.h	2011-05-15 09:36:51.000000000 +0100
+@@ -31,13 +31,12 @@
+  unsigned char IIWrite(unsigned char Byte,unsigned char Definition);
+  unsigned char IIRead(unsigned char Definition);
+  void QuickStop();
+- 
++  
+  void hIIInit();
+  unsigned char hIIWrite(unsigned char Byte,unsigned char Definition);
+  unsigned char hIIRead(unsigned char Definition);
+  void hQuickStop();
+ 
+- 
+  void IRTx(unsigned char Byte);
+  void IRRx();
+  
+@@ -54,6 +53,10 @@
+  void Tx1Wire(unsigned char v);
+  unsigned char Rx1Wire(void);
+  char ResetCheck1W(void);
++ // these two send and receive a single bit and are provided to support
++ // the ROM search algorithm.
++ void OwTx1WireABit(unsigned char v);	// LSB of v
++ unsigned char OwRx1WireABit(void);	// lsb of result.
+  
+  void TransmitRC5(unsigned int data);
+  unsigned int GetRC5();
+@@ -86,6 +89,8 @@
+ #pragma asmfunc Tx1Wire
+ #pragma asmfunc Rx1Wire
+ #pragma asmfunc ResetCheck1W
++#pragma asmfunc OwTx1WireABit
++#pragma asmfunc OwRx1WireABit
+ 
+ #pragma forcequick SerIntHandler
+ #pragma forcequick IRRx
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/I2C.h ./PIXIE/Libs/I2C.h
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/I2C.h	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/Libs/I2C.h	2011-05-15 09:36:51.000000000 +0100
+@@ -0,0 +1,54 @@
++//
++//
++//	(c) David Kerr April 2005. May be used and or modified provided this Copyright notice is displayed in the header
++//
++//	Revision History
++//	April 2005			Original coding
++//	5th August 2005		Modifications to become FED Element
++//	6th August 2005		Addition of State 6 for Reads immediately following long Writes
++//
++//Read and Write routine for external EEPROM 24LC256
++//At address zero using the MSSP hardware.
++//Other addresses may be used provided
++//the read and write control words in the State Processing
++//are changed from constants to variables
++//and merged with the bit-shifted device addresses.
++//
++//This uses Page Write Mode and sequential read mode
++//The user must ensure that in Write mode, no more than 64 bytes are written and
++//that page boundaries [at 64byte offset] are respected. If more than 64 bytes
++//are written or you attempt to write across a page boundary, the
++//bytes will overwrite bytes earlier in the page.
++//
++//Read may be any length from 1 byte to the maximum of 32767
++//
++//Users can invoke the software by setting up the variables shown
++//below in their own functions.
++//
++#ifndef _I2C_H
++#define _I2C_H
++
++#define I2C_BYTEADDRESS_BIT 0x01
++#define I2C_BYTEADDRESS I2C_BYTEADDRESS_BIT
++#define I2C_WORDADDRESS 0x00
++#define I2C_READ_BIT    0x02
++#define I2C_READ        I2C_READ_BIT
++#define I2C_WRITE       0x00
++
++extern void I2CStart(unsigned char busAddress, unsigned char *dataBuffer, unsigned int dataAddress, unsigned int dataLen, unsigned char flags );
++
++#define i2c_read_ba( busAddress, data, address, len ) I2CStart( busAddress, data, (unsigned int)address, len, (I2C_READ | I2C_BYTEADDRESS) )
++#define i2c_write_ba( busAddress, data, address, len ) I2CStart( busAddress, data, (unsigned int)address, len, (I2C_WRITE | I2C_BYTEADDRESS) )
++#define i2c_read_wa( busAddress, data, address, len ) I2CStart( busAddress, data, address, len, (I2C_READ | I2C_WORDADDRESS) )
++#define i2c_write_wa( busAddress, data, address, len ) I2CStart( busAddress, data, address, len, (I2C_WRITE | I2C_WORDADDRESS) )
++
++extern unsigned char i2c_state;		//State for the EEPROM FSM
++extern unsigned char i2c_busAddress;
++extern unsigned char *i2c_pointer;
++extern unsigned int i2c_bytes;			//Byte limit for Int routine
++extern unsigned char i2c_addressl, i2c_addressh;	//Address in EEPROM
++extern unsigned char i2c_flags;		//Determines read or write
++
++void process_ee_state();
++
++#endif
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/I2CLib.c ./PIXIE/Libs/I2CLib.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/I2CLib.c	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/Libs/I2CLib.c	2011-05-15 09:36:51.000000000 +0100
+@@ -0,0 +1,23 @@
++#include <pic.h>
++#include <I2C.h>
++//#include <Stdio.h>
++//#include <Strings.h>
++
++#define DEBUG_I2C( s, i )
++//#define DEBUG_I2C( s, i )  fnprintf(AddTx, s, i );
++
++void I2CStart( unsigned char busAddress, unsigned char *dataBuffer, unsigned int dataAddress, unsigned int dataLen, unsigned char flags )
++{
++    i2c_busAddress = busAddress;
++	i2c_pointer=dataBuffer;	//Data pointer for the state processing routines
++	i2c_bytes=dataLen;	//Number of bytes to move
++	i2c_addressh=dataAddress>>8;	//High address bits follow control word
++	i2c_addressl=dataAddress&0xff;	//then the low bits
++	i2c_state=1;		//Set start state for interrupt code
++	i2c_flags=flags;	//Set to 0 for write and 1 for read
++    DEBUG_I2C( "\n\r BusAddress %x", i2c_busAddress );
++    DEBUG_I2C( " DevAddress %x", dataAddress );
++    DEBUG_I2C( " flags %x", i2c_flags );
++	SSPCON2&=~(1<<RCEN);	//Disable Receive enable initially
++	SSPCON2|=1<<SEN;	//Assert the start condition
++}
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/Mimic.h ./PIXIE/Libs/Mimic.h
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/Mimic.h	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/Libs/Mimic.h	2011-05-15 09:36:51.000000000 +0100
+@@ -0,0 +1,17 @@
++#ifdef MimicUsed
++
++#define MAX_MIMIC_LEVEL  64
++#define MimicCount 8
++extern unsigned char mimicTable[MAX_MIMIC_LEVEL];
++
++//void MimicSetPwmTable( unsigned char chnBit, unsigned char newLevel );
++
++// Call periodically to handle mimic fades
++void FadeMimics();
++
++// Call to update target Mimic level.
++void SetMimicTargetLevel( unsigned char chn, unsigned char targetLevel );
++// Call to set an immediate value for the mimic.
++void SetMimicLevelNow(unsigned char chn, unsigned char targetLevel );
++
++#endif
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/SerInt2.c ./PIXIE/Libs/SerInt2.c
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/SerInt2.c	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/Libs/SerInt2.c	2011-05-15 09:36:51.000000000 +0100
+@@ -0,0 +1,449 @@
++#include <pic.h>
++#include <datalib.h>
++#include <SerInt2.h>
++
++unsigned char TxTab2[TXBUFSZ2];
++unsigned char RxTab2[RXBUFSZ2];
++
++#ifdef _SerIntInit2
++#asmdefine _GetSPOtoFSR0
++//********************************************************************
++//
++// Asynchronous TX and RX handlers
++//
++//********************************************************************
++
++#ifdef _AddTx2
++ #define _WaitRx2
++#endif
++
++#ifdef _WaitRx2
++ #define _GetRxSize2
++#endif
++
++ const int SerVarSpace2=7;	  // SPace used for serial variables
++ unsigned char register SerVars2[SerVarSpace2]; // Vars in common page
++
++// TODO use common isfsrsave across all interrupt handlers
++// Fix location of buffers to simplify buffer manipulation/address calculation see mimic interrupt handler.
++ #pragma asm
++ module "SerVarAsm" global
++   isfsrsaveL2 = SerVars2+0 ; // Saves FSR
++   isfsrsaveH2 = SerVars2+1 ; // Saves FSR
++   sertemp2 = SerVars2+2;   // Temporary variable, may be used elsewhere
++   rxhead2 = SerVars2+3;    // Pointer to head of receive buffer
++   rxtail2 = SerVars2+4;    // Pointer to tail of receive buffer
++   txhead2 = SerVars2+5;    // Pointer to head of transmit buffer
++   txtail2 = SerVars2+6;    // Pointer to head of transmit buffer
++ endmodule
++ #pragma asmend
++#endif
++
++#ifdef _GetRxSize2
++#pragma asm
++module "_GetRxSize2"
++; Return 0 size of receive buffer 
++; Set zero flag if buffer is empty (i.e. no characters)
++; Return 0 size of receive buffer in W
++
++GetRxSize2::
++		movlb rxhead2>>8
++		movf rxhead2,w,BANKED	; Calculate size of rx buffer
++                subwf rxtail2,w,BANKED
++                clrf WREG
++                btfsc STATUS,C
++                movlw _RXBUFSZ2
++                addwf rxhead2,w,BANKED
++                movwf sertemp2,BANKED
++                movf rxtail2,w,BANKED
++                subwf sertemp2,w,BANKED
++                andlw _RXBUFSZ2-1
++                movwf ACC
++                MRET 0
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _GetTxSize2
++#pragma asm
++module "_GetTxSize2"
++
++		
++; Return 0 size of transmit buffer 
++; Set zero flag if buffer is empty (i.e. no characters)
++; Return 0 size of receive buffer in W
++
++GetTxSize2::
++		movlb txhead2>>8
++		movf txhead2,w,BANKED
++                subwf txtail2,w,BANKED
++                clrf WREG
++                btfsc STATUS,C
++                movlw _TXBUFSZ2
++                addwf txhead2,w,BANKED
++                movwf sertemp2,BANKED
++                movf txtail2,w,BANKED
++                subwf sertemp2,w,BANKED
++                andlw _TXBUFSZ2-1
++                movwf ACC
++		MRET 0
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _AddTx2
++
++#pragma asm
++module "_AddTx2"
++
++;
++; Add byte in W to the transmit list, if no space in the transmit buffer 
++; then wait for space to become available as characters are transmitted
++;
++
++AddTx2::
++		
++	if _QUICKCALL==1
++		MGETFSRSPO 1		; FSR points to Count
++	else
++		MGETFSRSPO 3		; FSR points to Count
++	endif
++		movf INDF0,w
++		movlb rxhead2>>8
++		movwf sertemp2,BANKED
++waitsp2          incf txhead2,w,BANKED   ; Wait for space to be available
++                andlw _TXBUFSZ2-1
++                subwf txtail2,w,BANKED
++                btfsc STATUS,Z
++                bra waitsp2
++                
++                movlw TxTab2>>8
++                movwf FSR0H
++                movf txhead2,w,BANKED    ;  Find the address of the head
++                addlw TxTab2
++                movwf FSR0L
++                btfsc STATUS,C
++                incf FSR0H
++                movf sertemp2,w,BANKED
++                movwf INDF0
++                incf txhead2,f,BANKED
++                movlw _TXBUFSZ2-1
++                andwf txhead2,f,BANKED
++                bsf PIE3,TX2IE  ; enable interrupts
++                MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _ResendTx2
++
++#pragma asm
++module "_ResendTx2"
++; Note this makes assumptions, these are that the data to be resent starts at the 
++; begining of the Tx buffer and that txTail is the end of the data.
++; Purpose is to make DMX work better by being able to just resend buffer contents.
++;
++ResendTx2::
++                bcf PIE3,TX2IE  ; enable interrupts
++		movlb txhead2>>8
++		clrf txtail2,BANKED   ;  clear pointer
++                incf txtail2,f,BANKED   ; move on
++
++                ; get first byte and send.
++                LFSR FSR0, TxTab2
++                movf INDF0,w
++                movwf TXREG2
++                
++                bsf PIE3,TX2IE  ; enable interrupts
++                MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _FlushTx2
++
++#pragma asm
++module "_FlushTx2"
++; Note this makes assumptions, these are that the data to be resent starts at the 
++; begining of the Tx buffer and that txTail is the end of the data.
++; Purpose is to make DMX work better by being able to just resend buffer contents.
++;
++
++FlushTx2::
++		movlb txhead2>>8
++		clrf txhead2,BANKED   ;  clear pointer
++		clrf txtail2,BANKED
++		MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _WaitRx2
++#pragma asm
++module "_WaitRx2"
++;
++; Get next byte from receive buffer, wait if none there yet
++; return 0 the result in the W register
++;
++
++WaitRx2::
++                MCALL GetRxSize2
++		movf ACC,w
++		btfsc STATUS,Z
++                bra WaitRx2
++                
++		movlb rxhead2>>8
++		movlw RxTab2>>8
++		movwf FSR0H
++                movf rxtail2,w,BANKED
++                addlw RxTab2     	; Move address of byte to FSR
++                movwf FSR0L
++                btfsc STATUS,C
++                incf FSR0H
++                incf rxtail2,f,BANKED
++                movlw _RXBUFSZ2-1
++                andwf rxtail2,f,BANKED
++                movlw _RXBUFSZ2/8
++                subwf ACC
++		movlb rxhead2>>8
++                movf INDF0,w
++                movwf ACC
++                MRET 0
++
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _SerIntHandler2
++#pragma asm
++module "_SerIntHandler2"
++;********************************************************************
++;
++; Interrupt handler
++;
++; Add to this code for other interrupt sources - note can only be called
++; from interrupts
++;
++;********************************************************************
++
++SerIntHandler2::
++                btfsc PIR3,RC2IF         ; Check rx flag
++                bra asrx2
++                btfsc PIR3,TX2IF
++                bra astx2
++                bra SIRR2
++bufempt2        bcf PIE3,TX2IE
++		ifdef _TxFree2Used
++		    bsf _TxFree2Flag,_TxFree2FlagBit		; Set flag
++		endif
++SIRet2          movlb txhead2>>8
++		movf isfsrsaveL2,w,BANKED
++		movwf FSR0L
++		movf isfsrsaveH2,w,BANKED
++		movwf FSR0H
++SIRR2		return 0
++;
++; Transmit interrupt handler
++;
++astx2
++		movlb txhead2>>8
++		movf FSR0L,w
++		movwf isfsrsaveL2,BANKED
++		movf FSR0H,w
++		movwf isfsrsaveH2,BANKED
++
++                movf txhead2,w,BANKED
++                subwf txtail2,w,BANKED          ; Test if buffer empty
++                btfsc STATUS,Z
++                bra bufempt2
++                movlw TxTab2>>8
++                movwf FSR0H
++                movf txtail2,w,BANKED            ; Now move in tail of buffer
++                addlw TxTab2
++                movwf FSR0L
++                btfsc STATUS,C
++                incf FSR0H
++                incf txtail2,f,BANKED
++                movlw _TXBUFSZ2-1         ; Chop off the upper bits
++                andwf txtail2,f,BANKED
++                movf INDF0,w                 ; Send this byte now
++                movwf TXREG2
++	 	bra SIRet2
++;
++; Receive Interrupt Handler
++;
++asrx2           movlb txhead2>>8
++		movf FSR0L,w
++		movwf isfsrsaveL2,BANKED
++		movf FSR0H,w
++		movwf isfsrsaveH2,BANKED
++		movlw RxTab2>>8
++		movwf FSR0H
++		movf rxhead2,w,BANKED
++                addlw RxTab2
++                movwf FSR0L            ; FSR holds address to put incoming byte
++                btfsc STATUS,C
++                incf FSR0H
++                movf RCREG2,w             ; Get and save the incoming byte
++                movwf INDF0
++
++		ifdef _RxByte2Used
++    		    bsf _RxByte2Flag,_RxByte2FlagBit
++		endif
++
++		incf rxhead2,w,BANKED           ; Check there is room in rxbuf
++                andlw _RXBUFSZ2-1
++                subwf rxtail2,w,BANKED
++                btfsc STATUS,Z
++                bra SIRet2
++                incf rxhead2,f,BANKED             ; Move up head
++                movlw _RXBUFSZ2-1
++                andwf rxhead2,f,BANKED
++                movf rxhead2,w,BANKED
++                subwf rxtail2,w,BANKED
++                movlw _RXBUFSZ2           ; If head<tail then add buffer size to head
++                btfss STATUS,C
++                clrf WREG
++                addwf rxhead2,w,BANKED    ; Now get size of buffer to w
++       		bra SIRet2
++
++endmodule
++#pragma asmend
++#endif
++#ifdef _SerIntInit2
++#pragma asm
++module "_SerIntInit2"
++
++SPHIGH2                 equ ((_APROCFREQ*.1)/(_SERINTRATE2*.4))-1
++
++SerIntInit2::
++;	bcf INTCON,GIE
++	movlb txhead2>>8
++        clrf txhead2,BANKED		; Clear all buffers
++        clrf txtail2,BANKED
++        clrf rxhead2,BANKED
++        clrf rxtail2,BANKED
++
++; Now set the ports and tris registers up
++	bsf LATG,1		; Start driving serial bit high
++        bcf TRISG,1
++        bsf TRISG,2
++
++; Now the peripheral registers
++	
++	bsf INTCON,PEIE
++        movlw (1<<SPEN)+(1<<SREN)+(1<<CREN) ; Enable Receive port
++        movwf RCSTA2
++        bsf PIE3,RC2IE
++        bsf PIE3,TX2IE
++        movlw SPHIGH2>>8          	 ; Set baud rate high byte
++        movwf SPBRGH2
++        movlw SPHIGH2          	 ; Set baud rate low byte
++        movwf SPBRG2
++;        bsf TXEN,TXSTA2 ; Enable TX
++        movlw (1<<TXEN)+(1<<BRGH)+(1<<TX9)+(1<<TX9D)      ; Enable TX and High baud select bit, 2 stop bits
++        movwf TXSTA2
++
++;
++; Final action before starting is to enable interrupts
++;
++;    if _USEAD==0
++;        bsf INTCON,GIE          ; Enable interrupts
++;    endif
++        MRET 0
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _Serial2Enable
++#pragma asm
++module "_Serial2Enable"
++Serial2Enable::
++        movlw (1<<SPEN)+(1<<SREN)+(1<<CREN) ; Enable Receive port
++        movwf RCSTA2
++        movlw (1<<TXEN)+(1<<BRGH)+(1<<TX9)+(1<<TX9D)      ; Enable TX and High baud select bit, 2 stop bits
++        movwf TXSTA2
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _Serial2Disable
++#pragma asm
++module "_Serial2Disable"
++Serial2Disable::
++        bcf RCSTA2,SPEN
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _DmxMBB
++#pragma asm
++module "_DmxMBB"
++DmxMBB::
++        bcf RCSTA2,SPEN ; disable EUSART
++        bsf LATG, 1     ; set high
++        DELAY 100    ; 10 uS at 40Mhz.
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _DmxMAB
++#pragma asm
++module "_DmxMAB"
++DmxMAB::
++        bsf LATG, 1     ; set high
++        DELAY 100    ; 10 uS at 40Mhz.
++        movlw (1<<SPEN)+(1<<SREN)+(1<<CREN) ; Enable Receive port
++        movwf RCSTA2
++        movlw (1<<TXEN)+(1<<BRGH)+(1<<TX9)+(1<<TX9D)      ; Enable TX and High baud select bit, 2 stop bits
++        movwf TXSTA2
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _DmxB
++#pragma asm
++module "_DmxB"
++DmxB::
++        bcf LATG, 1     ; set low
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _DmxBreak
++#pragma asm
++module "_DmxBreak"
++DmxBreak::
++        bcf RCSTA2,SPEN ; disable EUSART
++        bcf LATG, 1     ; set low
++        DELAY 1000    ; 100 uS at 40Mhz.
++        bsf LATG, 1     ; set high
++        DELAY 100    ; 10 uS at 40Mhz.
++        movlw (1<<SPEN)+(1<<SREN)+(1<<CREN) ; Enable Receive port
++        movwf RCSTA2
++        movlw (1<<TXEN)+(1<<BRGH)+(1<<TX9)+(1<<TX9D)      ; Enable TX and High baud select bit, 2 stop bits
++        movwf TXSTA2
++	MRET 0 
++endmodule
++#pragma asmend
++#endif
++
++#ifdef _SetBaud2
++void SetBaud2(unsigned baud)
++{
++    SPBRGH2 = baud >> 8;
++    SPBRG2 = baud;
++}
++#endif
++
++//#ifdef _SetTxByte2
++//void SetTxByte2(unsigned char idx, unsigned char val)
++//{
++//    TxTab2[idx] = val;
++//}
++//#endif
+diff -rupN ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/SerInt2.h ./PIXIE/Libs/SerInt2.h
+--- ../andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/SerInt2.h	1970-01-01 01:00:00.000000000 +0100
++++ ./PIXIE/Libs/SerInt2.h	2011-05-15 09:36:51.000000000 +0100
+@@ -0,0 +1,53 @@
++#ifndef _SERINT2_H
++#define _SERINT2_H
++
++#pragma wizcpp uselib "$(FEDPATH)\libs\SerInt2.c"
++
++#define TXBUFSZ2    32
++#define RXBUFSZ2    32
++#pragma asmline _TXBUFSZ2=32
++#pragma asmline _RXBUFSZ2=32
++
++extern unsigned char TxTab2[TXBUFSZ2];
++extern unsigned char RxTab2[RXBUFSZ2];
++
++unsigned char GetRxSize2(void);
++unsigned char GetTxSize2(void);
++void AddTx2(unsigned char TxChar);
++void FlushTx2(void);
++//void FlushRx2(void);
++void ResendTx2(void);
++unsigned char WaitRx2(void);
++void SerIntHandler2(void);
++void SerIntInit2(void);
++void SetBaud2(unsigned baud);
++//void SetTxByte2(unsigned char idx, unsigned char val);
++#define S2_DmxSetLevel(idx, val)   TxTab2[idx] = val
++#define S2_DmxGetLevel(idx) TxTab2[idx]
++//void S2_DmxSetLevel(unsigned char idx, unsigned char val);
++//void S2_DmxGetLevel(unsigned char idx);
++void DmxBreak(void);
++void DmxMAB(void);
++void DmxB(void);
++void DmxMBB(void);
++
++void Serial2Enable();
++void Serial2Disable();
++
++#pragma asmfunc GetRxSize2
++#pragma asmfunc GetTxSize2
++#pragma asmfunc AddTx2
++#pragma asmfunc ResendTx2
++#pragma asmfunc FlushTx2
++#pragma asmfunc WaitRx2
++#pragma asmfunc SerIntHandler2
++#pragma asmfunc SerIntInit2
++#pragma asmfunc Serial2Enable
++#pragma asmfunc Serial2Disable
++#pragma asmfunc DmxBreak
++#pragma asmfunc DmxMBB
++#pragma asmfunc DmxMAB
++
++#pragma forcequick SerIntHandler2
++
++#endif

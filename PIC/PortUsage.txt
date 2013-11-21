@@ -1,0 +1,102 @@
+Webbrick 6/18F6722 family
+
+AH some updates
+LPK notes added 23/4/2007. A4 is still free.
+
+Port A
+------
+0 | Analogue In 0
+1 | Analogue In 1
+2 | Analogue In 2
+3 | Analogue In 3
+4 | NU
+5 | Digital In 8 (Monitor)
+6 | XTAL
+7 | XTAL
+
+Port B
+------
+Digital inputs 0-7
+
+Port C
+------
+0 | Unused?
+1 | An Out/PWM 1
+2 | An Out/PWM 0
+3 | I2C - RTC
+4 | I2C - RTC
+5 | 12V mimic enable.
+6 | EUSART 1 Rx - Siteplayer
+7 | EUSART 1 Tx - Siteplayer
+
+Port D
+------
+Digital outputs 0-7
+0-3 | Triacs + OC?
+4-7 | 2 Relays + Digital Logic Out
+
+Port E
+------
+Mimics 0-7
+
+Port F
+------
+0 | Digital In 9 (Monitor)
+1 | Digital In 10 (Monitor)
+2 | Digital In 11 (Monitor)
+3 | Dallas 1 Wire
+4 | Unused - was resrved for 1 Wire FET driver.
+5 | Heartbeat
+6 | (xRotary) ---  RS232/RS485 selection
+7 | (xRotary) ---  RS485 TX Enable
+
+Port G
+------
+0 | An Out/PWM 2
+1 | EUSART 2 Tx
+2 | EUSART 2 Rx
+3 | An Out/PWM 3
+4 | Factory Reset Button
+5 | MCLR - programming control PIN.
+
+=========================================================================================================
+					WebBrick 5/18F4525 family
+=========================================================================================================
+
+PORT A
+------
+0 | 4.7K Analogue 0 input.
+1 | Digital In 8 (Monitor)
+2 | Digital In 9 (Monitor)
+3 | Digital In 10 (Monitor)
+4 | Digital In 11 (Monitor)
+5 | Edge
+6 | XTal
+7 | XTal
+
+PORT B
+------
+Digital inputs 0-7
+
+PORT C
+------
+0 | ICD, unused
+1 | An Out/PWM 1
+2 | An Out/PWM 0
+3 | unused
+4 | 4.7K pullup Rotary encoder
+5 | 4.7K pullup Rotary encoder
+6 | EUSART 1 Rx - Siteplayer
+7 | EUSART 1 Tx - Siteplayer
+
+
+PORT D
+------
+Digital outputs 0-7
+
+PORT E
+------
+0 | Dallas 1 Wire
+1 | DMX out ???
+2 | Heartbeat
+

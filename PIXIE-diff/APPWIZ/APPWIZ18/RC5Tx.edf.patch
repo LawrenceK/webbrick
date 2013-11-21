@@ -1,0 +1,24 @@
+--- /home/lawrence/webbrick/webbrick/PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf
++++ /home/lawrence/webbrick/andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/RC5Tx.edf
+@@ -32,15 +32,13 @@
+ [Init]
+ HasInit=1
+ InitCall=
+-nLines=8
++nLines=6
+ Line0=const int IRPORT=&RC5TxPort;
+-Line1=#ifndef RC5RxUsed
+-Line2=const int IRFREQ=RC5TxCarrier;
+-Line3=#endif
+-Line4=const int IRBIT=RC5TxBit;
+-Line5==============================
+-Line6=-------
+-Line7=RC5TxPort&=~(1<<IRBIT);
++Line1=const int IRFREQ=RC5TxCarrier;
++Line2=const int IRBIT=RC5TxBit;
++Line3==============================
++Line4=-------
++Line5=RC5TxPort&=~(1<<IRBIT);
+ [Occurrences]
+ nOccur=0
+ [HookElements]

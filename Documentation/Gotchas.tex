@@ -1,0 +1,36 @@
+\section{Gotchas, Futures}
+\index{Gotchas}
+\index{Futures}
+
+Here we layout all the unimplemented features and current known bugs for versions 6.0 through 6.6 Releases of the firmware
+
+\begin{description}
+
+\item [Web Site] use http://community.webbricksystems.com/ for all WebBrick news.
+
+\item [Split Scene Banks]
+
+	On first power up, buttons that do a 'Next' from scene 8 onwards will actually do a next from scene 0
+	until scene 8 is selected.  The simple workaround is to press any 'off' buttons just after WebBrick power up.
+
+    This has been fixed in WebBrick firmware 6.6 onwards. 
+
+\item[Analogue 0utputs Version 6.1 onwards]
+
+From version 6.1 of the WebBrick we have included a diode to protect against reverse polarity at the supply rails. 
+This effectively drops the internal 12v supply rail by 0.6V.  This means that for WebBricks that are supplied with 
+12.0V or less, the top end of the analogue output drops to about 9.67V.  The simple solution is to ensure that the 
+WebBrick are supplied with a little more than 12V.  12.6-18.0V is fine.  Note that 13.6-13.8V power supplies are 
+particularly suitable for float charging sealed lead acid batteries.
+
+\item[Configuring Digital Inputs]
+
+In version 6.1 it is possible to configure things like a high threshold for a digital channel. 
+This is a meaningless configuration. It does no harm, but conversely does nothing at all.
+
+\item[udp Types]
+
+  From 6.6 onwards there is only one UDP type for Digital Inputs, the 'Remote' and 'Alarm' types have been removed.
+
+
+\end{description}

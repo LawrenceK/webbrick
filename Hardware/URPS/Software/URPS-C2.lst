@@ -1,0 +1,1385 @@
+---------------------------------------------
+PIC ASSEMBLER LISTING
+Line    Address Opcode  Instruction
+---------------------------------------------
+0001    0000            ;Line removed by MPASMWIN preprocessor: 	list p=16f690
+0002    0000            ;Line removed by MPASMWIN preprocessor: 	#include <p16f690.inc>
+0003    0000            ;Line removed by MPASMWIN preprocessor (RADIX can not be changed - DEC is used): 	radix dec
+0004    0000            ; Begin
+0005    0000            	R0L EQU 0x20
+0006    0000            	R0H EQU 0x21
+0007    0000            	R1L EQU 0x22
+0008    0000            	R1H EQU 0x23
+0009    0000            	R2L EQU 0x24
+0010    0000            	R2H EQU 0x25
+0011    0000            	R3L EQU 0x26
+0012    0000            	R3H EQU 0x27
+0013    0000            	R4L EQU 0x28
+0014    0000            	R4H EQU 0x29
+0015    0000            	R5L EQU 0x2A
+0016    0000            	R5H EQU 0x2B
+0017    0000            	ORG 0x0000
+0018    0000    118A    	BCF PCLATH,3
+0019    0001    120A    	BCF PCLATH,4
+0020    0002    2805    	GOTO L0007
+0021    0003            	ORG 0x0004
+0022    0004    0009    	RETFIE
+0023    0005            L0007:
+0024    0005            ; 1:  'URPC Controller Firmware
+0025    0005            ; 2: 
+0026    0005            ; 3: Define CONF_WORD = 0x33bc
+0027    0005            ; 4: 
+0028    0005            ; 5: 
+0029    0005            ; 6: Dim x As Byte
+0030    0005            ;       The address of 'x' is 0x2F
+0031    0005            	x EQU 0x2F
+0032    0005            ; 7: Dim y As Byte
+0033    0005            ;       The address of 'y' is 0x30
+0034    0005            	y EQU 0x30
+0035    0005            ; 8: Dim yy As Byte
+0036    0005            ;       The address of 'yy' is 0x31
+0037    0005            	yy EQU 0x31
+0038    0005            ; 9: Dim i As Byte
+0039    0005            ;       The address of 'i' is 0x32
+0040    0005            	i EQU 0x32
+0041    0005            ; 10: Dim tim As Word
+0042    0005            ;       The address of 'tim' is 0x33
+0043    0005            	tim EQU 0x33
+0044    0005            ; 11: Dim batvolts As Word
+0045    0005            ;       The address of 'batvolts' is 0x35
+0046    0005            	batvolts EQU 0x35
+0047    0005            ; 12: Dim psu1volts As Word
+0048    0005            ;       The address of 'psu1volts' is 0x37
+0049    0005            	psu1volts EQU 0x37
+0050    0005            ; 13: Dim psu2volts As Word
+0051    0005            ;       The address of 'psu2volts' is 0x39
+0052    0005            	psu2volts EQU 0x39
+0053    0005            ; 14: Dim opvolts As Word
+0054    0005            ;       The address of 'opvolts' is 0x3B
+0055    0005            	opvolts EQU 0x3B
+0056    0005            ; 15: Dim batt_ov As Word
+0057    0005            ;       The address of 'batt_ov' is 0x3D
+0058    0005            	batt_ov EQU 0x3D
+0059    0005            ; 16: Dim batov As Bit
+0060    0005            ;       The address of 'batov' is 0x2C,0
+0061    0005            ; 17: Dim batuv As Bit
+0062    0005            ;       The address of 'batuv' is 0x2C,1
+0063    0005            ; 18: Dim p1ov As Bit
+0064    0005            ;       The address of 'p1ov' is 0x2C,2
+0065    0005            ; 19: Dim p1uv As Bit
+0066    0005            ;       The address of 'p1uv' is 0x2C,3
+0067    0005            ; 20: Dim p2uv As Bit
+0068    0005            ;       The address of 'p2uv' is 0x2C,4
+0069    0005            ; 21: Dim p2ov As Bit
+0070    0005            ;       The address of 'p2ov' is 0x2C,5
+0071    0005            ; 22: Dim nobat As Bit
+0072    0005            ;       The address of 'nobat' is 0x2C,6
+0073    0005            ; 23: Dim pa7 As Bit
+0074    0005            ;       The address of 'pa7' is 0x2C,7
+0075    0005            ; 24: Dim button As Bit
+0076    0005            ;       The address of 'button' is 0x2D,0
+0077    0005            ; 25: Dim charge As Bit
+0078    0005            ;       The address of 'charge' is 0x2D,1
+0079    0005            ; 26: Dim discharge As Bit
+0080    0005            ;       The address of 'discharge' is 0x2D,2
+0081    0005            ; 27: Dim trickle As Bit
+0082    0005            ;       The address of 'trickle' is 0x2D,3
+0083    0005            ; 28: Dim top_green As Bit
+0084    0005            ;       The address of 'top_green' is 0x2D,4
+0085    0005            ; 29: Dim top_red As Bit
+0086    0005            ;       The address of 'top_red' is 0x2D,5
+0087    0005            ; 30: Dim ctr_green As Bit
+0088    0005            ;       The address of 'ctr_green' is 0x2D,6
+0089    0005            ; 31: Dim ctr_red As Bit
+0090    0005            ;       The address of 'ctr_red' is 0x2D,7
+0091    0005            ; 32: Dim bot_green As Bit
+0092    0005            ;       The address of 'bot_green' is 0x2E,0
+0093    0005            ; 33: Dim bot_red As Bit
+0094    0005            ;       The address of 'bot_red' is 0x2E,1
+0095    0005            ; 34: Dim leds_blanked As Bit
+0096    0005            ;       The address of 'leds_blanked' is 0x2E,2
+0097    0005            ; 35: Dim alarm As Bit
+0098    0005            ;       The address of 'alarm' is 0x2E,3
+0099    0005            ; 36: Dim alarm_on As Bit
+0100    0005            ;       The address of 'alarm_on' is 0x2E,4
+0101    0005            ; 37: Dim al As Bit
+0102    0005            ;       The address of 'al' is 0x2E,5
+0103    0005            ; 38:  'Dim bov As Bit
+0104    0005            ; 39: Dim warn As Bit
+0105    0005            ;       The address of 'warn' is 0x2E,6
+0106    0005            ; 40: 
+0107    0005            ; 41:  'volts/6/2.5*1024
+0108    0005            ; 42: Const ov_psu = 997 '14.6V at PSU -0.6 Diode Drop = 14.0V at Battery
+0109    0005            ;       The value of 'ov_psu' is 997
+0110    0005            ; 43: Const uv_psu = 983 '14.4V at PSU -0.6 Diode Drop = 13.8V at Battery
+0111    0005            ;       The value of 'uv_psu' is 983
+0112    0005            ; 44: Const ov_batt = 955 '14.0V
+0113    0005            ;       The value of 'ov_batt' is 955
+0114    0005            ; 45: Const warn_batt = 750 '11V
+0115    0005            ;       The value of 'warn_batt' is 750
+0116    0005            ; 46: Const uv_batt = 683 '10V
+0117    0005            ;       The value of 'uv_batt' is 683
+0118    0005            ; 47: Const dead_batt = 341 '5V
+0119    0005            ;       The value of 'dead_batt' is 341
+0120    0005            ; 48: 
+0121    0005            ; 49: ADCON0 = 0
+0122    0005    019F    	CLRF 0x1F
+0123    0006            ; 50: ADCON1 = %01000000
+0124    0006    1683    	BSF STATUS,RP0
+0125    0007    3040    	MOVLW 0x40
+0126    0008    009F    	MOVWF 0x1F
+0127    0009            ; 51: OSCCON = %01000001 'Internal Osc 1MHz No external signal
+0128    0009    3041    	MOVLW 0x41
+0129    000A    008F    	MOVWF 0x0F
+0130    000B            ; 52: ANSEL = %00001111
+0131    000B    1703    	BSF STATUS,RP1
+0132    000C    1283    	BCF STATUS,RP0
+0133    000D    300F    	MOVLW 0x0F
+0134    000E    009E    	MOVWF 0x1E
+0135    000F            ; 53: ANSELH = %00000000
+0136    000F    019F    	CLRF 0x1F
+0137    0010            ; 54: ADCON0 = %11011000
+0138    0010    1303    	BCF STATUS,RP1
+0139    0011    30D8    	MOVLW 0xD8
+0140    0012    009F    	MOVWF 0x1F
+0141    0013            ; 55: 
+0142    0013            ; 56: TMR0 = 0
+0143    0013    0181    	CLRF 0x01
+0144    0014            ; 57: ASM:        clrwdt
+0145    0014    0064    	       clrwdt
+0146    0015            ; 58: OPTION_REG = %10001100
+0147    0015    1683    	BSF STATUS,RP0
+0148    0016    308C    	MOVLW 0x8C
+0149    0017    0081    	MOVWF 0x01
+0150    0018            ; 59: 
+0151    0018            ; 60: x = 0
+0152    0018    1283    	BCF STATUS,RP0
+0153    0019    01AF    	CLRF 0x2F
+0154    001A            ; 61: y = 0
+0155    001A    01B0    	CLRF 0x30
+0156    001B            ; 62: Define ADC_CLOCK = 3
+0157    001B            ; 63:  'Define ADC_SAMPLEUS = 250
+0158    001B            ; 64: 
+0159    001B            ; 65: TRISA.0 = 1 'Battery Voltage
+0160    001B    1683    	BSF STATUS,RP0
+0161    001C    1405    	BSF 0x05,0
+0162    001D            ; 66: TRISA.1 = 1 'ADC Reference input
+0163    001D    1485    	BSF 0x05,1
+0164    001E            ; 67: TRISA.2 = 1 'Output voltage
+0165    001E    1505    	BSF 0x05,2
+0166    001F            ; 68: TRISA.4 = 1 'PSU1 Voltage
+0167    001F    1605    	BSF 0x05,4
+0168    0020            ; 69: TRISA.5 = 0 'LED1
+0169    0020    1285    	BCF 0x05,5
+0170    0021            ; 70: 
+0171    0021            ; 71: TRISB.4 = 0 'LED3
+0172    0021    1206    	BCF 0x06,4
+0173    0022            ; 72: TRISB.5 = 1 'Push button
+0174    0022    1686    	BSF 0x06,5
+0175    0023            ; 73: TRISB.6 = 0 'LED2
+0176    0023    1306    	BCF 0x06,6
+0177    0024            ; 74: TRISB.7 = 0 'Serial out
+0178    0024    1386    	BCF 0x06,7
+0179    0025            ; 75: 
+0180    0025            ; 76: TRISC.0 = 0 'LED3
+0181    0025    1007    	BCF 0x07,0
+0182    0026            ; 77: TRISC.1 = 0 'Buzzer control
+0183    0026    1087    	BCF 0x07,1
+0184    0027            ; 78: TRISC.2 = 0 'LED2
+0185    0027    1107    	BCF 0x07,2
+0186    0028            ; 79: TRISC.3 = 1 'PSU2 Voltage
+0187    0028    1587    	BSF 0x07,3
+0188    0029            ; 80: TRISC.4 = 0 'LED1
+0189    0029    1207    	BCF 0x07,4
+0190    002A            ; 81: TRISC.5 = 0 'Under Voltage control
+0191    002A    1287    	BCF 0x07,5
+0192    002B            ; 82: TRISC.6 = 0 'Trickle charge control
+0193    002B    1307    	BCF 0x07,6
+0194    002C            ; 83: TRISC.7 = 0 'Over voltage switch control
+0195    002C    1387    	BCF 0x07,7
+0196    002D            ; 84: 
+0197    002D            ; 85: PORTA.5 = 0
+0198    002D    1283    	BCF STATUS,RP0
+0199    002E    1285    	BCF 0x05,5
+0200    002F            ; 86: PORTB.4 = 0
+0201    002F    1206    	BCF 0x06,4
+0202    0030            ; 87: PORTB.6 = 0
+0203    0030    1306    	BCF 0x06,6
+0204    0031            ; 88: PORTB.7 = 0
+0205    0031    1386    	BCF 0x06,7
+0206    0032            ; 89: PORTC.0 = 0
+0207    0032    1007    	BCF 0x07,0
+0208    0033            ; 90: PORTC.1 = 1
+0209    0033    1487    	BSF 0x07,1
+0210    0034            ; 91: PORTC.2 = 0
+0211    0034    1107    	BCF 0x07,2
+0212    0035            ; 92: PORTC.4 = 0
+0213    0035    1207    	BCF 0x07,4
+0214    0036            ; 93: PORTC.5 = 0
+0215    0036    1287    	BCF 0x07,5
+0216    0037            ; 94: PORTC.6 = 0
+0217    0037    1307    	BCF 0x07,6
+0218    0038            ; 95: PORTC.7 = 0
+0219    0038    1387    	BCF 0x07,7
+0220    0039            ; 96: 
+0221    0039            ; 97: charge = False
+0222    0039    10AD    	BCF 0x2D,1
+0223    003A            ; 98: discharge = False
+0224    003A    112D    	BCF 0x2D,2
+0225    003B            ; 99: top_green = False
+0226    003B    122D    	BCF 0x2D,4
+0227    003C            ; 100: top_red = False
+0228    003C    12AD    	BCF 0x2D,5
+0229    003D            ; 101: ctr_green = False
+0230    003D    132D    	BCF 0x2D,6
+0231    003E            ; 102: ctr_red = False
+0232    003E    13AD    	BCF 0x2D,7
+0233    003F            ; 103: bot_green = False
+0234    003F    102E    	BCF 0x2E,0
+0235    0040            ; 104: bot_red = True
+0236    0040    14AE    	BSF 0x2E,1
+0237    0041            ; 105: alarm = False
+0238    0041    11AE    	BCF 0x2E,3
+0239    0042            ; 106: alarm_on = True
+0240    0042    162E    	BSF 0x2E,4
+0241    0043            ; 107:  'bov = False
+0242    0043            ; 108: 
+0243    0043            ; 109: 
+0244    0043            ; 110: Gosub led_test
+0245    0043    2273    	CALL L0006
+0246    0044            ; 111:  '___
+0247    0044            ; 112:  'RS232 Test routine_______________________________________________________
+0248    0044            ; 113:  'Define SEROUT_DELAYUS = 5000
+0249    0044            ; 114:  'Serout PORTB.7, 1200, "Hello world!", CrLf
+0250    0044            ; 115: 
+0251    0044            ; 116: 
+0252    0044            ; 117:  '**********************************************************
+0253    0044            ; 118:  '__________________________________________________________
+0254    0044            ; 119: start:  'START OF MAIN LOOP
+0255    0044            L0001:
+0256    0044            ; 120: 
+0257    0044            ; 121: Gosub control
+0258    0044    2211    	CALL L0004
+0259    0045            ; 122: 
+0260    0045            ; 123:  'Flash heart-beat LED every 64 times round loop
+0261    0045            ; 124: 
+0262    0045            ; 125: If alarm = True Then
+0263    0045    1DAE    	BTFSS 0x2E,3
+0264    0046    2848    	GOTO L0008
+0265    0047            ; 126: warn = True
+0266    0047    172E    	BSF 0x2E,6
+0267    0048            ; 127: Endif
+0268    0048    301F    L0008:	MOVLW 0x1F
+0269    0049    0583    	ANDWF STATUS,F
+0270    004A            ; 128: 
+0271    004A            ; 129: If leds_blanked = True And warn = False And x = 0 Then
+0272    004A    1D2E    	BTFSS 0x2E,2
+0273    004B    285D    	GOTO L0009
+0274    004C    301F    	MOVLW 0x1F
+0275    004D    0583    	ANDWF STATUS,F
+0276    004E    1B2E    	BTFSC 0x2E,6
+0277    004F    285D    	GOTO L0009
+0278    0050    301F    	MOVLW 0x1F
+0279    0051    0583    	ANDWF STATUS,F
+0280    0052    082F    	MOVF 0x2F,W
+0281    0053    3C00    	SUBLW 0x00
+0282    0054    1D03    	BTFSS STATUS,Z
+0283    0055    285D    	GOTO L0009
+0284    0056            ; 130: PORTB.6 = 1
+0285    0056    1706    	BSF 0x06,6
+0286    0057            ; 131: WaitMs 10
+0287    0057    300A    	MOVLW 0x0A
+0288    0058    00A0    	MOVWF R0L
+0289    0059    01A1    	CLRF R0H
+0290    005A    2334    	CALL W001
+0291    005B            ; 132: PORTB.6 = 0
+0292    005B    1306    	BCF 0x06,6
+0293    005C            ; 133: Else
+0294    005C    2873    	GOTO L0010
+0295    005D    301F    L0009:	MOVLW 0x1F
+0296    005E    0583    	ANDWF STATUS,F
+0297    005F            ; 134: If leds_blanked = True And warn = True And x = 0 Then
+0298    005F    1D2E    	BTFSS 0x2E,2
+0299    0060    2871    	GOTO L0011
+0300    0061    301F    	MOVLW 0x1F
+0301    0062    0583    	ANDWF STATUS,F
+0302    0063    1F2E    	BTFSS 0x2E,6
+0303    0064    2871    	GOTO L0011
+0304    0065    301F    	MOVLW 0x1F
+0305    0066    0583    	ANDWF STATUS,F
+0306    0067    082F    	MOVF 0x2F,W
+0307    0068    3C00    	SUBLW 0x00
+0308    0069    1D03    	BTFSS STATUS,Z
+0309    006A    2871    	GOTO L0011
+0310    006B            ; 135: PORTC.2 = 1
+0311    006B    1507    	BSF 0x07,2
+0312    006C            ; 136: WaitMs 10
+0313    006C    300A    	MOVLW 0x0A
+0314    006D    00A0    	MOVWF R0L
+0315    006E    01A1    	CLRF R0H
+0316    006F    2334    	CALL W001
+0317    0070            ; 137: PORTC.2 = 0
+0318    0070    1107    	BCF 0x07,2
+0319    0071            ; 138: Endif
+0320    0071    301F    L0011:	MOVLW 0x1F
+0321    0072    0583    	ANDWF STATUS,F
+0322    0073            ; 139: Endif
+0323    0073    301F    L0010:	MOVLW 0x1F
+0324    0074    0583    	ANDWF STATUS,F
+0325    0075            ; 140: If x < 63 Then
+0326    0075    303F    	MOVLW 0x3F
+0327    0076    022F    	SUBWF 0x2F,W
+0328    0077    1803    	BTFSC STATUS,C
+0329    0078    287D    	GOTO L0012
+0330    0079            ; 141: x = x + 1
+0331    0079    082F    	MOVF 0x2F,W
+0332    007A    3E01    	ADDLW 0x01
+0333    007B    00AF    	MOVWF 0x2F
+0334    007C            ; 142: Else
+0335    007C    2880    	GOTO L0013
+0336    007D    301F    L0012:	MOVLW 0x1F
+0337    007E    0583    	ANDWF STATUS,F
+0338    007F            ; 143: x = 0
+0339    007F    01AF    	CLRF 0x2F
+0340    0080            ; 144: Endif
+0341    0080    301F    L0013:	MOVLW 0x1F
+0342    0081    0583    	ANDWF STATUS,F
+0343    0082            ; 145: 
+0344    0082            ; 146: 
+0345    0082            ; 147: For i = 0 To 9
+0346    0082    01B2    	CLRF 0x32
+0347    0083            L0014:
+0348    0083    0832    	MOVF 0x32,W
+0349    0084    3C09    	SUBLW 0x09
+0350    0085    1C03    	BTFSS STATUS,C
+0351    0086    2937    	GOTO L0015
+0352    0087            ; 148: 
+0353    0087            ; 149: Gosub time_on
+0354    0087    2254    	CALL L0005
+0355    0088            ; 150: ASM:        clrwdt
+0356    0088    0064    	       clrwdt
+0357    0089            ; 151: Adcin 0, batvolts
+0358    0089    179F    	BSF ADCON0,ADFM
+0359    008A    1683    	BSF STATUS,RP0
+0360    008B    3030    	MOVLW 0x30
+0361    008C    009F    	MOVWF ADCON1
+0362    008D    3000    	MOVLW 0x00
+0363    008E    1283    	BCF STATUS,RP0
+0364    008F    00A0    	MOVWF R0L
+0365    0090    2367    	CALL A001
+0366    0091    1683    	BSF STATUS,RP0
+0367    0092    081E    	MOVF ADRESL,W
+0368    0093    1283    	BCF STATUS,RP0
+0369    0094    00B5    	MOVWF 0x35
+0370    0095    081E    	MOVF ADRESH,W
+0371    0096    00B6    	MOVWF 0x36
+0372    0097            ; 152: Adcin 3, psu2volts
+0373    0097    179F    	BSF ADCON0,ADFM
+0374    0098    1683    	BSF STATUS,RP0
+0375    0099    3030    	MOVLW 0x30
+0376    009A    009F    	MOVWF ADCON1
+0377    009B    3003    	MOVLW 0x03
+0378    009C    1283    	BCF STATUS,RP0
+0379    009D    00A0    	MOVWF R0L
+0380    009E    2367    	CALL A001
+0381    009F    1683    	BSF STATUS,RP0
+0382    00A0    081E    	MOVF ADRESL,W
+0383    00A1    1283    	BCF STATUS,RP0
+0384    00A2    00B9    	MOVWF 0x39
+0385    00A3    081E    	MOVF ADRESH,W
+0386    00A4    00BA    	MOVWF 0x3A
+0387    00A5            ; 153: Adcin 7, psu1volts
+0388    00A5    179F    	BSF ADCON0,ADFM
+0389    00A6    1683    	BSF STATUS,RP0
+0390    00A7    3030    	MOVLW 0x30
+0391    00A8    009F    	MOVWF ADCON1
+0392    00A9    3007    	MOVLW 0x07
+0393    00AA    1283    	BCF STATUS,RP0
+0394    00AB    00A0    	MOVWF R0L
+0395    00AC    2367    	CALL A001
+0396    00AD    1683    	BSF STATUS,RP0
+0397    00AE    081E    	MOVF ADRESL,W
+0398    00AF    1283    	BCF STATUS,RP0
+0399    00B0    00B7    	MOVWF 0x37
+0400    00B1    081E    	MOVF ADRESH,W
+0401    00B2    00B8    	MOVWF 0x38
+0402    00B3            ; 154: Adcin 2, opvolts
+0403    00B3    179F    	BSF ADCON0,ADFM
+0404    00B4    1683    	BSF STATUS,RP0
+0405    00B5    3030    	MOVLW 0x30
+0406    00B6    009F    	MOVWF ADCON1
+0407    00B7    3002    	MOVLW 0x02
+0408    00B8    1283    	BCF STATUS,RP0
+0409    00B9    00A0    	MOVWF R0L
+0410    00BA    2367    	CALL A001
+0411    00BB    1683    	BSF STATUS,RP0
+0412    00BC    081E    	MOVF ADRESL,W
+0413    00BD    1283    	BCF STATUS,RP0
+0414    00BE    00BB    	MOVWF 0x3B
+0415    00BF    081E    	MOVF ADRESH,W
+0416    00C0    00BC    	MOVWF 0x3C
+0417    00C1            ; 155:  '------------------------------------------
+0418    00C1            ; 156: 
+0419    00C1            ; 157: If psu1volts > ov_psu Then 'Over Voltage
+0420    00C1    0837    	MOVF 0x37,W
+0421    00C2    00A0    	MOVWF R0L
+0422    00C3    0838    	MOVF 0x38,W
+0423    00C4    00A1    	MOVWF R0H
+0424    00C5    3003    	MOVLW 0x03
+0425    00C6    00A3    	MOVWF R1H
+0426    00C7    30E5    	MOVLW 0xE5
+0427    00C8    2318    	CALL C003
+0428    00C9    1D03    	BTFSS STATUS,Z
+0429    00CA    28CE    	GOTO L0016
+0430    00CB            ; 158: top_green = True
+0431    00CB    162D    	BSF 0x2D,4
+0432    00CC            ; 159: top_red = True
+0433    00CC    16AD    	BSF 0x2D,5
+0434    00CD            ; 160: warn = True
+0435    00CD    172E    	BSF 0x2E,6
+0436    00CE            ; 161: Endif
+0437    00CE    301F    L0016:	MOVLW 0x1F
+0438    00CF    0583    	ANDWF STATUS,F
+0439    00D0            ; 162: 
+0440    00D0            ; 163: If psu1volts < ov_psu And psu1volts > uv_psu Then 'Voltage OK
+0441    00D0    0837    	MOVF 0x37,W
+0442    00D1    00A0    	MOVWF R0L
+0443    00D2    0838    	MOVF 0x38,W
+0444    00D3    00A1    	MOVWF R0H
+0445    00D4    3003    	MOVLW 0x03
+0446    00D5    00A3    	MOVWF R1H
+0447    00D6    30E5    	MOVLW 0xE5
+0448    00D7    231B    	CALL C004
+0449    00D8    1D03    	BTFSS STATUS,Z
+0450    00D9    28E9    	GOTO L0017
+0451    00DA    301F    	MOVLW 0x1F
+0452    00DB    0583    	ANDWF STATUS,F
+0453    00DC    0837    	MOVF 0x37,W
+0454    00DD    00A0    	MOVWF R0L
+0455    00DE    0838    	MOVF 0x38,W
+0456    00DF    00A1    	MOVWF R0H
+0457    00E0    3003    	MOVLW 0x03
+0458    00E1    00A3    	MOVWF R1H
+0459    00E2    30D7    	MOVLW 0xD7
+0460    00E3    2318    	CALL C003
+0461    00E4    1D03    	BTFSS STATUS,Z
+0462    00E5    28E9    	GOTO L0017
+0463    00E6            ; 164: top_green = True
+0464    00E6    162D    	BSF 0x2D,4
+0465    00E7            ; 165: top_red = False
+0466    00E7    12AD    	BCF 0x2D,5
+0467    00E8            ; 166: warn = False
+0468    00E8    132E    	BCF 0x2E,6
+0469    00E9            ; 167: Endif
+0470    00E9    301F    L0017:	MOVLW 0x1F
+0471    00EA    0583    	ANDWF STATUS,F
+0472    00EB            ; 168: 
+0473    00EB            ; 169: If psu1volts < uv_psu Then 'Under voltage
+0474    00EB    0837    	MOVF 0x37,W
+0475    00EC    00A0    	MOVWF R0L
+0476    00ED    0838    	MOVF 0x38,W
+0477    00EE    00A1    	MOVWF R0H
+0478    00EF    3003    	MOVLW 0x03
+0479    00F0    00A3    	MOVWF R1H
+0480    00F1    30D7    	MOVLW 0xD7
+0481    00F2    231B    	CALL C004
+0482    00F3    1D03    	BTFSS STATUS,Z
+0483    00F4    28F8    	GOTO L0018
+0484    00F5            ; 170: top_green = False
+0485    00F5    122D    	BCF 0x2D,4
+0486    00F6            ; 171: top_red = True
+0487    00F6    16AD    	BSF 0x2D,5
+0488    00F7            ; 172: warn = True
+0489    00F7    172E    	BSF 0x2E,6
+0490    00F8            ; 173: Endif
+0491    00F8    301F    L0018:	MOVLW 0x1F
+0492    00F9    0583    	ANDWF STATUS,F
+0493    00FA            ; 174:  '------------------------------------------
+0494    00FA            ; 175: 
+0495    00FA            ; 176: If psu2volts > ov_psu Then 'Over Voltage >14.6
+0496    00FA    0839    	MOVF 0x39,W
+0497    00FB    00A0    	MOVWF R0L
+0498    00FC    083A    	MOVF 0x3A,W
+0499    00FD    00A1    	MOVWF R0H
+0500    00FE    3003    	MOVLW 0x03
+0501    00FF    00A3    	MOVWF R1H
+0502    0100    30E5    	MOVLW 0xE5
+0503    0101    2318    	CALL C003
+0504    0102    1D03    	BTFSS STATUS,Z
+0505    0103    2907    	GOTO L0019
+0506    0104            ; 177: ctr_green = True
+0507    0104    172D    	BSF 0x2D,6
+0508    0105            ; 178: ctr_red = True
+0509    0105    17AD    	BSF 0x2D,7
+0510    0106            ; 179: warn = True
+0511    0106    172E    	BSF 0x2E,6
+0512    0107            ; 180: Endif
+0513    0107    301F    L0019:	MOVLW 0x1F
+0514    0108    0583    	ANDWF STATUS,F
+0515    0109            ; 181: 
+0516    0109            ; 182: If psu2volts < ov_psu And psu2volts > uv_psu Then 'Voltage OK between 14.2V and 14.6
+0517    0109    0839    	MOVF 0x39,W
+0518    010A    00A0    	MOVWF R0L
+0519    010B    083A    	MOVF 0x3A,W
+0520    010C    00A1    	MOVWF R0H
+0521    010D    3003    	MOVLW 0x03
+0522    010E    00A3    	MOVWF R1H
+0523    010F    30E5    	MOVLW 0xE5
+0524    0110    231B    	CALL C004
+0525    0111    1D03    	BTFSS STATUS,Z
+0526    0112    2922    	GOTO L0020
+0527    0113    301F    	MOVLW 0x1F
+0528    0114    0583    	ANDWF STATUS,F
+0529    0115    0839    	MOVF 0x39,W
+0530    0116    00A0    	MOVWF R0L
+0531    0117    083A    	MOVF 0x3A,W
+0532    0118    00A1    	MOVWF R0H
+0533    0119    3003    	MOVLW 0x03
+0534    011A    00A3    	MOVWF R1H
+0535    011B    30D7    	MOVLW 0xD7
+0536    011C    2318    	CALL C003
+0537    011D    1D03    	BTFSS STATUS,Z
+0538    011E    2922    	GOTO L0020
+0539    011F            ; 183: ctr_green = True
+0540    011F    172D    	BSF 0x2D,6
+0541    0120            ; 184: ctr_red = False
+0542    0120    13AD    	BCF 0x2D,7
+0543    0121            ; 185: warn = False
+0544    0121    132E    	BCF 0x2E,6
+0545    0122            ; 186: Endif
+0546    0122    301F    L0020:	MOVLW 0x1F
+0547    0123    0583    	ANDWF STATUS,F
+0548    0124            ; 187: 
+0549    0124            ; 188: If psu2volts < uv_psu Then 'Under voltage <14.2V
+0550    0124    0839    	MOVF 0x39,W
+0551    0125    00A0    	MOVWF R0L
+0552    0126    083A    	MOVF 0x3A,W
+0553    0127    00A1    	MOVWF R0H
+0554    0128    3003    	MOVLW 0x03
+0555    0129    00A3    	MOVWF R1H
+0556    012A    30D7    	MOVLW 0xD7
+0557    012B    231B    	CALL C004
+0558    012C    1D03    	BTFSS STATUS,Z
+0559    012D    2931    	GOTO L0021
+0560    012E            ; 189: ctr_green = False
+0561    012E    132D    	BCF 0x2D,6
+0562    012F            ; 190: ctr_red = True
+0563    012F    17AD    	BSF 0x2D,7
+0564    0130            ; 191: warn = True
+0565    0130    172E    	BSF 0x2E,6
+0566    0131            ; 192: Endif
+0567    0131    301F    L0021:	MOVLW 0x1F
+0568    0132    0583    	ANDWF STATUS,F
+0569    0133            ; 193: 
+0570    0133            ; 194: Next i
+0571    0133    3001    	MOVLW 0x01
+0572    0134    07B2    	ADDWF 0x32,F
+0573    0135    1C03    	BTFSS STATUS,C
+0574    0136    2883    	GOTO L0014
+0575    0137    301F    L0015:	MOVLW 0x1F
+0576    0138    0583    	ANDWF STATUS,F
+0577    0139            ; 195:  '------------------------------------------
+0578    0139            ; 196: 
+0579    0139            ; 197: Gosub check_bat_present
+0580    0139    219A    	CALL L0002
+0581    013A            ; 198: If nobat = True Then
+0582    013A    1F2C    	BTFSS 0x2C,6
+0583    013B    293E    	GOTO L0022
+0584    013C            ; 199: alarm = True
+0585    013C    15AE    	BSF 0x2E,3
+0586    013D            ; 200: Goto start
+0587    013D    2844    	GOTO L0001
+0588    013E            ; 201: Endif
+0589    013E    301F    L0022:	MOVLW 0x1F
+0590    013F    0583    	ANDWF STATUS,F
+0591    0140            ; 202:  '------------------------------------------
+0592    0140            ; 203: 
+0593    0140            ; 204: For i = 0 To 9
+0594    0140    01B2    	CLRF 0x32
+0595    0141            L0023:
+0596    0141    0832    	MOVF 0x32,W
+0597    0142    3C09    	SUBLW 0x09
+0598    0143    1C03    	BTFSS STATUS,C
+0599    0144    2996    	GOTO L0024
+0600    0145            ; 205: ASM:        clrwdt
+0601    0145    0064    	       clrwdt
+0602    0146            ; 206: Gosub time_on
+0603    0146    2254    	CALL L0005
+0604    0147            ; 207: 
+0605    0147            ; 208: If batvolts > ov_psu Then 'Over Voltage >13.9 at battery
+0606    0147    0835    	MOVF 0x35,W
+0607    0148    00A0    	MOVWF R0L
+0608    0149    0836    	MOVF 0x36,W
+0609    014A    00A1    	MOVWF R0H
+0610    014B    3003    	MOVLW 0x03
+0611    014C    00A3    	MOVWF R1H
+0612    014D    30E5    	MOVLW 0xE5
+0613    014E    2318    	CALL C003
+0614    014F    1D03    	BTFSS STATUS,Z
+0615    0150    2955    	GOTO L0025
+0616    0151            ; 209: bot_green = True
+0617    0151    142E    	BSF 0x2E,0
+0618    0152            ; 210: bot_red = True
+0619    0152    14AE    	BSF 0x2E,1
+0620    0153            ; 211: charge = False
+0621    0153    10AD    	BCF 0x2D,1
+0622    0154            ; 212: alarm = True
+0623    0154    15AE    	BSF 0x2E,3
+0624    0155            ; 213: Endif
+0625    0155    301F    L0025:	MOVLW 0x1F
+0626    0156    0583    	ANDWF STATUS,F
+0627    0157            ; 214: 
+0628    0157            ; 215: If batvolts < ov_batt And batvolts > uv_batt Then 'Voltage OK between 10V and 14V
+0629    0157    0835    	MOVF 0x35,W
+0630    0158    00A0    	MOVWF R0L
+0631    0159    0836    	MOVF 0x36,W
+0632    015A    00A1    	MOVWF R0H
+0633    015B    3003    	MOVLW 0x03
+0634    015C    00A3    	MOVWF R1H
+0635    015D    30BB    	MOVLW 0xBB
+0636    015E    231B    	CALL C004
+0637    015F    1D03    	BTFSS STATUS,Z
+0638    0160    2973    	GOTO L0026
+0639    0161    301F    	MOVLW 0x1F
+0640    0162    0583    	ANDWF STATUS,F
+0641    0163    0835    	MOVF 0x35,W
+0642    0164    00A0    	MOVWF R0L
+0643    0165    0836    	MOVF 0x36,W
+0644    0166    00A1    	MOVWF R0H
+0645    0167    3002    	MOVLW 0x02
+0646    0168    00A3    	MOVWF R1H
+0647    0169    30AB    	MOVLW 0xAB
+0648    016A    2318    	CALL C003
+0649    016B    1D03    	BTFSS STATUS,Z
+0650    016C    2973    	GOTO L0026
+0651    016D            ; 216: bot_green = True
+0652    016D    142E    	BSF 0x2E,0
+0653    016E            ; 217: bot_red = False
+0654    016E    10AE    	BCF 0x2E,1
+0655    016F            ; 218: charge = True
+0656    016F    14AD    	BSF 0x2D,1
+0657    0170            ; 219: discharge = True
+0658    0170    152D    	BSF 0x2D,2
+0659    0171            ; 220: alarm = False
+0660    0171    11AE    	BCF 0x2E,3
+0661    0172            ; 221: alarm_on = True
+0662    0172    162E    	BSF 0x2E,4
+0663    0173            ; 222: Endif
+0664    0173    301F    L0026:	MOVLW 0x1F
+0665    0174    0583    	ANDWF STATUS,F
+0666    0175            ; 223: 
+0667    0175            ; 224: If batvolts < warn_batt Then 'Under voltage <11V
+0668    0175    0835    	MOVF 0x35,W
+0669    0176    00A0    	MOVWF R0L
+0670    0177    0836    	MOVF 0x36,W
+0671    0178    00A1    	MOVWF R0H
+0672    0179    3002    	MOVLW 0x02
+0673    017A    00A3    	MOVWF R1H
+0674    017B    30EE    	MOVLW 0xEE
+0675    017C    231B    	CALL C004
+0676    017D    1D03    	BTFSS STATUS,Z
+0677    017E    2980    	GOTO L0027
+0678    017F            ; 225: alarm = True
+0679    017F    15AE    	BSF 0x2E,3
+0680    0180            ; 226: Endif
+0681    0180    301F    L0027:	MOVLW 0x1F
+0682    0181    0583    	ANDWF STATUS,F
+0683    0182            ; 227: 
+0684    0182            ; 228: If batvolts < uv_batt Then 'Under voltage <10V
+0685    0182    0835    	MOVF 0x35,W
+0686    0183    00A0    	MOVWF R0L
+0687    0184    0836    	MOVF 0x36,W
+0688    0185    00A1    	MOVWF R0H
+0689    0186    3002    	MOVLW 0x02
+0690    0187    00A3    	MOVWF R1H
+0691    0188    30AB    	MOVLW 0xAB
+0692    0189    231B    	CALL C004
+0693    018A    1D03    	BTFSS STATUS,Z
+0694    018B    2990    	GOTO L0028
+0695    018C            ; 229: discharge = False
+0696    018C    112D    	BCF 0x2D,2
+0697    018D            ; 230: bot_green = False
+0698    018D    102E    	BCF 0x2E,0
+0699    018E            ; 231: bot_red = True
+0700    018E    14AE    	BSF 0x2E,1
+0701    018F            ; 232: trickle = True
+0702    018F    15AD    	BSF 0x2D,3
+0703    0190            ; 233: Endif
+0704    0190    301F    L0028:	MOVLW 0x1F
+0705    0191    0583    	ANDWF STATUS,F
+0706    0192            ; 234: 
+0707    0192            ; 235: Next i
+0708    0192    3001    	MOVLW 0x01
+0709    0193    07B2    	ADDWF 0x32,F
+0710    0194    1C03    	BTFSS STATUS,C
+0711    0195    2941    	GOTO L0023
+0712    0196    301F    L0024:	MOVLW 0x1F
+0713    0197    0583    	ANDWF STATUS,F
+0714    0198            ; 236:  '------------------------------------------
+0715    0198            ; 237: 
+0716    0198            ; 238: Goto start
+0717    0198    2844    	GOTO L0001
+0718    0199            ; 239: End
+0719    0199    2999    L0029:	GOTO L0029
+0720    019A            ; 240: check_bat_present: 
+0721    019A            L0002:
+0722    019A            ; 241: 
+0723    019A            ; 242: PORTC.6 = 0 'Charge off
+0724    019A    1307    	BCF 0x07,6
+0725    019B            ; 243: PORTC.7 = 0 'Trickle off
+0726    019B    1387    	BCF 0x07,7
+0727    019C            ; 244: WaitMs 1
+0728    019C    3001    	MOVLW 0x01
+0729    019D    00A0    	MOVWF R0L
+0730    019E    01A1    	CLRF R0H
+0731    019F    2334    	CALL W001
+0732    01A0            ; 245: Adcin 0, batvolts
+0733    01A0    179F    	BSF ADCON0,ADFM
+0734    01A1    1683    	BSF STATUS,RP0
+0735    01A2    3030    	MOVLW 0x30
+0736    01A3    009F    	MOVWF ADCON1
+0737    01A4    3000    	MOVLW 0x00
+0738    01A5    1283    	BCF STATUS,RP0
+0739    01A6    00A0    	MOVWF R0L
+0740    01A7    2367    	CALL A001
+0741    01A8    1683    	BSF STATUS,RP0
+0742    01A9    081E    	MOVF ADRESL,W
+0743    01AA    1283    	BCF STATUS,RP0
+0744    01AB    00B5    	MOVWF 0x35
+0745    01AC    081E    	MOVF ADRESH,W
+0746    01AD    00B6    	MOVWF 0x36
+0747    01AE            ; 246: If batvolts < dead_batt Then '<5V
+0748    01AE    0835    	MOVF 0x35,W
+0749    01AF    00A0    	MOVWF R0L
+0750    01B0    0836    	MOVF 0x36,W
+0751    01B1    00A1    	MOVWF R0H
+0752    01B2    3001    	MOVLW 0x01
+0753    01B3    00A3    	MOVWF R1H
+0754    01B4    3055    	MOVLW 0x55
+0755    01B5    231B    	CALL C004
+0756    01B6    1D03    	BTFSS STATUS,Z
+0757    01B7    29BE    	GOTO L0030
+0758    01B8            ; 247: nobat = True
+0759    01B8    172C    	BSF 0x2C,6
+0760    01B9            ; 248: charge = False
+0761    01B9    10AD    	BCF 0x2D,1
+0762    01BA            ; 249: trickle = False
+0763    01BA    11AD    	BCF 0x2D,3
+0764    01BB            ; 250: bot_green = False
+0765    01BB    102E    	BCF 0x2E,0
+0766    01BC            ; 251: bot_red = True
+0767    01BC    14AE    	BSF 0x2E,1
+0768    01BD            ; 252: Else
+0769    01BD    29C1    	GOTO L0031
+0770    01BE    301F    L0030:	MOVLW 0x1F
+0771    01BF    0583    	ANDWF STATUS,F
+0772    01C0            ; 253: nobat = False
+0773    01C0    132C    	BCF 0x2C,6
+0774    01C1            ; 254: Endif
+0775    01C1    301F    L0031:	MOVLW 0x1F
+0776    01C2    0583    	ANDWF STATUS,F
+0777    01C3            ; 255: Gosub control
+0778    01C3    2211    	CALL L0004
+0779    01C4            ; 256: WaitUs 100
+0780    01C4    3064    	MOVLW 0x64
+0781    01C5    00A8    	MOVWF R4L
+0782    01C6    235D    	CALL X001
+0783    01C7            ; 257: Return
+0784    01C7    0008    	RETURN
+0785    01C8            ; 258: display: 
+0786    01C8            L0003:
+0787    01C8            ; 259: If leds_blanked = True Then
+0788    01C8    1D2E    	BTFSS 0x2E,2
+0789    01C9    29D1    	GOTO L0032
+0790    01CA            ; 260: PORTA.5 = 0
+0791    01CA    1285    	BCF 0x05,5
+0792    01CB            ; 261: PORTC.4 = 0
+0793    01CB    1207    	BCF 0x07,4
+0794    01CC            ; 262: PORTB.6 = 0
+0795    01CC    1306    	BCF 0x06,6
+0796    01CD            ; 263: PORTC.2 = 0
+0797    01CD    1107    	BCF 0x07,2
+0798    01CE            ; 264: PORTB.4 = 0
+0799    01CE    1206    	BCF 0x06,4
+0800    01CF            ; 265: PORTC.0 = 0
+0801    01CF    1007    	BCF 0x07,0
+0802    01D0            ; 266: Else
+0803    01D0    2A0E    	GOTO L0033
+0804    01D1    301F    L0032:	MOVLW 0x1F
+0805    01D2    0583    	ANDWF STATUS,F
+0806    01D3            ; 267: PORTB.6 = top_green
+0807    01D3    1A2D    	BTFSC 0x2D,4
+0808    01D4    1706    	BSF 0x06,6
+0809    01D5    1E2D    	BTFSS 0x2D,4
+0810    01D6    1306    	BCF 0x06,6
+0811    01D7            ; 268: PORTC.2 = top_red
+0812    01D7    1AAD    	BTFSC 0x2D,5
+0813    01D8    1507    	BSF 0x07,2
+0814    01D9    1EAD    	BTFSS 0x2D,5
+0815    01DA    1107    	BCF 0x07,2
+0816    01DB            ; 269: PORTC.4 = ctr_green
+0817    01DB    1B2D    	BTFSC 0x2D,6
+0818    01DC    1607    	BSF 0x07,4
+0819    01DD    1F2D    	BTFSS 0x2D,6
+0820    01DE    1207    	BCF 0x07,4
+0821    01DF            ; 270: PORTA.5 = ctr_red
+0822    01DF    1BAD    	BTFSC 0x2D,7
+0823    01E0    1685    	BSF 0x05,5
+0824    01E1    1FAD    	BTFSS 0x2D,7
+0825    01E2    1285    	BCF 0x05,5
+0826    01E3            ; 271: PORTC.0 = bot_green
+0827    01E3    182E    	BTFSC 0x2E,0
+0828    01E4    1407    	BSF 0x07,0
+0829    01E5    1C2E    	BTFSS 0x2E,0
+0830    01E6    1007    	BCF 0x07,0
+0831    01E7            ; 272: PORTB.4 = bot_red
+0832    01E7    18AE    	BTFSC 0x2E,1
+0833    01E8    1606    	BSF 0x06,4
+0834    01E9    1CAE    	BTFSS 0x2E,1
+0835    01EA    1206    	BCF 0x06,4
+0836    01EB            ; 273: 
+0837    01EB            ; 274:  'Flash the bottom LED if battery below 5V
+0838    01EB            ; 275: If yy >= 7 And nobat = True Then
+0839    01EB    3007    	MOVLW 0x07
+0840    01EC    0231    	SUBWF 0x31,W
+0841    01ED    1C03    	BTFSS STATUS,C
+0842    01EE    29F4    	GOTO L0034
+0843    01EF    301F    	MOVLW 0x1F
+0844    01F0    0583    	ANDWF STATUS,F
+0845    01F1    1F2C    	BTFSS 0x2C,6
+0846    01F2    29F4    	GOTO L0034
+0847    01F3            ; 276: PORTB.4 = 1
+0848    01F3    1606    	BSF 0x06,4
+0849    01F4            ; 277: Endif
+0850    01F4    301F    L0034:	MOVLW 0x1F
+0851    01F5    0583    	ANDWF STATUS,F
+0852    01F6            ; 278: If yy < 7 And nobat = True Then
+0853    01F6    3007    	MOVLW 0x07
+0854    01F7    0231    	SUBWF 0x31,W
+0855    01F8    1803    	BTFSC STATUS,C
+0856    01F9    29FF    	GOTO L0035
+0857    01FA    301F    	MOVLW 0x1F
+0858    01FB    0583    	ANDWF STATUS,F
+0859    01FC    1F2C    	BTFSS 0x2C,6
+0860    01FD    29FF    	GOTO L0035
+0861    01FE            ; 279: PORTB.4 = 0
+0862    01FE    1206    	BCF 0x06,4
+0863    01FF            ; 280: Endif
+0864    01FF    301F    L0035:	MOVLW 0x1F
+0865    0200    0583    	ANDWF STATUS,F
+0866    0201            ; 281: 
+0867    0201            ; 282: If yy < 15 Then
+0868    0201    300F    	MOVLW 0x0F
+0869    0202    0231    	SUBWF 0x31,W
+0870    0203    1803    	BTFSC STATUS,C
+0871    0204    2A09    	GOTO L0036
+0872    0205            ; 283: yy = yy + 1
+0873    0205    0831    	MOVF 0x31,W
+0874    0206    3E01    	ADDLW 0x01
+0875    0207    00B1    	MOVWF 0x31
+0876    0208            ; 284: Else
+0877    0208    2A0C    	GOTO L0037
+0878    0209    301F    L0036:	MOVLW 0x1F
+0879    020A    0583    	ANDWF STATUS,F
+0880    020B            ; 285: yy = 0
+0881    020B    01B1    	CLRF 0x31
+0882    020C            ; 286: Endif
+0883    020C    301F    L0037:	MOVLW 0x1F
+0884    020D    0583    	ANDWF STATUS,F
+0885    020E            ; 287: 
+0886    020E            ; 288: 
+0887    020E            ; 289: 
+0888    020E            ; 290: Endif
+0889    020E    301F    L0033:	MOVLW 0x1F
+0890    020F    0583    	ANDWF STATUS,F
+0891    0210            ; 291: Return
+0892    0210    0008    	RETURN
+0893    0211            ; 292: 
+0894    0211            ; 293: control: 
+0895    0211            L0004:
+0896    0211            ; 294: PORTC.7 = charge
+0897    0211    18AD    	BTFSC 0x2D,1
+0898    0212    1787    	BSF 0x07,7
+0899    0213    1CAD    	BTFSS 0x2D,1
+0900    0214    1387    	BCF 0x07,7
+0901    0215            ; 295: PORTC.5 = discharge
+0902    0215    192D    	BTFSC 0x2D,2
+0903    0216    1687    	BSF 0x07,5
+0904    0217    1D2D    	BTFSS 0x2D,2
+0905    0218    1287    	BCF 0x07,5
+0906    0219            ; 296: PORTC.6 = trickle
+0907    0219    19AD    	BTFSC 0x2D,3
+0908    021A    1707    	BSF 0x07,6
+0909    021B    1DAD    	BTFSS 0x2D,3
+0910    021C    1307    	BCF 0x07,6
+0911    021D            ; 297: Gosub display
+0912    021D    21C8    	CALL L0003
+0913    021E            ; 298: button = Not PORTB.5
+0914    021E    1E86    	BTFSS 0x06,5
+0915    021F    142D    	BSF 0x2D,0
+0916    0220    1A86    	BTFSC 0x06,5
+0917    0221    102D    	BCF 0x2D,0
+0918    0222            ; 299: 
+0919    0222            ; 300: al = alarm_on And alarm
+0920    0222    0100    	CLRW
+0921    0223    1E2E    	BTFSS 0x2E,4
+0922    0224    3E01    	ADDLW 0x01
+0923    0225    1DAE    	BTFSS 0x2E,3
+0924    0226    3E01    	ADDLW 0x01
+0925    0227    1903    	BTFSC STATUS,Z
+0926    0228    16AE    	BSF 0x2E,5
+0927    0229    1D03    	BTFSS STATUS,Z
+0928    022A    12AE    	BCF 0x2E,5
+0929    022B            ; 301: 
+0930    022B            ; 302:  'Pulse the buzzer
+0931    022B            ; 303: If y >= 12 And al = True Then
+0932    022B    300C    	MOVLW 0x0C
+0933    022C    0230    	SUBWF 0x30,W
+0934    022D    1C03    	BTFSS STATUS,C
+0935    022E    2A34    	GOTO L0038
+0936    022F    301F    	MOVLW 0x1F
+0937    0230    0583    	ANDWF STATUS,F
+0938    0231    1EAE    	BTFSS 0x2E,5
+0939    0232    2A34    	GOTO L0038
+0940    0233            ; 304: PORTC.1 = 1
+0941    0233    1487    	BSF 0x07,1
+0942    0234            ; 305: Endif
+0943    0234    301F    L0038:	MOVLW 0x1F
+0944    0235    0583    	ANDWF STATUS,F
+0945    0236            ; 306: If y < 12 And al = True Then
+0946    0236    300C    	MOVLW 0x0C
+0947    0237    0230    	SUBWF 0x30,W
+0948    0238    1803    	BTFSC STATUS,C
+0949    0239    2A3F    	GOTO L0039
+0950    023A    301F    	MOVLW 0x1F
+0951    023B    0583    	ANDWF STATUS,F
+0952    023C    1EAE    	BTFSS 0x2E,5
+0953    023D    2A3F    	GOTO L0039
+0954    023E            ; 307: PORTC.1 = 0
+0955    023E    1087    	BCF 0x07,1
+0956    023F            ; 308: Endif
+0957    023F    301F    L0039:	MOVLW 0x1F
+0958    0240    0583    	ANDWF STATUS,F
+0959    0241            ; 309: 
+0960    0241            ; 310: If y < 15 Then
+0961    0241    300F    	MOVLW 0x0F
+0962    0242    0230    	SUBWF 0x30,W
+0963    0243    1803    	BTFSC STATUS,C
+0964    0244    2A49    	GOTO L0040
+0965    0245            ; 311: y = y + 1
+0966    0245    0830    	MOVF 0x30,W
+0967    0246    3E01    	ADDLW 0x01
+0968    0247    00B0    	MOVWF 0x30
+0969    0248            ; 312: Else
+0970    0248    2A4C    	GOTO L0041
+0971    0249    301F    L0040:	MOVLW 0x1F
+0972    024A    0583    	ANDWF STATUS,F
+0973    024B            ; 313: y = 0
+0974    024B    01B0    	CLRF 0x30
+0975    024C            ; 314: Endif
+0976    024C    301F    L0041:	MOVLW 0x1F
+0977    024D    0583    	ANDWF STATUS,F
+0978    024E            ; 315: 
+0979    024E            ; 316: If al = False Then PORTC.1 = 1
+0980    024E    1AAE    	BTFSC 0x2E,5
+0981    024F    2A51    	GOTO L0042
+0982    0250    1487    	BSF 0x07,1
+0983    0251    301F    L0042:	MOVLW 0x1F
+0984    0252    0583    	ANDWF STATUS,F
+0985    0253            ; 317: 
+0986    0253            ; 318: 
+0987    0253            ; 319: Return
+0988    0253    0008    	RETURN
+0989    0254            ; 320: 
+0990    0254            ; 321: time_on: 
+0991    0254            L0005:
+0992    0254            ; 322: If PORTB.5 = 0 Then
+0993    0254    1A86    	BTFSC 0x06,5
+0994    0255    2A5C    	GOTO L0043
+0995    0256            ; 323: tim = 65535
+0996    0256    30FF    	MOVLW 0xFF
+0997    0257    00B3    	MOVWF 0x33
+0998    0258    30FF    	MOVLW 0xFF
+0999    0259    00B4    	MOVWF 0x34
+1000    025A            ; 324: leds_blanked = False
+1001    025A    112E    	BCF 0x2E,2
+1002    025B            ; 325: alarm_on = False
+1003    025B    122E    	BCF 0x2E,4
+1004    025C            ; 326: Endif
+1005    025C    301F    L0043:	MOVLW 0x1F
+1006    025D    0583    	ANDWF STATUS,F
+1007    025E            ; 327: tim = tim - 1
+1008    025E    3001    	MOVLW 0x01
+1009    025F    0233    	SUBWF 0x33,W
+1010    0260    00B3    	MOVWF 0x33
+1011    0261    3000    	MOVLW 0x00
+1012    0262    1C03    	BTFSS STATUS,C
+1013    0263    3E01    	ADDLW 0x01
+1014    0264    0234    	SUBWF 0x34,W
+1015    0265    00B4    	MOVWF 0x34
+1016    0266            ; 328: If tim = 0 Then
+1017    0266    0833    	MOVF 0x33,W
+1018    0267    00A0    	MOVWF R0L
+1019    0268    0834    	MOVF 0x34,W
+1020    0269    00A1    	MOVWF R0H
+1021    026A    01A3    	CLRF R1H
+1022    026B    3000    	MOVLW 0x00
+1023    026C    2312    	CALL C001
+1024    026D    1D03    	BTFSS STATUS,Z
+1025    026E    2A70    	GOTO L0044
+1026    026F            ; 329: leds_blanked = True
+1027    026F    152E    	BSF 0x2E,2
+1028    0270            ; 330:  'alarm_on = True
+1029    0270            ; 331: Endif
+1030    0270    301F    L0044:	MOVLW 0x1F
+1031    0271    0583    	ANDWF STATUS,F
+1032    0272            ; 332: Return
+1033    0272    0008    	RETURN
+1034    0273            ; 333: 
+1035    0273            ; 334: led_test: 
+1036    0273            L0006:
+1037    0273            ; 335: ASM:        clrwdt
+1038    0273    0064    	       clrwdt
+1039    0274            ; 336: For i = 1 To 10
+1040    0274    3001    	MOVLW 0x01
+1041    0275    00B2    	MOVWF 0x32
+1042    0276            L0045:
+1043    0276    0832    	MOVF 0x32,W
+1044    0277    3C0A    	SUBLW 0x0A
+1045    0278    1C03    	BTFSS STATUS,C
+1046    0279    2A84    	GOTO L0046
+1047    027A            ; 337: PORTA.5 = 1 'Red
+1048    027A    1685    	BSF 0x05,5
+1049    027B            ; 338: WaitMs 20
+1050    027B    3014    	MOVLW 0x14
+1051    027C    00A0    	MOVWF R0L
+1052    027D    01A1    	CLRF R0H
+1053    027E    2334    	CALL W001
+1054    027F            ; 339: PORTA.5 = 0
+1055    027F    1285    	BCF 0x05,5
+1056    0280            ; 340: Next i
+1057    0280    3001    	MOVLW 0x01
+1058    0281    07B2    	ADDWF 0x32,F
+1059    0282    1C03    	BTFSS STATUS,C
+1060    0283    2A76    	GOTO L0045
+1061    0284    301F    L0046:	MOVLW 0x1F
+1062    0285    0583    	ANDWF STATUS,F
+1063    0286            ; 341: ASM:        clrwdt
+1064    0286    0064    	       clrwdt
+1065    0287            ; 342: For i = 1 To 10
+1066    0287    3001    	MOVLW 0x01
+1067    0288    00B2    	MOVWF 0x32
+1068    0289            L0047:
+1069    0289    0832    	MOVF 0x32,W
+1070    028A    3C0A    	SUBLW 0x0A
+1071    028B    1C03    	BTFSS STATUS,C
+1072    028C    2A97    	GOTO L0048
+1073    028D            ; 343: PORTC.4 = 1 'Green
+1074    028D    1607    	BSF 0x07,4
+1075    028E            ; 344: WaitMs 20
+1076    028E    3014    	MOVLW 0x14
+1077    028F    00A0    	MOVWF R0L
+1078    0290    01A1    	CLRF R0H
+1079    0291    2334    	CALL W001
+1080    0292            ; 345: PORTC.4 = 0
+1081    0292    1207    	BCF 0x07,4
+1082    0293            ; 346: Next i
+1083    0293    3001    	MOVLW 0x01
+1084    0294    07B2    	ADDWF 0x32,F
+1085    0295    1C03    	BTFSS STATUS,C
+1086    0296    2A89    	GOTO L0047
+1087    0297    301F    L0048:	MOVLW 0x1F
+1088    0298    0583    	ANDWF STATUS,F
+1089    0299            ; 347: ASM:        clrwdt
+1090    0299    0064    	       clrwdt
+1091    029A            ; 348: For i = 1 To 10
+1092    029A    3001    	MOVLW 0x01
+1093    029B    00B2    	MOVWF 0x32
+1094    029C            L0049:
+1095    029C    0832    	MOVF 0x32,W
+1096    029D    3C0A    	SUBLW 0x0A
+1097    029E    1C03    	BTFSS STATUS,C
+1098    029F    2AAA    	GOTO L0050
+1099    02A0            ; 349: PORTB.6 = 1 'Green
+1100    02A0    1706    	BSF 0x06,6
+1101    02A1            ; 350: WaitMs 20
+1102    02A1    3014    	MOVLW 0x14
+1103    02A2    00A0    	MOVWF R0L
+1104    02A3    01A1    	CLRF R0H
+1105    02A4    2334    	CALL W001
+1106    02A5            ; 351: PORTB.6 = 0
+1107    02A5    1306    	BCF 0x06,6
+1108    02A6            ; 352: Next i
+1109    02A6    3001    	MOVLW 0x01
+1110    02A7    07B2    	ADDWF 0x32,F
+1111    02A8    1C03    	BTFSS STATUS,C
+1112    02A9    2A9C    	GOTO L0049
+1113    02AA    301F    L0050:	MOVLW 0x1F
+1114    02AB    0583    	ANDWF STATUS,F
+1115    02AC            ; 353: ASM:        clrwdt
+1116    02AC    0064    	       clrwdt
+1117    02AD            ; 354: For i = 1 To 10
+1118    02AD    3001    	MOVLW 0x01
+1119    02AE    00B2    	MOVWF 0x32
+1120    02AF            L0051:
+1121    02AF    0832    	MOVF 0x32,W
+1122    02B0    3C0A    	SUBLW 0x0A
+1123    02B1    1C03    	BTFSS STATUS,C
+1124    02B2    2ABD    	GOTO L0052
+1125    02B3            ; 355: PORTC.2 = 1 'Red
+1126    02B3    1507    	BSF 0x07,2
+1127    02B4            ; 356: WaitMs 20
+1128    02B4    3014    	MOVLW 0x14
+1129    02B5    00A0    	MOVWF R0L
+1130    02B6    01A1    	CLRF R0H
+1131    02B7    2334    	CALL W001
+1132    02B8            ; 357: PORTC.2 = 0
+1133    02B8    1107    	BCF 0x07,2
+1134    02B9            ; 358: Next i
+1135    02B9    3001    	MOVLW 0x01
+1136    02BA    07B2    	ADDWF 0x32,F
+1137    02BB    1C03    	BTFSS STATUS,C
+1138    02BC    2AAF    	GOTO L0051
+1139    02BD    301F    L0052:	MOVLW 0x1F
+1140    02BE    0583    	ANDWF STATUS,F
+1141    02BF            ; 359: ASM:        clrwdt
+1142    02BF    0064    	       clrwdt
+1143    02C0            ; 360: For i = 1 To 10
+1144    02C0    3001    	MOVLW 0x01
+1145    02C1    00B2    	MOVWF 0x32
+1146    02C2            L0053:
+1147    02C2    0832    	MOVF 0x32,W
+1148    02C3    3C0A    	SUBLW 0x0A
+1149    02C4    1C03    	BTFSS STATUS,C
+1150    02C5    2AD0    	GOTO L0054
+1151    02C6            ; 361: PORTB.4 = 1 'Red
+1152    02C6    1606    	BSF 0x06,4
+1153    02C7            ; 362: WaitMs 20
+1154    02C7    3014    	MOVLW 0x14
+1155    02C8    00A0    	MOVWF R0L
+1156    02C9    01A1    	CLRF R0H
+1157    02CA    2334    	CALL W001
+1158    02CB            ; 363: PORTB.4 = 0
+1159    02CB    1206    	BCF 0x06,4
+1160    02CC            ; 364: Next i
+1161    02CC    3001    	MOVLW 0x01
+1162    02CD    07B2    	ADDWF 0x32,F
+1163    02CE    1C03    	BTFSS STATUS,C
+1164    02CF    2AC2    	GOTO L0053
+1165    02D0    301F    L0054:	MOVLW 0x1F
+1166    02D1    0583    	ANDWF STATUS,F
+1167    02D2            ; 365: ASM:        clrwdt
+1168    02D2    0064    	       clrwdt
+1169    02D3            ; 366: For i = 1 To 10
+1170    02D3    3001    	MOVLW 0x01
+1171    02D4    00B2    	MOVWF 0x32
+1172    02D5            L0055:
+1173    02D5    0832    	MOVF 0x32,W
+1174    02D6    3C0A    	SUBLW 0x0A
+1175    02D7    1C03    	BTFSS STATUS,C
+1176    02D8    2AE3    	GOTO L0056
+1177    02D9            ; 367: PORTC.0 = 1 'Green
+1178    02D9    1407    	BSF 0x07,0
+1179    02DA            ; 368: WaitMs 20
+1180    02DA    3014    	MOVLW 0x14
+1181    02DB    00A0    	MOVWF R0L
+1182    02DC    01A1    	CLRF R0H
+1183    02DD    2334    	CALL W001
+1184    02DE            ; 369: PORTC.0 = 0
+1185    02DE    1007    	BCF 0x07,0
+1186    02DF            ; 370: Next i
+1187    02DF    3001    	MOVLW 0x01
+1188    02E0    07B2    	ADDWF 0x32,F
+1189    02E1    1C03    	BTFSS STATUS,C
+1190    02E2    2AD5    	GOTO L0055
+1191    02E3    301F    L0056:	MOVLW 0x1F
+1192    02E4    0583    	ANDWF STATUS,F
+1193    02E5            ; 371: ASM:        clrwdt
+1194    02E5    0064    	       clrwdt
+1195    02E6            ; 372: For i = 1 To 2
+1196    02E6    3001    	MOVLW 0x01
+1197    02E7    00B2    	MOVWF 0x32
+1198    02E8            L0057:
+1199    02E8    0832    	MOVF 0x32,W
+1200    02E9    3C02    	SUBLW 0x02
+1201    02EA    1C03    	BTFSS STATUS,C
+1202    02EB    2B08    	GOTO L0058
+1203    02EC            ; 373: PORTA.5 = 1
+1204    02EC    1685    	BSF 0x05,5
+1205    02ED            ; 374: PORTC.4 = 1
+1206    02ED    1607    	BSF 0x07,4
+1207    02EE            ; 375: PORTB.6 = 1
+1208    02EE    1706    	BSF 0x06,6
+1209    02EF            ; 376: PORTC.2 = 1
+1210    02EF    1507    	BSF 0x07,2
+1211    02F0            ; 377: PORTB.4 = 1
+1212    02F0    1606    	BSF 0x06,4
+1213    02F1            ; 378: PORTC.0 = 1
+1214    02F1    1407    	BSF 0x07,0
+1215    02F2            ; 379: PORTC.1 = 0
+1216    02F2    1087    	BCF 0x07,1
+1217    02F3            ; 380: WaitMs 200
+1218    02F3    30C8    	MOVLW 0xC8
+1219    02F4    00A0    	MOVWF R0L
+1220    02F5    01A1    	CLRF R0H
+1221    02F6    2334    	CALL W001
+1222    02F7            ; 381: ASM:        clrwdt
+1223    02F7    0064    	       clrwdt
+1224    02F8            ; 382: PORTA.5 = 0
+1225    02F8    1285    	BCF 0x05,5
+1226    02F9            ; 383: PORTC.4 = 0
+1227    02F9    1207    	BCF 0x07,4
+1228    02FA            ; 384: PORTB.6 = 0
+1229    02FA    1306    	BCF 0x06,6
+1230    02FB            ; 385: PORTC.2 = 0
+1231    02FB    1107    	BCF 0x07,2
+1232    02FC            ; 386: PORTB.4 = 0
+1233    02FC    1206    	BCF 0x06,4
+1234    02FD            ; 387: PORTC.0 = 0
+1235    02FD    1007    	BCF 0x07,0
+1236    02FE            ; 388: PORTC.1 = 1
+1237    02FE    1487    	BSF 0x07,1
+1238    02FF            ; 389: WaitMs 200
+1239    02FF    30C8    	MOVLW 0xC8
+1240    0300    00A0    	MOVWF R0L
+1241    0301    01A1    	CLRF R0H
+1242    0302    2334    	CALL W001
+1243    0303            ; 390: ASM:        clrwdt
+1244    0303    0064    	       clrwdt
+1245    0304            ; 391: Next i
+1246    0304    3001    	MOVLW 0x01
+1247    0305    07B2    	ADDWF 0x32,F
+1248    0306    1C03    	BTFSS STATUS,C
+1249    0307    2AE8    	GOTO L0057
+1250    0308    301F    L0058:	MOVLW 0x1F
+1251    0309    0583    	ANDWF STATUS,F
+1252    030A            ; 392: ASM:        clrwdt
+1253    030A    0064    	       clrwdt
+1254    030B            ; 393: WaitMs 200
+1255    030B    30C8    	MOVLW 0xC8
+1256    030C    00A0    	MOVWF R0L
+1257    030D    01A1    	CLRF R0H
+1258    030E    2334    	CALL W001
+1259    030F            ; 394: ASM:        clrwdt
+1260    030F    0064    	       clrwdt
+1261    0310            ; 395: Return
+1262    0310    0008    	RETURN
+1263    0311            ; 396: 
+1264    0311            ; 397: 
+1265    0311            ; 398: 
+1266    0311            ; End of program
+1267    0311    2B11    L0059:	GOTO L0059
+1268    0312            ; Comparison Routine
+1269    0312    00A2    C001:	MOVWF R1L
+1270    0313    3005    	MOVLW 0x05
+1271    0314    2B24    	GOTO C007
+1272    0315    00A2    C002:	MOVWF R1L
+1273    0316    3002    	MOVLW 0x02
+1274    0317    2B24    	GOTO C007
+1275    0318    00A2    C003:	MOVWF R1L
+1276    0319    3006    	MOVLW 0x06
+1277    031A    2B24    	GOTO C007
+1278    031B    00A2    C004:	MOVWF R1L
+1279    031C    3003    	MOVLW 0x03
+1280    031D    2B24    	GOTO C007
+1281    031E    00A2    C005:	MOVWF R1L
+1282    031F    3004    	MOVLW 0x04
+1283    0320    2B24    	GOTO C007
+1284    0321    00A2    C006:	MOVWF R1L
+1285    0322    3001    	MOVLW 0x01
+1286    0323    2B24    	GOTO C007
+1287    0324    00A8    C007:	MOVWF R4L
+1288    0325    0823    	MOVF R1H,W
+1289    0326    0221    	SUBWF R0H,W
+1290    0327    1D03    	BTFSS STATUS,Z
+1291    0328    2B2B    	GOTO C008
+1292    0329    0822    	MOVF R1L,W
+1293    032A    0220    	SUBWF R0L,W
+1294    032B    3004    C008:	MOVLW 0x04
+1295    032C    1803    	BTFSC STATUS,C
+1296    032D    3001    	MOVLW 0x01
+1297    032E    1903    	BTFSC STATUS,Z
+1298    032F    3002    	MOVLW 0x02
+1299    0330    0528    	ANDWF R4L,W
+1300    0331    1D03    	BTFSS STATUS,Z
+1301    0332    30FF    	MOVLW 0xFF
+1302    0333    0008    	RETURN
+1303    0334            ; Waitms Routine
+1304    0334    08A0    W001:	MOVF R0L,F
+1305    0335    1903    	BTFSC STATUS,Z
+1306    0336    2B3F    	GOTO W002
+1307    0337    2346    	CALL W003
+1308    0338    03A0    	DECF R0L,F
+1309    0339    0000    	NOP
+1310    033A    0000    	NOP
+1311    033B    0000    	NOP
+1312    033C    0000    	NOP
+1313    033D    0000    	NOP
+1314    033E    2B34    	GOTO W001
+1315    033F    08A1    W002:	MOVF R0H,F
+1316    0340    1903    	BTFSC STATUS,Z
+1317    0341    0008    	RETURN
+1318    0342    2346    	CALL W003
+1319    0343    03A1    	DECF R0H,F
+1320    0344    03A0    	DECF R0L,F
+1321    0345    2B34    	GOTO W001
+1322    0346    300C    W003:	MOVLW 0x0C
+1323    0347    00A5    	MOVWF R2H
+1324    0348    0BA5    W004:	DECFSZ R2H,F
+1325    0349    2B48    	GOTO W004
+1326    034A    0000    	NOP
+1327    034B    0000    	NOP
+1328    034C    3003    	MOVLW 0x03
+1329    034D    00A2    	MOVWF R1L
+1330    034E    0BA2    W005:	DECFSZ R1L,F
+1331    034F    2B55    	GOTO W006
+1332    0350    2357    	CALL W007
+1333    0351    2357    	CALL W007
+1334    0352    0000    	NOP
+1335    0353    0000    	NOP
+1336    0354    0008    	RETURN
+1337    0355    2357    W006:	CALL W007
+1338    0356    2B4E    	GOTO W005
+1339    0357    300D    W007:	MOVLW 0x0D
+1340    0358    00A4    	MOVWF R2L
+1341    0359    0BA4    W008:	DECFSZ R2L,F
+1342    035A    2B59    	GOTO W008
+1343    035B    0000    	NOP
+1344    035C    0008    	RETURN
+1345    035D            ; Waitus Routine - Byte Argument
+1346    035D    3025    X001:	MOVLW 0x25
+1347    035E    02A8    	SUBWF R4L,F
+1348    035F    1C03    	BTFSS STATUS,C
+1349    0360    0008    	RETURN
+1350    0361    2B62    	GOTO X002
+1351    0362    3018    X002:	MOVLW 0x18
+1352    0363    02A8    	SUBWF R4L,F
+1353    0364    1C03    	BTFSS STATUS,C
+1354    0365    0008    	RETURN
+1355    0366    2B62    	GOTO X002
+1356    0367            ; Adcin Routine
+1357    0367    0DA0    A001:	RLF R0L,F
+1358    0368    0DA0    	RLF R0L,F
+1359    0369    303C    	MOVLW 0x3C
+1360    036A    05A0    	ANDWF R0L,F
+1361    036B    30C0    	MOVLW 0xC0
+1362    036C    059F    	ANDWF ADCON0,F
+1363    036D    0820    	MOVF R0L,W
+1364    036E    049F    	IORWF ADCON0,F
+1365    036F    141F    	BSF ADCON0,ADON
+1366    0370    3014    	MOVLW 0x14
+1367    0371    00A8    	MOVWF R4L
+1368    0372    235D    	CALL X001
+1369    0373    149F    	BSF ADCON0,GO
+1370    0374    189F    A002:	BTFSC ADCON0,GO
+1371    0375    2B74    	GOTO A002
+1372    0376    130C    	BCF PIR1,ADIF
+1373    0377    101F    	BCF ADCON0,ADON
+1374    0378    0008    	RETURN
+1375    0379            ; Configuration word settings
+1376    0379            	ORG 0x2007
+1377    2007    33BC    	DW 0x33BC
+1378    2008            ; End of listing
+1379    2008            	END
+---------------------------------------------
+Number of errors = 0

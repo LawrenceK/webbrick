@@ -1,0 +1,23 @@
+The Temperaure project was a start on a simple temperature sensor tester.
+The OSTester is a more generic tester
+
+Notes:
+
+RB7 ICSP PGD
+RB6 ICSP PGC
+RB5 Serial Tx
+RB4 Digital Switch In
+RB3 Digital Out
+RB2 Serial Rx
+RB1 1 Wire temp sensors.
+RB0 CCP output, reserve for analogue output
+
+RA7 LED 1
+RA6 LED 2
+RA5 MCLR - ICSP
+RA4 LED 3
+RA3 LED 4
+RA2 LED 5
+RA1 LED 6
+RA0 Analogue input.
+

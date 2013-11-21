@@ -1,0 +1,4 @@
+wbFactoryTest.py testSerial232OutOfWebBrick
+wbFactoryTest.py testSerial232InToWebBrick
+wbFactoryTest.py testSerial485OutOfWebBrick
+wbFactoryTest.py testSerial485InToWebBrick

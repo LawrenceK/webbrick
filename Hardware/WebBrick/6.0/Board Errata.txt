@@ -1,0 +1,92 @@
+WebBrick 6-64 tasks
+-------------------
+
+Checklist
+=========
+
+
+a) Check that VSS, V- and GND are all the same net.
+
+b) Check that all pins on Digital and Analogue buses are connected
+
+c) Check that V+ goes to Quad Op Amp
+
+Tasks
+=====
+
+16 May 2006
+Issues affecting Revision 3 hardware 
+
+i) Use taller male connector, at least 3mm.
+ii)Adjust screw hole positions, slightly too close.
+v) Ensure parts list updated before next manufaacture, lower profile replays.
+
+Future enhancements
+=================
+
+i) Change RJ45 socket so we can access POE power connections.
+
+HISTORICAL
+===========
+Pre May 2006
+
+xa) Change to 1 relay
+
+b) Create space for 3mm mains separation
+
+xc) Remember heat sinks for triacs
+
+d) Add holes for light pipes
+
+xe) Change regulated side cap to 100uf
+
+f) Try to lose 0.1" from length of board
+
+
+IO Board
+========
+
+ --- Change to 4 layer ---
+
+xa) 1 wire pull up
+
+?b) provision for mimics (i.e.) DIL switch
+
+xc) ROT pull-ups
+
+xd) change to 3.5mm pitch
+
+xe) 12V *to* WebBrick 6-64
+
+
+IO Board Remedial
+=================
+
+xROT pull-ups are in fact pull down ! -- Needs changing a documentation!
+
+xOptoTriacs are too close together
+
+Use lower profile relays
+
+
+ABL Heatsinks
+=============
+
+john.hoccom@ablcomponents.co.uk
+
+100 PPC50 black anodised @ 1.50
+
+
+WebBrick 6-64 remedial tasks
+============================
+
+a) AVDD and AVSS (decouple)
+
+b) change element to use GND instead of AVSS to solve confusion
+
+c) Decouple at input and programming connector
+
+xd) Decouple SP with 10NF
+
+e) Check what signals go to the IO board -- I2C and second UART.
+

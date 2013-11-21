@@ -1,0 +1,38 @@
+\subsection{Python Examples}
+
+There are some Python examples that you can use to generate the UDP packets that WebBricks will respond to.  
+Please note that in most cases you will need at least version 2.0 of Python for these programs.  This is 
+because earlier versions did not like sending broadcast packets on all platforms. If you are an Apple Mac 
+user you'll need OSX and Python 2.2 or 2.3, note that 2.3 is bundled with the Panther release of OSX, and 
+very nice it is too.
+
+
+\begin{description}
+
+\item[DigitalOut.py]
+
+This program simply constructs the command string 'DO6T:' which translates to Toggle Digital Out 6.  
+This was chosen because on a standard FED PIC development board 4 LEDs are available on PORTD bits 4-7.  
+The LED on Bit 7 is currently used as a heart beat with a period of approximately 1 second.  The fact that 
+the heartbeat LED flashes tells the user that PIC18F452 program in running and not locked up anywhere.
+
+usage:  \begin{verbatim} python2 DigitalOut.py \end{verbatim}
+
+\item[DigitalCmd]
+
+This program demonstrates the real flexibility of WebBrick server control, since it issues digital output 
+commands to any channel.
+
+usage:  \begin{verbatim} python2 DigitalCmd.py -n chn -f chn -t chn -d chn\end{verbatim}
+
+	\begin{description}
+	\item[-n chn]  Switch chn oN  
+	\item[-f chn]  Switch chn oFf  
+	\item[-t chn]  Toggle chn  
+	\item[-d chn]  Dwell chn 
+	\end{description}
+
+
+
+
+\end{description}

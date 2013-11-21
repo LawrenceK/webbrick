@@ -1,0 +1,99 @@
+[Main]
+Name=Mimic using Timer 4
+ShortName=Mimic
+ASMFileName=mimic.c
+IniFileName=mimic.h
+HelpText=Mimic using Timer 4
+Icon=Mimic.bmp
+HasInterrupt=1
+Group=CCP
+nTemp=0
+AppType=0
+LoopCall=
+AllowMulti=0
+HelpApp=
+IntPri=0
+UseAsm=0
+nConfig=1
+[IOS]
+nIO=0
+[Parameters]
+nPar=1
+Name0=RotateMimics,Mimics shift by 2 for rev 4 hardware:
+Type0=3
+Default0=0
+[Interrupt]
+NLines=20
+Line0=#ifdef MimicIntUsed
+Line1=#asm
+Line2=btfss   PIR3,TMR4IF
+Line3=goto    MimicIntEnd
+Line4=
+Line5=bcf     PIR3,TMR4IF
+Line6=MOVFF   FSR0L,ISaveFSR0L
+Line7=MOVFF   FSR0H,ISaveFSR0H
+Line8=MOVLB   mimicIndex >> 8
+Line9=LFSR    0, mimicTable
+Line10=MOVF    mimicIndex, w, BANKED
+Line11=MOVFF   PLUSW0, LATE
+Line12=INCF    mimicIndex, f, BANKED
+Line13=BTFSC   mimicIndex, 6, BANKED
+Line14=CLRF    mimicIndex, BANKED
+Line15=MOVFF   ISaveFSR0L,FSR0L
+Line16=MOVFF   ISaveFSR0H,FSR0H
+Line17=MimicIntEnd::
+Line18=#asmend
+Line19=#endif
+[Init]
+HasInit=1
+InitCall=
+nLines=7
+Line0=unsigned char register ISaveFSR0L;
+Line1=unsigned char register ISaveFSR0H;
+Line2=#define MAX_MIMIC_LEVEL  64
+Line3=extern unsigned char mimicTable[MAX_MIMIC_LEVEL];
+Line4=unsigned char mimicIndex;
+Line5====================
+Line6=
+[Occurrences]
+nOccur=0
+Name0=Compare5,Action when comparison achieved,PIR3,CCP5IF,0
+
+[HookElements]
+nHooked=1
+Name0=Timer 4
+FileName0=Timer4.edf
+LongFileName0=
+Name0Par0=EnTimer4
+Name0ParV0=1
+Name0Par1=T4_Pre
+Name0ParV1=3
+Name0Par2=T4_Post
+Name0ParV2=0
+Name0nOccur=0
+
+[PublicCalls]
+nCalls=3
+nVars=1
+vName0=mimicTable
+vHelp0=mimicTable
+Name0=UpdateMimics
+Help0=UpdateMimics
+Name1=FadeMimics
+Help1=FadeMimics
+Name2=SetMimics
+Help2=SetMimics
+
+[InComp]
+NLines=0
+Line0=Compare Module 5
+
+[AutoVar]
+nAVar=1
+Name0=PIE3,255,8,1
+
+[Defines]
+nDefines=0
+
+[Processors]
+nProcessors=0

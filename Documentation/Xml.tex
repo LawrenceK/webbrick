@@ -1,0 +1,332 @@
+\section {Xml Structure}
+\index{XML}
+
+A WebBrick can serve up two Xml files, one of these (WbStatus.xml) provides the current status of dynamic information, i.e.
+current output state and the other (WBCfg.xml) contains the complete WebBrick configuration.
+
+The element names are chosen to identify the commands used to modify attributes within the PIC chip.
+
+The XML is intended to be consumed by other computer software more than used to display to the end user in its raw form. If
+you try and look at it in a normal text editor you will find some very long line lengths.
+
+\subsection{Trigger Encoding,XML}
+    When a trigger sequence is sent out from the webbrick it is encoded into 3 bytes encoded as 
+    follows.
+
+    \begin{enumerate}
+    \item[ConfigByte1]
+    This uses the following Bit fields
+        \begin{enumerate}
+        \item[Bits 0-4] The encoding of these bits depends on the command group.
+        \item[Bits 5-6] These bits select a command group.
+            \begin{enumerate}
+            \item[0] General commands
+            \item[1] Not currently used
+            \item[2] Not currently used
+            \item[3] Dwell commands.
+            \end{enumerate}
+        \item[Bits 7] This indicates whether to send a UDP packet.
+            \begin{enumerate}
+            \item[0] No UDP packet will be sent in response to a input trigger
+            \item[1] General UDP Packet, see packet contents for further details.
+            \end{enumerate}
+        \end{enumerate}
+
+        General Commands - these use 5 bits as a command or action.
+            \begin{enumerate}
+            \item[0] No Action
+            \item[1] Off
+            \item[2] On
+            \item[3] Momentary - short duration
+            \item[4] Toggle
+            \item[5] Unused
+            \item[6] Unused
+            \item[7] Next
+            \item[8] Prev
+            \item[9] Set Low Threshold
+            \item[10] Set High Threshold
+            \item[11] Adjust Low Threshold
+            \item[12] Adjust High Threshold
+            \item[13] Send Infra Red
+            \item[14] Up
+            \item[15] Down
+            \item[16] Set DMX channel
+            \item[17] Count
+            \end{enumerate}
+
+        Dwell Commands - these use 2 bits as a command and 3 bits to select a dwell number.
+
+            \begin{enumerate}
+            \item[0-2] Dwell number or index
+            \item[3-4] Dwell command
+            \end{enumerate}
+            
+            \begin{enumerate}
+            \item[0 - 00] Dwell On
+            \item[1 - 16] Dwell Off
+            \item[2 - 32] Dwell Cancel
+            \item[3 - 48] Dwell Always
+            \end{enumerate}
+
+    \item[ConfigByte2]
+
+    This uses the following bit fields.
+        \begin{enumerate}
+        \item[Bit 7] If this bit is set then the target channel is analogue and the following analogue 
+            format applies.
+        \end{enumerate}
+        Analogue format.
+        \begin{enumerate}
+        \item[Bit 7] bit is set
+        \item[Bits 0-3] This is the setpoint to be used in analogue commands
+        \item[Bits 4-6] This is the analogue channel on which the action is to be performed.
+        \end{enumerate}
+        Non analogue format.
+        \begin{enumerate}
+        \item[Bit 7] bit is clear
+        \item[Bit 6] If Clear then it is a digital channel, if set then it is a Scene.
+        \item[Bits 0-3] This is the digital channel or scene number.
+        \item[Bits 4-5] Reserved for other possible options, keep as 0.
+        \end{enumerate}
+
+    \item[ConfigByte3]
+    This is the remote node to be triggered for remote actions. It will be set in all
+    UDP packets so can be used for other purposes when type is General or Alarm.
+
+    \item[ConfigByte4]
+    This is a reserved byte not yet used.
+    \end{enumerate}
+
+\subsection {WbStatus.xml}
+\index{WbStatus.xml}
+
+    \begin{tabular}{l|l}
+    Element&Description\\
+    \hline
+    WebbrickStatus&Overall Element in WbStatus.xml\\
+    SN&Node number\\
+    Error&Response to last command\\
+    Context&Operational State\\
+    LoginState&Login level\\
+    DI&Digital input state\\
+    DO&Digital output state\\
+    Clock&Current webbrick clock\\
+    Date&Not implemented\\
+    Time&Current webbrick time\\
+    Day&Current webbrick day of week\\
+    OWbus&One wire bus status\\
+    Tmps&Temperature elements\\
+    Tmp&Temperature id nn values\\
+    AOs&Analogue output elements\\
+    AO&Analogue output id nn values\\
+    AIs&Analogue input elements\\
+    AI&Analogue input id nn values\\
+    \end{tabular}
+
+For example of using this see wb6Status.py in the python API or wb6Status.php in the PHP API.
+
+\subsubsection {Error}
+The element contents are 0 or an error code if the last webbrick command was invalid.
+
+    \begin{tabular}{l|l}
+    Value&Description\\
+    \hline
+    0&No Error\\
+	1&Bad Command\\
+	2&Bad Parameter\\
+	3&Not Logged In\\
+	4&Address Locked, attempt to change IP address on address locked webbrick.\\
+	5&In Startup\\
+	6&No Command yet issued\\
+    \end{tabular}
+
+\subsubsection {Context}
+Operating context.
+
+    \begin{tabular}{l|l}
+    Value&Description\\
+    \hline
+    0&Startup\\
+    \end{tabular}
+
+\subsubsection {LoginState}
+Login state.
+
+    \begin{tabular}{l|l}
+    Value&Description\\
+    \hline
+    0&Logged out\\
+    1&controls enabled\\
+    2&configuration\\
+    3&installer\\
+    \end{tabular}
+
+\subsubsection {DI}
+Digital input state, bit mapped integer where bit 0 is the current state of digital input 0 (when using a zero base). 
+
+\subsubsection {DO}
+Digital output state, bit mapped integer where bit 0 is the current state of digital output 0 (when using a zero base). 
+
+\subsubsection {Clock}
+Contains the current time as known by the WebBrick, the XML includes full date but this is not implemented within the
+system at present. The element Date within Clock contains date string and Time contains the time in 24 hour format.
+	
+\subsubsection {OWBus}
+Contains the status of the one wire bus. The value of 255 shows no sensors detected and a small integer is a bit mapped 
+value with a bit for each temperature sensor.
+
+\subsubsection {Tmps}
+Contains one entry for each possible temperature sensor.
+
+\subsubsection {Tmp}
+Contains an id attribute, the current low threshold and high thresholds as attributes and the 
+current temperature reading. Note these are in 16ths of a degree so convert to float/real number and 
+divide by 16 to get value.
+
+\subsubsection {AO}
+Contains the current analogue output value for an analogue output channel, this is a number from 0-100 where 100
+is 10V output.
+
+\subsubsection {AI}
+Contains an id attribute, the current low threshold and high thresholds as attributes and the 
+current analogue reading. Note these are in the range 0 - 100 where 100 is 5V at the terminal.
+
+\subsubsection {Sample wbStatus.xml}
+The following is a sample copy of a webbrick Xml status file.
+
+\verbatiminput{WbStatus.xml}
+
+\subsection {WbCfg.xml}
+\index{WbCfg.xml}
+
+    \begin{tabular}{l|l}
+    Element&Description\\
+    \hline
+    WebbrickConfig&Overall Element in WbStatus.xml\\
+    NN&Node Name\\
+    SN&Node number\\
+    SRs&Rotary encoder elements\\
+    SR&Rotary encoder step value\\
+    IR&Infra red address received by webbrick on IR reception.\\
+    SF&Analogue fade rate\\
+    CDs&digital input elements\\
+    CD&digital id nn input\\
+    Trg&Trigger setting\\
+    TrgL&Low threshold and trigger setting\\
+    TrgH&High threshold and trigger setting\\
+    CCs&Scene elements\\
+    CC&Scene id nn settings\\
+    CWs&Dwell elements\\
+    CW&Dwell id nn setting\\
+    CSs&Set point elements\\
+    CS&Set point id nn \\
+    CTs&Temperature elements\\
+    CT&Temperature input id nn value,name,thresholds\\
+    CIs&Analogue input elements\\
+    CI&Analogue input id nn value,name,thresholds\\
+    CEs&Scheduled event elements\\
+    CE&Scheduled event id nn \\
+    NOs&Digital output elements\\
+    NO&Digital output id nn name \\
+    NMs&Monitor input elements\\
+    NAs&Analogue output elements\\
+    NA&Analogue output id nn name \\
+    MM&Mimic configuration\\
+    \end{tabular}
+
+\subsubsection {WebbrickConfig}
+Contains the firmware version number
+
+\subsubsection {NN}
+Contains the configured node name.
+
+\subsubsection {SI}
+Contains the IP address and MAC address of the webbrick.
+
+\subsubsection {SN}
+Contains the configured webbrick node number.
+
+\subsubsection {SR}
+Contains attributes id and the Value for the rotary step value.
+
+\subsubsection {SF}
+Contains the fade rate counter, this controls how fast the analogue channels fade up and down.
+
+\subsubsection {CDs}
+Container element for all the digital input channel elements.
+
+\subsubsection {CD}
+Configuration details for a digital input. Contains an id, the name and the options for the input and a nested trigger
+element. See start of section for trigger details.
+
+\subsubsection {CCs}
+Container element for all the scene elements.
+
+\subsubsection {CS}
+Configuration details for a scene. Contains an id attribute and controls for the digital outputs and analogue outputs.
+The Dm attribute identifies which digital channels are affected by this scene and Ds for those channels whether to 
+switch the channel off or on. Am identifies which analogue channels are affected and Av the set points for those 
+channels. Note when a scene is selected by a trigger the trigger action will override the On action here, so that 
+a scene can be dwelled etc. If the scene says Off then Off it goes.
+
+\subsubsection {CWs}
+Container element for all the dwell values.
+
+\subsubsection {CW}
+Contain the configured dwell values in seconds.
+
+\subsubsection {CSs}
+Container element for all the analogue set point values.
+
+\subsubsection {CS}
+Contains each of the set point values in the range 0-100.
+
+\subsubsection {CTs}
+Container element for all the temperature sensor configuration.
+
+\subsubsection {CT}
+Contains an id and a name for a temperature sensor and an embedded trigger along with the threshold
+at which it occurs. TrgL is the low threshold amd TrgH is the high threshold for the sensor. Threshold
+values are in 16ths of a degree.
+
+\subsubsection {CIs}
+Container element for all the analogue input configuration.
+
+\subsubsection {CI}
+Contains an id and a name for an analogue channel and embedded triggers along with the threshold
+at which they occurs. TrgL is the low threshold amd TrgH is the high threshold for the sensor. Threshold
+values are in the range 0-100.
+
+\subsubsection {CEs}
+Container element for all the scheduled event configuration.
+
+\subsubsection {CE}
+Each element contains an id, Days, Hours, Minutes attribute. The Days attribute is bit mapped for days 0-6
+and identifies on which days of the week the event occurs. The embedded Trg element is the action to perform.
+
+\subsubsection {NOs}
+Container element for all the digital output elements.
+
+\subsubsection {NO}
+Each element contains an id and a name for a digital output.
+
+\subsubsection {NAs}
+Container element for all the analogue output elements.
+
+\subsubsection {NA}
+Each element contains an id and a name for a analogue output.
+
+\subsubsection {IR}
+Contains the Infra red RC5 address recognised by the webbrick.
+
+\subsubsection {MM}
+Contains the current mimic settings. The 'lo' and 'hi' attributes are the off an on mimic settings, this value
+is in the range 0-63. The 'dig' attribute is a 32 bit number with 4 bits for each digital output that maps the 
+output channel to a mimic, as there are only 8 mimics a channel number greater than 7 is basically No Mimic. 
+The 'an' attribute provides the same mapping for the analogue outputs. Finally the 'fr' attribute controls
+how fast the mimics fade from one setting to the next.
+
+\subsubsection {Sample wbCfg.xml}
+The following is a sample copy of a webbrick Xml config file.
+
+\verbatiminput{WbCfg.xml}

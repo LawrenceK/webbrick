@@ -1,0 +1,40 @@
+\section{Power Requirements}
+\index{Power Requirements}
+
+ This section deals with the power budget required to run a WebBrick.
+ 
+ \subsection{Power Supply}
+ \index{Power Supply}
+ 
+    WebBricks should be run from a power supply that delivers 12.6V to 18V.  12.6V is a minimum to achieve a full 0-10V range on
+    the analogue outputs.
+    
+    A quiescent WebBrick will consume 55-60mA at 12.6V, however the WebBrick in real use will be supplying power to a range of external items
+    including:
+ 	
+\begin{itemize}
+
+\item{\bf LEDs} The WebBrick may drive up to 8 mimic LEDs, each consuming 5mA. {\it 40mA}
+
+\item{\bf Relays} There are two relays, each using 30mA to hold the contacts closed. {\it 60mA}
+
+\item{\bf Temperature Sensors} There may be up to 5 sensors, these are driven periodically. {\it 5mA peak}
+
+\item{\bf Analogue Outputs} There are four buffered 0-10V outputs each capable of supplying 20mA. {\it 80mA}
+
+\item{\bf General Output Drive} The digital outputs can each supply 5mA, although only four are presented as TTL.
+if a rotary encoder is connected it will use 2mA.  Driving the triac and open collector gates requires 2mA each. {\it 40mA}
+
+\end{itemize}
+
+Total power budget, all outputs driven, all sensors connected 280mA.
+ 	
+ 	
+\subsubsection{Back Feed}
+\index{Back Feed}
+ 	
+    Because the WebBrick consumes so little current, it is possible to inadvertently 
+    power it through the coils of external relays connected to 
+    the open collector outputs.  This only becomes an issue if one needs to fully power 
+    down a WebBrick. To avoid this situation we suggest
+    that the +ve side of relay coils are driven from the same power supply as drives the WebBricks.

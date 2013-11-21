@@ -1,0 +1,56 @@
+\section{Temperature Sensors}
+\index{Temperature Sensors}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{Images/TempSensorPic.png}
+\end{figure}
+
+\subsection{WebBricks and Temperature Sensors}
+
+We supply and recommend Dallas DS18B20 temperature sensors.  These are connected to the 1 Wire bus on the WebBrick
+within the following limits:
+
+	\begin{itemize}
+	  
+	  \item{Cable:} Cat 5E cable is recommended for temperature sensor connections.  Webbrick Systems supply
+	  		temperature sensors with 2M Cat 5E pre-attached.
+	  		
+	  \item{Bus Length:}  We recommend a maximum bus length of 90M for a single sensor and 50M for multiple sensors.
+	  			Maximum spur length 2M.
+	  			
+	  \item{Unused cores:} We recommend that unused cores are connected to ground.  In particular the brown core
+	  			should be connected to ground.
+	  			
+	  \item{Sensor Accuracy:} Is within 0.5 Deg C.
+	  
+	  \item{Sensor Resolution:} Is 0.125 Deg C, although this is less than the accuracy of the temperature sensor
+	  				it is very useful for determination of whether a temperature is rising or falling
+	  
+	\end{itemize}
+
+
+\subsection{Connections}
+
+The following connections should be made:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{Images/TempSensor.png}
+\end{figure}
+
+	\begin{itemize}
+	  
+	  \item{Brown-White:} +5V
+	  		
+	  \item{Blue-White:} Data 
+
+	  \item{Blue:} Ground 
+
+	  \item{Brown:} Ground, this core is not connected to the temperature sensor,
+	  		grounding this core satisfies the EMC conditions of CE marking.
+	  			
+	\end{itemize}
+
+
+Note that multiple temperature sensors are connected in parallel.

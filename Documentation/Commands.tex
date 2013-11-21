@@ -1,0 +1,830 @@
+\section {Command Structure}
+\index{command structure}
+
+The WebBrick has a command interface that accepts command strings, these can be generated
+by the Web interface and can also be sent to the WebBrick over the network. For network delivery
+the commands can be sent using an HTTP URL with the command encoded in the parameters or a UDP transmission,
+the HTTP use is preferable as you get an indication of whether the command was received at the WebBrick.
+
+\subsection{General}
+\index{Command Structure, General}
+All commands start with a 2 character identifier, and are followed by any required parameters and terminated 
+by a colon (':') character after the parameters, 
+which means end-command. Each parameter to a command is terminated by a semi-colon (;). In this document 
+items in \param{is a user parameter} 
+and should be replaced with real world values. Items in [...] are optional parameters, therefore are not essential to replace. Generally the first character within the 2 character 
+identifier identifies the command group and the second identifies the entity type. No extra blank spaces should
+be inserted into the command as unexpected things may happen or the command be rejected.
+
+These commands can be sent to the WebBrick in two ways:
+
+\begin{enumerate}
+	\item By encoding the parameters into 
+	an HTTP URL and accessing that URL
+	\item or by sending a UDP packet to the WebBrick with a 
+	correct Siteplayer header on it for delivery to the PIC chip. 
+\end{enumerate}
+
+The embedded UI uses the 
+HTTP URL approach and it is recommended that this approach is used for external systems. If you want
+to use UDP packets look at the python code in wbUdp.py for details.
+
+The HTTP URL to be used is http://\param{ip Address}/cfg.spi?com=\param{commandString}
+Where \param{ip address} is the WebBricks IP address or host name.
+and \param{commandString} is one of the command strings documented here. Note some commands will
+need you logged in for them to be processed.
+
+To make it easier to understand the command strings the first character is generally used as follows:
+
+\subsubsection{command groups}
+\begin{tabular}{l|p{12cm}}
+1st Letter&Command Group\\
+\hline
+C&Configure\\
+S&Set\\
+N&Name\\
+D&Digital\\
+A&Analogue\\
+I&Infra Red\\
+T&Thresholds\\
+\end{tabular}
+
+And the second character generally identifies the target channel type, as follows:
+\subsubsection{entity type}
+\begin{tabular}{l|p{12cm}}
+2nd Letter&entity type\\
+\hline
+D&Digital input\\
+A&Analogue Output\\
+I&Analogue input\\
+O&Digital Output\\
+T&Temperature\\
+C&Scene\\
+R&Serial comms or rotary encoder\\
+\end{tabular}
+
+\subsubsection{Trigger Configuration}
+\index{Trigger!configuration sequence}
+\index{Trigger sequence}
+A lot of the commands take a sequence of parameters referred to as a Trigger sequence, this 
+defines what is to happen when a trigger event occurs, for example a digital input or 
+a temperature threshold being crossed. 
+
+The sequence of parameters is:
+
+\param{A\textbar{}D\textbar{}S\textbar{}T\textbar{}I}\param{targetChn}; \param{SetPointNr}; \param{actionType}; \param{DwellNr}; \param{UDPType}; \param{AssociatedValue} [; \param{OptValue}]:
+
+Where:
+
+\begin{tabular}{l|p{12cm}}
+Parameter&Description\\
+\hline
+\param{A\textbar{}D\textbar{}S\textbar{}T\textbar{}I}&is a single character that identifies whether the target channel is an 
+analogue output(A), a digital output (D), a Scene (S), a Temperature sensor (T), or Infra Red Send\\
+\param{targetChn}&is the channel number or Scene being targeted\\
+\param{actionType}&is one of the values from the Action table (range 0-15) In the case of a Scene this
+is used as the action for all analogue channels that are not marked to be ignored and for digital 
+channels marked for On in the scene configuration.\\
+\param{DwellNr}&is a dwell number and is ignored if the actionType is not a dwell. Note for DT command dwell 
+is passed in seconds and not as a dwell index.\\
+\param{SetPointNr}&is a setpoint number and is ignored if the target channel is not analogue, Note a Scene is
+not an analogue channel and the SetPoint is taken from the Scene.\\
+\param{UDPDo}&identifies whether a UDP packet type is to be sent\\
+\param{AssociatedValue}&is a number associated with the action.\\
+\param{OptValue}&is an optional reserved value.\\
+\end{tabular}
+
+\subsubsection{Actions}
+Each trigger can cause one of the following actions to be performed on an output channel.
+
+\begin{tabular}{l|l|p{12cm}}
+Nr&Action&Description\\
+\hline
+
+0&None&no action\\
+1&Off&switch off\\
+2&On&switch digital channels on or an analogue channel to a setpoint.\\
+3&Momentary&Switch a channel on for a small time period circa 200mS.\\
+4&Toggle&Turn an on channel off and an off channel on. For analogue channels if the current setting is greater than 0 it is deemed to be on.\\
+5&Dwell Always&Always Switch a channel on for a configured time period, if lamp already on this will switch off after a time period.\\
+6&Dwell-Cancel&If a channel is Off Switch the channel on for a configured time period. 
+If the channel is already On then switch the channel Off immediately.\\
+7&Next&Move a channel to its next higher state, for analogue channels this is to the next set point, for digital channels this is equivalent to a toggle. If the target is any Scene change the current scene at the web brick up by one.\\
+8&Prev&Reverse of Next, Down Setpoint, Toggle, Previous Scene.\\
+9&SetLowThreshold&Change the low threshold for one of the analogue input or temperature sensor\\
+10&SetHighThreshold&Change the high threshold for one of the analogue input or temperature sensor\\
+11&AdjustLowThreshold&Move the low threshold for one of the analogue input or temperature sensor\\
+12&AdjustHighThreshold&Move the high threshold for one of the analogue input or temperature sensor\\
+13&SendIR&Send a command over the Infra Red emitter, RC5 only, the target RC5 channel is the command code 
+and associated value is the RC5 address.\\
+14&Up&Take a channel up a step, generally used for analogue outputs.\\
+15&Down&Take a channel down a step, generally used for analogue outputs.\\
+16&Set Dmx&Set a DMX channel to a level.\\
+17&Count&Sets the channel to count mode.\\
+18&Dwell On&Switch a channel on for a configured time period if it is not already on.\\
+19&Dwell Off&Switch a channel off after a configured time period.\\
+\end{tabular}
+
+Notes
+\begin{itemize}
+\item Toggle, On and Off actions all override a current Dwell command.
+\item A Dwell command issued during a current Dwell period will reset the Dwell time.
+\item A Dwell Cancel command issued during a current Dwell period will end the dwell. A Dwell Cancel issued 
+outside a Dwell period will switch the output on for the Dwell time.
+\item At the end of an analogue dwell the output will return to the level prior to the dwell, this 
+is useful for setting lights
+to a low level and bringing them high on some trigger, e.g. security PIR.
+\item Channel numbers are zero based for the internal commands.
+\item Scenes are in two banks, one bank of 8 and one bank of 4, when performing Next and Prev Scene the scene change 
+stays within the bank that the trigger definition identifies by selecting one of the scenes within the chosen bank.
+\item String parameters cannot contain any of the characters '\textless{}\textgreater{}\&
+\item Analogue channels go up and down setpoints with Next/Prev and step the level the rotary step value with Up/Down \&
+\item Some commands are meaningless with some outputs, where possible reasonable actions are chosen. i.e. for digital 
+channels Next/Prev/Up/Down are treated as a toggle command\\
+\end{itemize}
+
+\subsection{Error Codes}
+These may be displayed in the header of the webbpage and may appear in the xml status.
+
+    \begin{tabular}{l|l}
+    Value&Description\\
+    \hline
+    0&No Error.\\
+	1&Bad Command.\\
+	2&Bad Parameter.\\
+	3&Not Logged In.\\
+	4&Address Locked, attempt to change IP address on address locked webbrick.\\
+	5&In Startup state.\\
+	6&No Command yet issued, post startup state.\\
+    \end{tabular}
+	
+\subsection{Command summary}
+
+\subsubsection{Static configuration commands}
+
+\begin{tabular}{l|p{12cm}}
+Command&Function\\
+\hline
+ND&Name digital Input\\
+NO&Name digital output\\
+NI&Name analogue input\\
+NA&Name analogue output\\
+NT&Name temperature sensor\\
+NN&Name node\\
+CD&Configure digital input\\
+CI&Configure analogue input\\
+CT&Configure temperature input\\
+CS&Configure set point\\
+CW&Configure dwell\\
+CR&Configure serial interface.\\
+CE&Configure scheduled event\\
+CC&Configure a scene\\
+SN&Set node number\\
+SF&Set fade rate\\
+SM&Set mimic brightness levels for on and off signals, and fade rate\\
+CM&Configure mimic channels for analogue and/or digital outputs\\
+ST&Set Time\\
+SD&Set Date\\
+SR&Set rotary encoder step\\
+SI&Set Internet address\\
+SA&Set IP address with verified MAC address; the !WebBrick sets its IP address to the specified value only if its 48-bit MAC address matches that supplied.  This command can be used with UDP broadcasts to set IP addresses when several WebBricks on a network have the same initial IP address.\\
+SP&Set password for indicated security level\\
+SO&Set option on (1) or Off (0) (Use with care: currently deprecated, and not reflected in XML configuration)\\
+IR&Enable infrared receive\\
+IT&Enable infrared transmit\\
+IA&Sets the RC5 Infrared address for receiving\\
+% Private command.
+%ZO&Security option setting (e.g. IP address locking)\\
+\end{tabular}
+
+\subsubsection{Dynamic status setting commands}
+
+\begin{tabular}{l|p{12cm}}
+Command&Function\\
+\hline
+DI&Trigger digital input\\
+DO&Set digital output\\
+DT&Invoke a trigger event action using the supplied parameters. The parameters are a full trigger definition as can
+be attached a local event source, i.e. digital input, but are acted upon when received. Note dwell is passed in seconds and not as a dwell index.\\
+DM&Set one or more mimic outputs to specified levels\\
+DA&Requests web brick to send a small number of UDP attention packets within a few seconds (currently: one immediately, and one more within a second).  This is used for WebBrick discovery.  (cf. factory reset causes attention packets to be sent every few seconds for a minute.)\\
+AA&Set analogue output to one of the setpoints or to an absolute level.\\
+SC&Set scene\\
+SS&Set operational state\\
+TA&Modify dynamic threshold for analogue input\\
+TT&Modify dynamic threshold for temperature sensor\\
+\end{tabular}
+
+
+\subsubsection{Miscellaneous WebBrick control commands}
+
+\begin{tabular}{l|p{12cm}}
+Command&Function\\
+\hline
+LG&Login to security level associated with password - also logout.\\
+RT&Re scan 1-wire bus for new devices\\
+RU&Refresh web user interface data\\
+RS&Reboot Siteplayer, PIC chip delays a while and then rebuilds the UI data.\\
+RB&Reboot PIC\\
+RI&Set RS485 driver off, input mode\\
+RO&Set RS485 driver on, output mode\\
+RD&Send serial data\\
+IS&Sends an RC5 infrared command (channel) over a configured infrared emitter\\
+\end{tabular}
+
+
+\subsection{Commands}
+
+All command are listed here.
+
+\subsubsection{AA - Analogue output control}
+\index{Analogue output control}
+\index{Analogue Output ! control sequence}
+AA\param{chn};[S\param{nn}\textbar{}\param{nn}]  Set Analogue output setpoint or absolute
+
+Set an analogue output to a specific level.
+chn is the analogue output channel number. If the output value is S\param{nn} then \param{nn} is the setpoint,
+otherwise \param{nn} is the output level as an absolute value of between 0-100\%. 
+
+e.g.
+AA1;S1:
+
+\subsubsection{CC - Configure Scene}
+\index{Configure Scene}
+CC\param{nr};[NFI][NFI][NFI][NFI][NFI][NFI][NFI][NFI]; [I\textbar{}S\param{nn}]; [I\textbar{}S\param{nn}]; [I\textbar{}S\param{nn}]; [I\textbar{}S\param{nn}]:
+
+Configure a scene. A scene consists of optional settings for all the digital and analogue channels. Any channel
+may be marked as Ignore (do not change). Digital channels also be marked as On or Off, whilst analogue channels
+can be given a set point. The first group [NFI] is for the digital channels and is repeated as many times 
+as required to cover the digital channels where a change is required, i.e. if you only want to modify 
+digital channels 0, 1, 2 then you only need list 3 entries. If you want to only affect channel 8 (or 16) then
+you must send all the preceding ignore's (I). Similarly for the analogue channels where each later entry is
+optional if you have already specified the required changes.
+
+e.g.
+CC0;NFNFNFNF;I;S1;S2;S3:
+CC1;NF:
+CC3;NF;S0;S1;S2;S3:
+
+\subsubsection{CD - Configure Digital Input}
+\index{Configure Digital Input}
+CD\param{chn}; \param{A\textbar{}D\textbar{}S}\param{targetChn}; \param{sp}; \param{actionType}; \param{dwell}; \param{udpType}; \param{AssociatedValue} [; \param{OptValue} [; \param{Options}]]:
+
+Configure one of the digital inputs.
+chn is the digital input channel number from 0 to 7 (or more). Remaining parameters are a Trigger Sequence.
+Options is a set of flags that controls the digital input event generation.
+
+\index{Options, Digital Input}
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&generate trigger event on rising edge, i.e. 0v to 5v transition.\\
+1&2&generate trigger event on falling edge (Default) i.e. 5v to 0v transition, a normally open switch is pressed.\\
+2&4&This input and the next is connected to a rotary encoder, when the rotary encoder is turned 'down' this trigger is actioned\\
+3&8&\\
+4&16&\\
+5&32&\\
+6&64&\\
+7&128&\\
+\end{tabular}
+
+To create the option value add the required Value's from the above table together.
+For example an option value of 3 (1+2) would set both rising and falling edge flags and this is useful if you have a latching switch of some sort, 
+i.e. standard MK light switch.
+
+e.g.
+CD7;A1;2;2;0;1;1:
+Configure Digital in 7 to target analogue output 1. setpoint 2, action On(2), dwell (0) ignored, UDP
+
+\subsubsection{CE - Configure scheduled event}
+\index{Configure scheduled event}
+CE\param{chn}; \param{Days}; \param{hours}; \param{Min}; \param{A\textbar{}D\textbar{}S}\param{targetChn}; \param{sp}; \param{actionType}; \param{dwell}; \param{udpType}; \param{AssociatedValue}[; \param{OptValue}];
+
+Configure scheduled event.
+chn is event number, currently 16 scheduled events are catered for. Days is a set of day numbers 
+from 0-6 to identify which days the event occurs on, e.g. "06" is Sunday and Saturday. hours (0-23) 
+and min (0-59) identifies the time within the day when it occurs. 
+The remaining parameters constitute a Trigger set as described else where,
+
+e.g.
+CE6;12345;12;30;A1;2;2;0;1;1:
+Configure event 6, at 12:30 on Mon to Fri to target analogue output 1. setpoint 2, action On(2), dwell (0) ignored, UDP. 
+
+\subsubsection{CI - Configure Analogue Input}
+\index{Configure Analogue Input}
+CI\param{chn}; \param{L\textbar{}H}; \param{Threshold}; \param{A\textbar{}D\textbar{}S}\param{targetChn}; \param{sp}; \param{actionType}; \param{dwell}; \param{udpType}; \param{AssociatedValue}[; \param{OptValue}];
+
+Configure one of the analogue inputs.
+L or H identify whether this is setting a High or Low threshold and Threshold is the analogue threshold
+as a value from 0-100\%. The low level hardware is 0-5V but so as to avoid issues when some signal
+conditioning is added the input is scaled.
+
+e.g.
+CI0;L;20;A1;2;2;0;1;1:
+
+\subsubsection{CM - Configure Mimics}
+\index{Configure Mimics}
+CM\param{A\textbar{}D}\param{source}; \param{mimicChn}[...]:
+
+Configure mimic channels for one or more analogue and/or digital outputs.
+
+      A target indicates an analogue output number target for a which a mimic channel is specified
+
+      D target indicates an digital output number target for a which a mimic channel is specified
+
+      mimicChn indicates a mimic channel number that will be associated with the corresponding 
+      analogue or digital output, to break the connection between a channel and a mimic use a mimic channel
+      number of 15.
+
+Pairs of outputs and corresponding mimic channels may be repeated for each association that is 
+required to be specified. (Or, a separate command may be used for each.)
+
+The default setting is that Digital outputs 0 to 7 are associated with mimic output 0-7. The off level and
+on level can be reconfigured with the SM command.
+
+e.g.
+CMA0;0;A1;1;A2;2;A3;3:
+target mimics 0 to 3 from analogue 0 to 3.
+
+\subsubsection{CS - Configure Preset point}
+\index{Configure Preset point}
+CS\param{chn}; \param{val}
+
+Configure one of the set points (Preset point) used for the analogue outputs.
+chn is the setpoint number and val is the setpoint value in the range 0-100\%. The low level hardware 
+generates 0-10V but this may be passed through some signal conditioning to suit the application.
+
+\subsubsection{CT - Configure Temperature Sensor}
+\index{Configure Temperature Sensor}
+CT\param{chn}; \param{L\textbar{}H\textbar{}B}; \param{Threshold}; \param{A\textbar{}D}\param{targetChn}; \param{sp}; \param{actionType}; \param{dwell}; \param{udpType}; \param{AssociatedValue}[; \param{OptValue}];
+
+Configure one of the temperature inputs.
+L or H or B identify whether this is setting a High or Low or Both threshold(s) and Threshold is the temperature threshold
+as a decimal temperature between -50 and +150 degrees Celsius
+
+\subsubsection{CR - Configure Serial}
+\index{Configure Serial}
+CR\param{mode}; \param{baudIdx}:
+
+The following modes exist:
+\begin{tabular}{l|l|p{12cm}}
+mode&Description\\
+\hline
+0&No mode change.\\
+2&RS232.\\
+4&RS485\\
+3&DMX mode\\
+\end{tabular}
+
+The following baud rates exist:
+\begin{tabular}{l|l|p{12cm}}
+index&Speed\\
+\hline
+0&300\\
+1&600\\
+2&1200\\
+3&2400\\
+4&4800\\
+5&9600\\
+6&19200\\
+7&38400\\
+8&57600\\
+9&115200\\
+10&250000\\
+11&9600\\
+12&9600\\
+13&9600\\
+14&9600\\
+15&9600\\
+\end{tabular}
+
+See commands RO, RI, RD
+
+\subsubsection{CW - Configure Dwell}
+\index{Configure Dwell}
+CW{\it [0-3];DwellValue}:
+
+There are 4 Dwell values that may be set, 0-3.
+DwellValue is a number between 2 and 32767, it is measured in 'near seconds'.
+Dwell is measured in more or less seconds.
+Note that it is the transition between 1 and 0 that marks the end of a Dwell countdown, 
+therefore a Dwell value of 10 really gives a Dwell of between 9 and 10 seconds, depending on
+when it was started.
+\index{Dwell!command sequence}
+
+\subsubsection{DA - Do Attention}
+\index{Attention}
+DA
+
+Request the WebBrick to send 1 or 2 attention packets, command is generally sent using UDP and broadcast
+to all WebBricks on the network.
+
+\subsubsection{DI - Trigger Digital input}
+\index{Trigger Digital input}
+DI\param{chn}
+
+Trigger input, generates a trigger just as if digital input chn had been triggered.
+
+\subsubsection{DM - Do Mimic}
+\index{Do Mimic}
+DM\param{mimicChn}; \param{mimicLevel}[; \param{mimicChn}; \param{mimicLevel}]
+
+Set one or more mimic channels to a set level. The mimic channel and level can be repeated to send more than one
+request in a single command. This overrides the values set by any recent output change targeted to the mimics
+at the WebBricks. mimicLevel can be between 0 and 63.
+
+\subsubsection{DO - Switch Digital output}
+\index{Switch Digital output}
+DO\param{chn};N\textbar{}F\textbar{}T\textbar{}D[; \param{dwell}]:
+
+Set digital output. Sets the state of one of the digital outputs.
+chn is the channel number to operate.
+
+\begin{tabular}{l|p{12cm}}
+Action&Description\\
+\hline
+N&On\\
+F&Off\\
+T&Toggle\\
+D&Dwell\\
+\end{tabular}
+
+If Dwell is specified then this can either be a DwellNumber \param{0-7} or if greater than 7 is a dwell in seconds.  If you really want to issue a dwell you're much better
+off considering the DT command, this gives you more control from the gateway since you need not worry if the dwell times have been reconfigured at the WebBrick.
+
+\subsubsection{DT - Trigger from External}
+\index{Trigger from External}
+DT; \param{A\textbar{}D\textbar{}S}\param{targetChn}; \param{sp}; \param{actionType}; \param{dwell}; \param{udpType}; \param{associatedValue}; \param{optValue}[; \param{options}]]:
+
+The packet contains trigger configuration which is actioned on receipt and not stored for later use. This
+enables an external source to do what an internally generated event can do. 
+
+{\em NOTES:}
+
+\begin{tabular}{l|p{12cm}}
+Parameter&Notes\\
+\hline
+dwell&This is set in seconds and not an index into the dwell table\\
+udpType& this is either 0,None or 1,Send\\
+associatedValue&If this is relevant to the action then this can be set\\
+optValue&This is not used and should be left at 0\\
+options&This is not used and should be left at 0\\
+\end{tabular}
+
+
+
+\subsubsection{FR - Factory Reset}
+\index{Factory Reset}
+FR  Configuration Factory reset.
+
+FR1  Full Factory reset.
+
+Perform a factory reset of the WebBrick, the base version only resets user configuration, the later version also resets 
+all options and the IP address (Unless IP address locked at Factory).
+
+\subsubsection{IA - InfraRed Address}
+\index{InfraRed}
+IA\param{address}:
+
+Sets the RC5 infra red address to be recognised. The command values 1-8 are mapped to generating digital triggers, 
+i.e. another soft key input.
+
+\subsubsection{InfraRed On Off}
+\index{InfraRed}
+IR\param{N\textbar{}F}:
+
+Switch on/off infra red reception, uses Digital input 11 and disables any other use for this connection.
+
+\begin{tabular}{l|p{12cm}}
+Action&Description\\
+\hline
+N&On\\
+F&Off\\
+\end{tabular}
+
+\subsubsection{IS - InfraRed Send}
+\index{InfraRed}
+IS\param{address}; \param{channel}:
+
+Sends the IR command using RC5 and the address (0-31) and channel (0-63) given. Allows a remote system
+to send RC5 infra red commands.
+
+
+\subsubsection{IT - InfraRed emitter}
+\index{InfraRed}
+IT\param{N\textbar{}F}:
+
+Switch on/off infra red transmission. Uses DigOut 7 and disables any other use for this connection.
+
+\begin{tabular}{l|p{12cm}}
+Action&Description\\
+\hline
+N&On\\
+F&Off\\
+\end{tabular}
+
+\subsubsection{LG - Login and Logout}
+\index{Login}
+LG; \param{password}  
+
+Try to login to the WebBrick to enable the command interface. Up to 3 passwords may be set
+Level 1 allows access to the Home page controls, its default is blank so the WebBrick
+automatically enters this state.
+Level 2 is for reconfiguration
+Level 3 is full reconfiguration access for installers.
+Note Login times out 5 minutes after the last valid configuration command (Level 3 is 1 Hour timeout). 
+
+Entering an invalid password will logout the user interface.
+
+\subsubsection{NA - Name Analogue Output}
+\index{Name Analogue Output}
+NA\param{chn}; \param{nameStr}:
+
+Give a name to an analogue output, chn is the channel number from 0 to max analogue outputs-1.
+
+\subsubsection{ND - Name Digital Input}
+\index{Name Digital Input}
+ND\param{chn}; \param{nameStr}:
+
+Give a name to a digital input, chn is the channel number from 0 to max digital inputs-1.
+The name string cannot contain any of the characters '\textless{}\textgreater{}\&
+
+\subsubsection{NI - Name Analogue Input}
+\index{Name Analogue Input}
+NI\param{chn}; \param{nameStr}:
+
+Give a name to an analogue input, chn is the channel number from 0 to max analogue inputs-1.
+The name string cannot contain any of the characters '\textless{}\textgreater{}\&
+
+\subsubsection{NN - Name Node}
+\index{Name Node}
+\index{NodeName}
+NN\param{NodeName}:
+
+Give a name to the WebBrick node.
+NodeName is limited to 10 characters  
+The name string cannot contain any of the characters '\textless{}\textgreater{}\&
+
+\subsubsection{ND - Name Digital Output}
+\index{Name Digital Output}
+NO\param{chn}; \param{nameStr}:
+
+Give a name to digital output, chn is the channel number from 0 to max digital outputs-1.
+The name string cannot contain any of the characters '\textless{}\textgreater{}\&
+
+\subsubsection{NT - Name Temperature sensor}
+\index{Name Temperature sensor}
+NT\param{chn}; \param{nameStr}:
+
+Give a name to a temperature input, chn is the channel number from 0 to max temperature inputs-1.
+The name string cannot contain any of the characters '\textless{}\textgreater{}\&
+
+\subsubsection{RB - Reboot}
+\index{Reboot}
+RB  Reboot.
+
+Hardware reboot/reset of the PIC chip and Siteplayer.
+
+\subsubsection{RS - Reboot Siteplayer}
+\index{Reboot}
+RS  Reboot of Siteplayer.
+
+Hardware reboot/reset of the Siteplayer.
+
+\subsubsection{RT - Re scan 1 Wire}
+\index{Re scan 1 Wire}
+RT  Re scan 1 wire bus.
+
+Scan the one wire bus for new sensors.
+
+\subsubsection{RU - Refresh User Interface}
+\index{Refresh User Interface}
+RU  Refresh User Interface.
+
+Resends all data from the PIC chip to the Siteplayer, for use if the PIC chip and Siteplayer are out of step.
+
+\subsubsection{RI - RS485 driver off}
+\index{RS485 driver off}
+RI:
+Set RS485 driver off, input mode
+
+\subsubsection{RO - RS485 driver on}
+\index{RS485 driver on}
+RO:
+Set RS485 driver on, output mode
+
+\subsubsection{RD - Serial send data}
+\index{Serial send data}
+RD \param{databyte as Decimal ASCII}:
+Send serial data, the databyte parameter can be repeated multiple times.
+
+Example, send 'A' character - RD65:  
+
+\subsubsection{SI - Set IP Address}
+\index{IP Address}
+Set Internet protocol address
+SI\param{n}; \param{n}; \param{n}; \param{n}:
+
+Where each \param{n} is an element of the IP address.
+
+SA\param{m}; \param{m}; \param{m}; \param{m}; \param{m}; \param{m}; \param{n}; \param{n}; \param{n}; \param{n}:
+
+Where each \param{m} is an element of the network MAC address.
+Where each \param{n} is an element of the IP address.
+This is to enable a bunch of WebBricks to be added to a network, identified and addresses set by a discovery process.
+
+\subsubsection{SC - Set Scene}
+\index{Set Scene}
+SC\param{nr}:
+
+Set the output channels to match a specific scene. The result is the equivalent of issuing On, Off or SetScene 
+for any channel not marked as Ignore. NOTE there is a slight difference when a trigger is used to set a scene
+in that instead of the ON action for digital channels marked as On and the analogue channels being sent 
+the action from the trigger will be sent i.e. Dwell, some possible actions will not make sense.
+
+\subsubsection{SD - Set Date}
+\index{Date, Set}
+SD\param{years}; \param{mon}; \param{date}  
+
+Set Date for the WebBrick. Not currently implemented or used.
+	
+\subsubsection{SF - Set FadeRate}
+\index{FadeRate, Set}
+SF\param{rate}  Set Fade rate
+
+Set the rate at which the analogue channels are adjusted to meet the desired output value. 
+The smaller the number the quicker the analogue output channel swings.
+
+With a setting of 1 the analogue will swing full range in approx 200mS, with a value of 255 the swing
+full range will take circa 50 seconds.
+
+\subsubsection{SM - Set Mimic}
+\index{Mimic, Set}
+SM\param{offLevel}; \param{onLevel}; \param{fadeRate}[;\param{0\textbar{}1}]:
+
+Set Mimic high and low level and the fade rate between them. These high and low values are used
+when connected as mimics for analogue and digital outputs, by use of an off level that is not quite off 
+we have a seek light in the dark. onLevel and offLevel can be between 0 and 63. The fade rate controls the speed that the mimic shifts from one level to
+the next, the next level could be selected by the DM command. The final optional parameter sets the mimic 
+output to low voltage (approx 4V) or high voltage (approx 10.5V).
+
+\subsubsection{SN - Set NodeNumber}
+\index{NodeNumber, Set}
+SN\param{NodeNumber}:
+
+Set node number
+NodeNumber should be between 1-254, 0 is reserved for 'new' WebBricks that will be configured by
+a remote server before they go into production.
+\index{NodeNumber}
+
+\subsubsection{SO - Set options flag}
+\index{Set options flag}
+Set an option flag value, some are bit mapped and others just on/off.
+SO\param{num}; \param{value}:
+
+Options control some small bits of a WebBrick's operation.
+Most options are not intended for general use and are undocumented.
+
+\begin{tabular}{l|p{12cm}}
+Option&Description\\
+\hline
+1&Manages UDP event transmission.\\
+2&Manages Analogue input options.\\
+3&Manages Analogue output options.\\
+4&Manages Digital input options.\\
+5&Manages Digital output options.\\
+6&Manages Temperaure sensor options.\\
+7&Manages Scene options.\\
+\end{tabular}
+
+UDP event transmission option.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&Enable sending temperature changes.\\
+1&2&Enable analogue input changes.\\
+2&4&Enable analogue output changes.\\
+3&8&Enable Infra red reception UDP packets.\\
+4&16&Enable RTC debug UDP packets.\\
+5&32&Enable Digital output UDP packets.\\
+\end{tabular}
+
+Analogue input options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&None.\\
+\end{tabular}
+
+Analogue output options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+1&2&Update DMX channels with analogue output changes.\\
+\end{tabular}
+
+Digital input options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&None.\\
+\end{tabular}
+
+Digital output options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&None.\\
+\end{tabular}
+
+Temperature sensor options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&None.\\
+\end{tabular}
+
+Scene options.
+
+\begin{tabular}{l|l|p{12cm}}
+Bit&Value&Description\\
+\hline
+0&1&Scenes setpoints target analogue outputs.\\
+1&2&Scenes setpoints target DMX channels.\\
+\end{tabular}
+
+Note: scenes can target analogue outputs and/or dmx channels.
+
+\subsubsection{SP - Set password}
+\index{Set password}
+Set a password.
+SP\param{level}; \param{new password}:
+
+level is the password level number 1-3. password is the new password to set. If the same password
+is set at multiple levels then login using that password will set itself to the highest of the 
+levels using that password string. If Level 1 password is blank the WebBrick will default to being
+logged in at level 1 at start and after login timeout. This enables the Home page controls.
+
+\subsubsection{SR - Rotary Encoder Step}
+\index{Rotary Encoder Step}
+Configure rotary encoder.
+SR\param{chn};\param{Steps}:
+
+Steps should be between 2-254, Analogue outputs are set in the raw range 0-1023, where 1023 is 5V, 
+Steps controls how far the output is
+indexed 'up' or 'down' for each step turn of the rotary encoder. 
+The configuration value sets the step for all rotary encoders and chn should be 0. Older webbricks had dedicated pins
+for rotary encoders and this only targetted analogue 0, Since 6.4 a rotary encoder may be connected to any even/odd pair of digital 
+inputs and target any analogue output or what ever the trigger definition can target.
+\index{Rotary Encoder!steps}
+
+
+\subsubsection{SS - Set Operating Mode}
+\index{Operating Mode, Set}
+Set operational state
+SS\param{ToD}:
+
+ToD is a value between 0-255 that lets the WebBrick know a bit about its operating environment, 
+the current recognised values are:
+
+\begin{tabular}{l|p{12cm}}
+Value&Description\\
+\hline
+0&This locks out any commands from the WebBrick holding any outputs at their current state (any Dwell in progress will complete).\\
+1&Holiday state, digital inputs ignored.\\
+2&This is normal operation.\\
+\end{tabular}
+\index{ToD}
+
+\subsubsection{ST - Set Time}
+\index{Time, Set}
+ST\param{dd}; \param{hh}; \param{mm}  Set Time
+
+Set the WebBrick clock. dd is day number from 0-6. hh and mm are the 24 hour time. The WebBrick will
+send out starting packets until the clock is set.
+
+\subsubsection{TA - Adjust Analogue Input Threshold}
+\index{Adjust Analogue Input Threshold}
+TA\param{chn}; \param{L\textbar{}H\textbar{}B}; \param{Threshold};
+
+Configure the active threshold on one of the analogue inputs. This does not update the persistent configuration
+only the active configuration.
+L or H or B identify whether this is setting a High or Low or Both threshold and Threshold is the analogue threshold
+as a value from 0-100\%. The low level hardware is 0-5V but so as to avoid issues when some signal
+conditioning is added the input is scaled.
+
+\subsubsection{TT - Adjust Temperature Sensor Threshold}
+\index{Adjust Temperature Sensor Threshold}
+TT\param{chn}; \param{l\textbar{}H\textbar{}B}; \param{Threshold};
+
+Configure the active threshold on one of the temperature sensors. This does not update the persistent configuration
+only the active configuration.
+L or H or B identify whether this is setting a High or Low or Both threshold and Threshold is the temperature threshold
+as a decimal temperature between -50 and +150 to 1 decimal place degrees Celsius. 
+i.e. these are valid 50, 43.3, -43, -54.9. These are not valid 34.95, -43.12.

@@ -1,0 +1,198 @@
+\section{UDP Output}
+\index{UDP Output}
+
+Any trigger (Digital, analogue threshold, temperature threshold, scheduled event, Infra Red receive) 
+can be configured to send a 
+UDP packet with a configured type indicator, one of General, Remote, Alarm. Output channels also send UDP packets 
+to indicate a change has occured this can be used to confirm the operation of remote commands.
+
+The UDP packet format is the same on most occasions (exception being unconfigured node) 
+although some fields may not be used and may contain garbage data.
+
+\subsection{General UDP Packet format}
+
+\index{UDP Packet Format}
+
+The UDP Packet Format is formed as follows:
+
+	\begin{tabular}{l|p{12cm}}
+	Field&Description\\
+    \hline
+	Len (byte)&The overall size of the UDP packet.\\
+	udpType (byte)&  The packet type one of the characters 'A', 'G', 'R'.\\
+	Source 0-1 (2bytes)& These are two characters to identify the Udp source see later table.\\
+	srcChannel (byte)& The channel/event index.\\
+	tgtChannel (byte)& The target channel when sending remote commands, if the target channel type is analogue
+			then the top bit is set, i.e. values are 128+channel.\\
+	action (byte)& The action being triggered (low 4 bits), includes Dwell number (high 4 bits).\\
+	fromNodeNr (byte)& Source webrick number 1-253.\\
+	toNodeNr (byte)& Target webrick number for remote commands.\\
+	setPointNr (byte)& Where relevant for packet type.\\
+	curValH (byte)& High byte of any value being sent\\
+	curValL (byte)& Low byte of any value being sent\\
+	\end{tabular}
+
+\subsubsection{UDP Packet Types}
+	
+The UDP Packet Types are:
+
+\index{UDP Packet Types}
+	\begin{tabular}{l|p{12cm}}
+	Type&Description\\
+    \hline
+	G&General format UDP Packet generated\\
+	\end{tabular}
+
+    There used to be a Remote and Alarm type in pre 6.6 firmware, this was never used in any applications and the space used to define these has been recovered for other uses.
+    
+\subsubsection{UDP Packet Sources}
+	
+The UDP Packet Sources are:
+
+\index{UDP Packet Source}
+	\begin{tabular}{l|p{12cm}}
+	Code&Description\\
+    \hline
+	Ta&Low analogue threshold trigger\\
+	TA&High analogue threshold trigger\\
+	Td&Trigger from remote DI command\\
+	TD&Trigger from local digital input\\
+	Tt&Low temperature threshold trigger\\
+	TT&High temperature threshold trigger\\
+	TS&Trigger from scheduled event\\
+	TR&Trigger from infra red remote control\\
+	TX&Trigger from external source, i.e. WebBrick Gateway\\
+	IR&infra red remote control\\
+	AI&New analogue input value 0-100\\
+	AO&New analogue output value 0-100\\
+	CT&Current temperature in 1/16ths degree\\
+	DO&Digital output/monitor state.\\
+	NN&Unconfigured node.\\
+	SS&Node starting, clock not set.\\
+	AT&Atention button pressed on webbrick, AKA Factory Reset button.\\
+	AA&Dicovery triggered response, Alert.\\
+	CC&Configuration changed.\\
+	\end{tabular}
+
+Further details on each packet follow.
+	
+Trigger
+\index{Low analogue threshold trigger}
+\index{High analogue threshold trigger}
+\index{Low temperature threshold trigger}
+\index{High temperature threshold trigger}
+\index{Trigger from scheduled event}
+\index{Trigger from local digital input}
+\index{Trigger from remote DI command}
+\index{Trigger from external source}
+\index{Monitor state}
+
+For this packet format:
+
+\begin{enumerate}
+\item the srcChannel identifies the channel number or scheduled event number. In the case of the monitor
+inputs this is the monitor number + number of digital inputs. In a later revision of the firmware the monitor inputs will
+just be other digital inputs and can be a normal trigger. In the case of external source this will be zero.
+\item  the tgtChannel is the remote webrick node number from the trigger configuration
+\item  udpType is from the trigger configuration
+\item  action is from the trigger configuration action and dwell number if the trigger type is analogue
+\item  fromNodeNr is my node number
+\item  toNodeNr is from the trigger configuration and is only relevant when the udpType is 'R' remote.
+\item  SetPointNr comes from trigger configuration.
+\item  CurValH is not used.
+\item  CurValL is used for local digital inputs and is an estimate of the number of times the input is triggered
+	in the last second.\\
+\end{enumerate}
+
+\subsubsection{UDP - Analogue Values}
+Analogue values
+
+\index{New analogue input value}
+\index{New analogue output value}
+
+For this packet format:
+\begin{enumerate}
+\item  the srcChannel identifies the analogue channel number
+\item  the tgtChannel is not used
+\item  udpType is 'G' General
+\item  action is not used
+\item  fromNodeNr is my node number
+\item  toNodeNr is not used
+\item  SetPointNr is not used
+\item  CurValH is not used.
+\item  CurValL is the new value for the input or output in the range 0-100.\\
+\end{enumerate}
+
+
+\subsubsection{UDP - Digital Output and Input States}
+	
+Digital/Monitor State
+
+\index{Digital output}
+
+For this packet format:
+\begin{enumerate}
+\item  the srcChannel identifies the digital output channel number.
+\item  the tgtChannel is not used
+\item  udpType is 'G' General
+\item  action is either DINACTIONON or DINACTIONOFF
+\item  fromNodeNr is my node number
+\item  toNodeNr is not used
+\item  SetPointNr is not used
+\item  CurValH is not used.
+\item  CurValL is not used.\\
+\end{enumerate}
+
+\subsubsection{WebBrick Starting}
+
+WebBrick node starting
+
+\index{Node starting}
+\index{Clock not set}
+
+For this packet format:
+\begin{enumerate}
+\item  fromNodeNr is my node number
+\end{enumerate}
+All other fields are not used.\\
+	
+\subsubsection{UDP - Unconfigured Node}
+
+Unconfigured
+
+\index{Unconfigured node}
+
+For this packet format the payload does not follow the standard format, the first 6 bytes of the payload are 
+the MAC address of the network interface.\\
+
+\subsection{WebBrick Time and UpTime format}
+
+\index{WebBrick Uptime}
+
+This packet has the following format:
+
+\begin{enumerate}
+\item  the srcChannel identifies the digital output channel number.
+\item i the tgtChannel is not used
+\item  udpType is 'G' General
+\item  'S'
+\item  'T'
+\item  WebBrick Time - HOURS, taken from the Real-Time Clock
+\item  WebBrick Time - MINUTES, taken from the Real-Time Clock
+\item  WebBrick Time - SECONDS, taken from the Real-Time Clock
+\item  WebBrick Time - DAY, taken from the Real-Time Clock
+\item  WebBrick Uptime, upper byte
+\item  WebBrick Uptime, lower byte
+\item  ResetCode\\
+\end{enumerate}
+
+ResetCode can have the following values:
+
+\begin{enumerate}
+\item  '0' This means that the SitePlayer (WebServer) was reset by either the internal watchdog, or a manual 'RS' command
+\item 'value of RCON', this is the internal value of the Reset Register of the WebBrick processor (Normally '92' for 6 and 7 series WebBricks) \\
+\end{enumerate}
+
+
+
+

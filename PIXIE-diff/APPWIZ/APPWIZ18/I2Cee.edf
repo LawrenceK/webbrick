@@ -1,0 +1,87 @@
+[Main]
+Name=I2C EEPROM driver
+ShortName=I2CEE
+ASMFileName=I2C.c
+IniFileName=I2C.h
+HelpApp=
+HelpText=Uses HW MSSP for a single 24LC256 at address zero
+Icon=I2CEE.bmp
+HasInterrupt=0
+IntPri=0
+Group=Data
+nTemp=0
+AppType=0
+LoopCall=Check_ee_State
+AllowMulti=0
+UseAsm=0
+nConfig=1
+[IOS]
+nIO=2
+IO0=SCL,IO,2,3,1
+IO1=SDA,I,2,4,1
+[Parameters]
+nPar=1
+Name0=K400,Use Fast Bus (400KHz)
+Type0=3
+Default0=1
+[Interrupt]
+NLines=0
+[InComp]
+NLines=0
+[Init]
+HasInit=1
+InitCall=
+nLines=26
+Line0=unsigned char i2c_state=0;		//State for the EEPROM FSM
+Line1=unsigned char i2c_busAddress;
+Line2=unsigned char *i2c_pointer;
+Line3=unsigned int i2c_bytes;			//Byte limit for Int routine
+Line4=
+Line5=
+Line6=unsigned char i2c_addressl, i2c_addressh;	//Address in EEPROM
+Line7=unsigned char i2c_flags;		//Determines read or write
+Line8=
+Line9=
+Line10=const int ClkK=APROCFREQ/1000;
+Line11=#define SSPV (ClkK/400/4)
+Line12=#if K400==1
+Line13=>const int SSPAddV=SSPV+1;
+Line14=#else
+Line15=>const int SSPAddV=SSPV*4+1;
+Line16=#endif
+Line17=
+Line18====================
+Line19=SSPCON1=0;
+Line20=SSPCON2=0;
+Line21=SSPSTAT=0;
+Line22=SSPSTAT|=1<<SMP;   // Disable slew rate control
+Line23=SSPCON1|=1<<3;	   //Set I2C Master mode clocked
+Line24=SSPADD=SSPAddV;	   //Sets clock to 20000/(4*(SSPAddV+1)
+Line25=SSPCON1|=1<<SSPEN; //Enable the MSSP
+[Occurrences]
+nOccur=4
+Name0=EEReadComplete,Read Operation Complete,,,0
+Name1=EEWriteComplete,Write Operation Complete,,,0
+Name2=EEReadFailed,Read Operation Failed,,,0
+Name3=EEWriteFailed,Write Operation Failed,,,0
+[HookElements]
+nHooked=0
+[PublicCalls]
+nCalls=4
+Name0=void i2c_read_ba(unsigned char *busAddress, unsigned char *data, unsigned char devAddress, unsigned int len ); 
+Help0=Reads bytes at devAddress (0-255) and I2C device at busAddress
+Name1=void i2c_write_ba(unsigned char *busAddress, unsigned char *data, unsigned char devAddress, unsigned int len ); 
+Help1=Writes bytes to devAddress (0-255) and I2C device at busAddress
+Name2=void i2c_read_wa(unsigned char *busAddress, unsigned char *data, unsigned int devAddress, unsigned int len ); 
+Help2=Reads bytes at devAddress (0-65535) and I2C device at busAddress
+Name3=void i2c_write_wa(unsigned char *busAddress, unsigned char *data, unsigned int devAddress, unsigned int len ); 
+Help3=Writes bytes to devAddress (0-65535) and I2C device at busAddress
+nVars=0
+[AutoVar]
+nAVar=0
+[Defines]
+nDefines=0
+[Processors]
+nProcessors=0
+
+

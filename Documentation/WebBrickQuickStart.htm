@@ -1,0 +1,511 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<meta name="GENERATOR" content="TtH 3.78">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+ 
+
+<title>WebBrick Quick Start Guide</title>
+ 
+<h1 align="center">Quick Start Guide </h1>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+
+
+<div class="p"><!----></div>
+
+<h3 align="center">Andy Harris, Lawrence Klyne </h3>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img width=20% height=20% src="Images/H2M8-logo.png">
+</center>
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/wb_logo.jpg">
+</center>
+<div class="p"><!----></div>
+
+<dl compact="compact">
+ <dt><b>July 2007 Document Version 6.4</b></dt>
+	<dd></dd>
+ <dt><b>Firmware Versions 6.4</b></dt>
+	<dd></dd>
+</dl>
+
+<div class="p"><!----></div>
+
+<dl compact="compact">
+ <dt><b>http://www.h2m8.com</b></dt>
+	<dd> for company information</dd>
+ <dt><b>http://community.h2m8.com</b></dt>
+	<dd> for WebBrick information</dd>
+</dl>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;What you've got</h2>
+
+<div class="p"><!----></div>
+In the box you'll have a WebBrick 6.2, a CD and any other peripherals that you've ordered.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="PackShots/ObliquePackShot-WithoutCoin.png">
+</center>
+<div class="p"><!----></div>
+The CD contains documentation, a standalone WebBrick monitor application for Windows (WebBrickMon), 
+Python interpreter for Linux and Windows, 
+Python library and example code and some PHP sample code. The PHP code is proof of concept 
+stuff as Python is our preferred environment and our active environment.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Overview</h2>
+
+<div class="p"><!----></div>
+What is a WebBrick? It is a network connected control and automation product designed around the principle 
+of 'local control - global intelligence'. This means that most of the time control is handled locally, but a 
+system as a whole can be made more intelligent through the use of some central control
+(for example the Webbrick Gateway) that provides the global intelligence. 
+i.e. Lights for a room are a local issue, but heating is 
+more of an overall control issue. This also means that you are
+not dependant on a single control system for the complete system, you can always switch on the lights 
+in this room while someone is making changes to a global control system.
+
+<div class="p"><!----></div>
+Control can be done through a WebBrick's web interface, through its physical inputs or using remote commands.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Connections</h2>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;Outputs</h3>
+
+<div class="p"><!----></div>
+The webbrick has the following types of outputs.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Digital</td><td width="474">These are used to connect to simple on off devices that can be switched on by a low voltage, i.e. LED
+lighting.</td></tr>
+<tr><td>Open collector</td><td width="474">These are used to connect to relays and similar devices that need the input connecting to 
+ground to switch on.</td></tr>
+<tr><td>Mains Triacs.</td><td width="474">These these enable mains voltage devices to be switched 
+on and off by the webbrick directly and are driven by 4 of the digitl outputs.</td></tr>
+<tr><td>Relay</td><td width="474">These are double pole changeover relays that are driven by 2 of the digital outputs.
+A changeover contact connects 1 connection to one of 2 other connections, each relay has two changeover
+contacts. These are intended for use by devices such as curtains which need connections swapping over</td></tr>
+<tr><td>Analogue</td><td width="474">These provide a 0 to 10V voltage which can be connected to lighting dimmers or any thing that uses
+a variable voltage to control it.</td></tr>
+<tr><td>Mimics</td><td width="474">These are pulse width modulated (PWM) digital outputs intended to connect to LED status indicators, the use 
+of PWM allows the LED brightness to be adjusted. They
+can be configured to show the state of a digital or analogue output channel or directly controlled
+over the network connection. When the output level is changed they fade over a short period of time to the
+new level.</td></tr>
+<tr><td>Infra red transmitter</td><td width="474">This can be connected to the WebBrick and then the WebBrick programmed to send RC5
+encoded commands to devices that can understand this infra red dialect.</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;Inputs</h3>
+
+<div class="p"><!----></div>
+The webbrick has the following types of inputs.
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Digital</td><td width="474">These are designed primarily for switches but can be used to connect input devices that only have 
+two states, see reference manula for details on this.</td></tr>
+<tr><td>Analogue</td><td width="474">Theseare used to connect input devices that provide a vraiable voltage, i.e. rotary controls or
+humidity sensors. See reference manula for voltage levels.</td></tr>
+<tr><td>Temperature</td><td width="474">This is used to connect up to 5 temperature sensors, they share the 3 wires going 
+from 1 sensor to the next.</td></tr>
+<tr><td>Rotary Encoder</td><td width="474">This is used to connect a continuously rotating knob to a webbrick to adjust the 
+first analogue output.</td></tr>
+<tr><td>Infra red receiver</td><td width="474">Can be connected to the WebBrick and then the WebBrick programmed map some 
+received RC5 dialect commands to be the equivalent of digital inputs. All RC5 commands received
+commands are sent over the network connection and can then be handled within the central controller.</td></tr></table>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Getting Started</h2>
+
+<div class="p"><!----></div>
+First you need to connect 12V power to the WebBrick, and then provide a network connection.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/RHTI_TopCover_27Mar06.jpg">
+</center>
+<div class="p"><!----></div>
+
+<table>
+<tr><td>Top left</td><td width="474">Most Relay Contacts</td></tr>
+<tr><td>Bottom left</td><td width="474">Mains and remaining Relay Contacts</td></tr>
+<tr><td>Center top</td><td width="474">Digital inputs</td></tr>
+<tr><td>Center bottom</td><td width="474">Analogue inputs, temperaure</td></tr>
+<tr><td>Right top</td><td width="474">power, digital outputs</td></tr>
+<tr><td>Right bottom</td><td width="474">Status Indicators and analogue outputs</td></tr></table>
+
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;Power</h3>
+
+<div class="p"><!----></div>
+Power is connected to the connector on the top right hand side of the case when you look at the top with
+the writing on the label facing you and the right way up, the larger connectors will be on your left hand side.
+The supply needs to be 12V-15V DC and it should be regulated. The polarity is important; the plus rail should be connected as 
+indicated on the overlay on top of the case. 
+To prevent injury the mains connections and relay connections are through physically larger connectors, 
+these are on the left hand side of the case. (Disconnect any mains supply when working on the webbrick connectors).
+The correct pins for the power supply input are pins 7 and 8 on the top right connector with PIN 8 being +12V 
+and PIN 7 being the 0v line
+from the power supply. NOTE pin1 is on the outer top edge of the case, so count right to left.
+
+<div class="p"><!----></div>
+When you power up the WebBrick, the following should happen:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>LED name</td><td>Colour</td><td width="474">description</td></tr>
+<tr><td>Power</td><td>red</td><td width="474">This should light immediately</td></tr>
+<tr><td>Network</td><td>green</td><td width="474">Lights for 0.25 seconds then waits for network link(stays lit if network is connected and available)</td></tr>
+<tr><td>Heart Beat</td><td>blue</td><td width="474">You'll see this flash rapidly during start-up then settle to 1Hz.
+	Once at 1Hz the WebBrick has booted and is ready to use</td></tr></table>
+
+
+<div class="p"><!----></div>
+If the webbrick fails to power up, check the power connections are the correct way round, there is a polarity
+protection diode to prevent damage if incorrectly connected.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;Network</h3>
+
+<div class="p"><!----></div>
+Take an Ethernet cable from your network hub and plug into the RJ45 connector on the top right of the unit,
+above the power connector, the locking tab is downwards intentionally so as to require a small screwdriver 
+to release it.
+
+<div class="p"><!----></div>
+When you plug the cable in the Green LED should come on to indicate a network connection has been found.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;Setting IP address</h2>
+
+<div class="p"><!----></div>
+The WebBrick default IP address is 10.100.100.100 with a 255.0.0.0 subnet mask, DHCP is not enabled. 
+If your network is not on 10.0.0.0 then you can use WebBrickMon to set the address to something valid 
+on your network or you can give a computer an additional IP address.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.1">
+5.1</a>&nbsp;&nbsp;Using WebBrickMon</h3>
+In the root directory of the CD is a small monitor application, its primary purpose is to find 
+unconfigured WebBricks on your network and optionally set the IP address they are using, it can 
+be used to see what UDP events are coming out of the WebBrick.
+
+<div class="p"><!----></div>
+To use locate your CD drive double click on WebBrickMon. Or Start/Run and browse to your CD and select WebBrickMon.
+
+<div class="p"><!----></div>
+When you start it for the first time, Windows may generate a warning about the application opening a network port, which of course it needs to.  
+Unblock the application and you'll see a display like:
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/WebBrickMon.png">
+</center>
+<div class="p"><!----></div>
+You should be seeing NewNode events and possibly some others. To set IP address enter a suitable value 
+in dotted form i.e. "192.168.1.1" in the dialog at the bottom and then click on SET. The monitor will 
+now wait for a WebBrick to send either New Node or an Alert packet and then 
+send the new IP address to the WebBrick. You will then see events coming from the new IP address.
+
+<div class="p"><!----></div>
+The main part of the monitor dialog shows WebBrick events with some decoding. First column is time, 
+followed by source IP address and 
+a sequence number. Then follows Event type and Event code, a text translation of the event code.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc5.2">
+5.2</a>&nbsp;&nbsp;Adding IP address to a windows computer</h3>
+There is no need to overwrite any of your existing network configuration in Windows.  
+Under the TCP/IP advanced configuration tab
+use add address to give you a dialog like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/addIP.jpg">
+</center>
+<div class="p"><!----></div>
+To locate the above go to Start/Setting/Network Connections or Control Panel Network connections and select the 
+Local Area Connection. Select Properties and scroll down to find TCP/IP and click properties again. Then Advanced button.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc6">
+6</a>&nbsp;&nbsp;Factory Reset switch</h2>
+There is a button that resets the WebBrick to its factory default, if it is pushed at power up then the configuration is erased and then set 
+to factory default values. If the factory reset button is pushed after power up the WebBrick will send Alert events (event code AA) 
+for 60 seconds, this is an assistance to locate a WebBrick IP address if unknown. To access the button use a credit card or similar 
+and insert flat between the case and the connector that is under the Ethernet connection, its location is intentional to reduce 
+finger trouble.
+
+<div class="p"><!----></div>
+Note if the IP address has been set for you at manufacture then the IP address will not be modified by a factory
+reset.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc7">
+7</a>&nbsp;&nbsp;Browsing to your WebBrick</h2>
+
+<div class="p"><!----></div>
+Having completed one of the two steps in "Setting IP address" you should now be able to access the WebBrick own webserver
+by entering either 10.100.100.100 into your browser (Internet Explorer or Firefox) or the address you entered in WebBrickMon.
+
+<div class="p"><!----></div>
+You should see a page which looks like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/uncHome.jpg">
+</center>
+<div class="p"><!----></div>
+This shows that the WebBrick is a new node and that there is no temperature sensors attached.  
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc8">
+8</a>&nbsp;&nbsp;Home page</h2>
+The WebBrick home page has control buttons that can be used to act on WebBrick outputs, by
+default these are enabled. If you set a user password (See manual) then these will be disabled until
+you login. This screen is split into:
+
+<div class="p"><!----></div>
+
+<table>
+<tr><td>i)</td><td width="474">a section showing state a of digital outputs.</td></tr>
+<tr><td>ii)</td><td width="474">a section showing state a of analogue outputs.</td></tr>
+<tr><td>iii)</td><td width="474">a section showing state a of analogue inputs.</td></tr>
+<tr><td>iv)</td><td width="474">a section showing state a of temperature sensors.</td></tr>
+<tr><td>v)</td><td width="474">a set of buttons that can be used to simulate a button press on the digital inputs, these then perform 
+what ever is configured for that input.</td></tr>
+<tr><td>vi)</td><td width="474">a set of buttons that adjust the analogue outputs to one of the set points.</td></tr>
+<tr><td>vii)</td><td width="474">a set of buttons that initiate one of the scenes, there are no scenes configured by default so they will
+do nothing.</td></tr></table>
+
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc9">
+9</a>&nbsp;&nbsp;Toggling an output channel</h2>
+
+<div class="p"><!----></div>
+Digital output channels 5 and 6 are connected to a pair of change over relays (DPDT relays).  If you operate those channels you should hear the relays
+click.  To do this go to the WebBrick home page.  Look for the section called 'Controls' and click on the Sw-5 and Sw-6 buttons.  You'll hear the relays
+operate and the resulting page should look like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/homeRelays.jpg">
+</center>
+<div class="p"><!----></div>
+Note that the DigOut-4 and DigOut-5 fields in the output section are now green.  This indicates that these digital outputs are on.  Also note that the Sw-6 button 
+is highlighted in pale yellow.  This is because the mouse was left over the button during the screenshot.  The point of the pale yellow mouse over is to 
+let you know that you can click on something.
+
+<div class="p"><!----></div>
+If you go to the configuration page and find that nothing has a mouse over its because you are not logged in.  Login will time out after 5 minutes, this is 
+because for home page operations you need not be logged in, but for configuration operations you need to be logged in.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc10">
+10</a>&nbsp;&nbsp;Temperaure sensors</h2>
+
+<div class="p"><!----></div>
+If we connect a temperature sensor to the WebBrick, read the datasheet that came with your temperature sensor for connection
+details (power off the WebBrick for this operation).
+Wwe should have a page which looks like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/sensHome.jpg">
+</center>
+<div class="p"><!----></div>
+This shows that the temperature sensor is working, in this case three sensors are connected. 
+Now we can login to the WebBrick to set some simple parameters.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc11">
+11</a>&nbsp;&nbsp;Basic Configuration</h2>
+
+<div class="p"><!----></div>
+Click the login link to get a page which looks like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/login.jpg">
+</center>
+<div class="p"><!----></div>
+The default 
+configuration password is "password". 
+Be sure to click the login button.  If your login was sucessful, you will be taken to:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg1">
+</a> <center><img src="Images/configuration.jpg">
+
+<center>Figure 1: WebBrick Configuration Home Page</center>
+</center>
+<div class="p"><!----></div>
+The banner section at the top will indicate LoggedIn, from there you can go click the 
+configure server link to get a page like this:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="Images/ConfigureServer.jpg">
+</center>
+<div class="p"><!----></div>
+You should at least enter the node name and number (the number should be between 1 and 254) you click 
+the first save button. You can also set the onboard clock if neccessary.
+
+<div class="p"><!----></div>
+Some of the configuration elements are straightforward, however others mean that you'll 
+really need to have a look at the full manual.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc12">
+12</a>&nbsp;&nbsp;A simple configuration</h2>
+
+<div class="p"><!----></div>
+In this configuration we will show how an output channel can be switched on above 28 deg C and switched off again at 24 deg C.
+
+<div class="p"><!----></div>
+First check that you are logged in to your WebBrick, then select the configuration page. 
+From here, look at the temperature sensors section, for each sensor there are two lines
+the first specifies a low threshold and its trigger action, the second a high threshold and its trigger action:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="Images/tempCfg.jpg">
+</center>
+<div class="p"><!----></div>
+Now click on the first section, you'll get a configuration dialog like:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="Images/tempLowCfg.jpg">
+</center>
+<div class="p"><!----></div>
+Now enter the value '24' in the first entry, this is the threshold value,
+Select Off as the action type from the action drop down box,
+Select Digital from the output type drop down box,
+Select 'DigOut-0' from the output drop down box,
+Leave UDP Type and assocaited value as is.
+And then click on Save button. This process is the process confuguring a trigger and is common across
+all the inputs in that all inputs can target an trigger action to all possible outputs. The dwell drop 
+down boxes will be greyed out unless you select a Dwell or Dwell Cancel action. Similarly the SetPoint drop down
+will be greyed out unless you select an Analogue channel as the output type.
+
+<div class="p"><!----></div>
+Do the same thing for the high threshold but enter 28 as the threshold value.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg2">
+</a> <center><img src="Images/tempHighCfg.jpg">
+</center>
+<div class="p"><!----></div>
+Now hold the temperature sensor between your fingers and refresh the home page to watch the temperature rising.  
+See that digital output 'DigOut-1' goes to the ON state
+above 28 deg C.  Now let go of the sensor and watch the temperature drop.  
+See that 'DigOut-1' goes OFF below 24 deg C.
+
+<div class="p"><!----></div>
+If you target the trigger at DigOut-4 or DigOut-5 you will hear the relays toggle.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc13">
+13</a>&nbsp;&nbsp;Quick tour of WebBrick and XML</h2>
+
+<div class="p"><!----></div>
+In order to drive standards based automation, the WebBrick can deliver both status and configuration information using XML.  
+To view the XML source, go to the advanced page.  Here you'll find the links to view the XML status and XML configuration. 
+You need not be logged in to see these. The content of these is documented in the mainreference manual and the python
+code on the CD has some helpers which will retrieve the XML from a WebBrick and extract data which can then be used 
+to make decisions. 
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc14">
+14</a>&nbsp;&nbsp;WebBrickMon</h2>
+
+<div class="p"><!----></div>
+You have already met WebBrickMon briefly in using it to set IP addresses, in a small WebBrick network it can be
+used to provide some debugging information for those who are building extended controls from server and want to
+see what’s happening. it has no filtering so if you have a network with a large number of 
+WebBrick on it you may find it hard to see the data.
+
+<div class="p"><!----></div>
+WebBrick send events using UDP and these are what WebBrickMon listens for. For each event it receives it prints some
+output identifying the WebBrick it came from and the channel type and number that it refers to. Depending on the channel 
+type it will list some additional data, see the WebBrick manual for the content of UDP events.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc15">
+15</a>&nbsp;&nbsp;Technical Support</h2>
+We prefer technical support questions to be sent by email and we aim to respond in 1 working day, please address support questions to
+technical@h2m8.com
+
+<div class="p"><!----></div>
+<a name="tth_sEcindex"></a>
+
+<h2> Index </h2>
+</html>

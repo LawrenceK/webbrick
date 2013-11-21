@@ -1,0 +1,128 @@
+\section {Applications}
+
+Here we provide some examples of use of the WebBrick. The great thing with the WebBrick is that a single device can
+provide more than one activity. For example PIRs, can trigger video recording at all times. Can switch lights at night. 
+Sound warning tones. In typical monitoring systems you need multiple devices because they do not interlink.
+
+\subsection {Heating}
+
+The notes in this section mostly consider that a WebBrick is taking the whole controller role.  Of course it's possible to
+add extra global intelligence using a general purpose host computer, for example the WebBrick Gateway.
+
+\subsubsection{Thresholds as set points}
+\index{Thresholds}
+
+	In the WeBrick architecture we use temperature sensors rather than thermostats.  We do this for a variety of reasons:
+	
+	\begin{itemize}
+		\item{Controls} - there are no external controls for a temperature sensor.  This means that it can be sited
+		where it both makes sense and is convenient.  For example under a kitchen worktop or directly bonded to a heated
+		floor.
+		\item{Accuracy and repeatability} - Old fashioned bi-metal strip thermostats close at one temperature and open at another.
+		Adjusting the set-point is a mechanical operation.  Whereas the sensors we use have resolution to 0.1 deg C and an accuracy
+		of 0.5 deg C.
+		\item{Remote Control} - Using sensors to read the temperature means that the actions on thresholds are defined within the
+		WebBrick.  Therefore the set points can be adjusted on a web page
+	\end{itemize}
+
+	With version 6.1 of the WebBrick it is now possible to control thresholds as an action.  Actions can be triggered from Digital Inputs
+	and from Schedules.  We can also raise actions from multiple temperature sensors, so we can create zones and frost-stat functionality.
+	
+	Therefore if we build a heating control scheme using WebBricks we can schedule changes of set-points using thresholds.  We can also
+	create {\em Boost} buttons that increase set-points.
+
+\subsubsection{Modern Combi boiler, single Zone}
+
+These generally have power applied all the time which is used to provide hot water and the central heating
+is controlled by a mixture of a thermostat and timed events. In this case we would use scheduled events to
+control the triacs and relays.  For example the output a triac feeding a relay that is controlled by one
+of the temperature sensors using under and over thresholds. In effect the triac replaces the time switch
+and the relay replaces the standard thermostat. The great benefits of this are:
+
+	\begin{itemize}
+		\item that the control can then be 
+		overridden by local buttons for boost (e.g. Dwell 1 hour on boiler output)
+		\item the use of a Home gateway system can use its calendar to switch heating off when home is empty. 
+		\item a home gateway can access local weather feeds to adjust switch on times dependant on temperature forecasts.
+		\item using the home gateway the home owner can control and make changes whilst away from the house, e.g. going home early.
+	\end{itemize}
+
+\subsubsection{Two zone heating system}
+In this case we drive the boiler off a mains triac that is driven from a schedule entry. And drive two 
+zone valves off the two relay outputs, these are triggered by high and low thresholds on two 
+temperature sensors. Advantages are as for single Zone.
+
+\subsubsection{Electric under floor heating}
+These are great ways of heating floors for things like bathrooms but electricity is not the cheapest
+heating source if over used.
+So it would be nice for them to come on for timed periods and be able to boost at other times. 
+In this case a single output can control the power to
+the floor controller, this can be switched by timed events for getting up time and a push button to boost 
+it at other times.
+
+Note it is not always best to chain Triac based controllers so if the underfloor heating controller
+uses a Triac we recommend using a Relay to power the floor from the WebBrick. Also underfloor heating 
+can need power greater than the abilities of the onboard Triacs so an external relay is a good idea.
+
+\subsubsection{Air conditioning}
+Controlled by an external relay as the power consumption of these is higher than can be handled directly.
+Control by a mix of time schedules and temperature thresholds.
+
+\subsection{Outside lighting/Security Lighting}
+This could be as simple as lighting that is timed to come on at dusk until dawn or it could be controlled
+by PIR sensors that switch on all the lighting around a house. The PIR sensors may not necessarily be on the same 
+WebBrick as the lights. For example on a big building there may be lights on all 4 sides of the building driven by 
+different webBricks, on sensing movement on one side you may bring that side up to full brightness and all the other
+sides to half brightness.
+
+\subsection{Internal lighting}
+
+\subsubsection{Night Lights}
+Especially with the very young and very old it is great to have some low level lighting around a house at 
+night, modern LEDs are very good for this drawing very little power. For one or two devices they can be 
+switched directly from the digital outputs for heavier loads 3 in series with a resistor can be driven 
+from a 12V supply and the open collector driver. If the power supply for a WebBrick is a sealed lead acid (SLA) battery
+then this could also provide power for the LED lights so that they stay on during power cuts. With the low power
+requirements the system could stay running off a 7 Amp Hour SLA battery for hours if not days.
+
+Maplin (www.maplin.co.uk) 12V 7Ah battery (MG47B) £25, Charger (LL30H) £13.
+TLC-direct (www.tlc-direct.co.uk) 12V 6AH battery £10+VAT
+
+\subsubsection{Dimming lights}
+For this: use dimmers that accept a 0-10V DC control voltage and wire these to the analogue outputs
+from the WebBrick. For example the soundlab G018VA 4 channel dimmer can handle 4 channels of 5A each 
+(Max 16A for the Unit).
+(See also section on Outside World).
+
+\subsection{Alarm Monitoring}
+By connecting dry contacts from fire and burglar alarms to the WebBrick monitor inputs the WebBrick
+in association can display the state of the alarm on a central display.The home gateway could then 
+send SMS or email messages to alert the home owner. E.g. via www.textanywhere.com.
+
+\subsubsection{Water sensors}
+In the case of property in low lying areas water sensors could be installed in basements and under 
+floor voids and configured to generate alarms.
+
+\subsection{Household services}
+
+\subsubsection{Water softener}
+A sensor could be added to a water softener to detect low salt levels and alert the household through a central
+display, especially useful when the device is installed in a basement where it is easily forgotten!
+
+Capacitive sensors are particularly useful for sensing salt levels where the softener has GRP or plastic side walls.
+
+\subsection{Home Cinema}
+A home cinema setup can include more than just the audio and video equipment, you may 
+also have (for example) roller screens and blackout curtains.
+
+\subsection{Access control}
+
+\subsubsection{Entry gates and doors}
+With the use of RF remote systems connected to a WebbRick control of electric gates and garage doors can be handled
+through a single system, the WebBrick. You can open gates and doors from the house before braving the elements to get 
+access to your car and can then close them from the car as you leave the premises. When video is used as well you can 
+open doors from work when your cleaner arrives as you will get a message when the door bell is pushed, you then check the 
+camera system verify the identity and let release the front door.
+
+\subsubsection{Camera systems}
+A PIR trigger can be set up to start a camera system recording video images which are made available to you on a web interface.

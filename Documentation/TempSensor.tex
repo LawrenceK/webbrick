@@ -1,0 +1,47 @@
+\section {Using the Temperature Sensor}
+
+Here we deal with the basic principles of using the temperature sensors.
+
+\subsection {Hardware}
+
+The temperature sensors are accessed using the DALLAS one wire interface protocol with the master
+functionality handled by the PIC chip. The Webbrick6 supports up to 5 DS18B20 temperature sensors. 
+These sensors have a 64 bit address that 
+can be used to uniquly identify them and they can read to a resolution below 0.1 degrees C.
+
+\subsection {Software}
+
+Every 5 seconds, an attempt is made to read the temperature from all known sensors and update 
+the status and values. At start up and on command (RT manual command) the bus will be scanned for new devices. 
+When a new sensor is found it is read to see whether it has been tagged previously, if it 
+is untagged or the tag corresponds to a currently active sensor then a new tag number is 
+generated and stored within the sensor. When a web brick is switched on these tags 
+keep the sensors in the same order within the temperature table. The values are all 
+available in the status XML.
+
+When a succesful reading is taken it is recorded. Temperature sensor 1 will be tested 
+against the Low and High trigger threshold. If the value is outside these values then 
+the relevant triggers are processed, these are identical to the digital inout trigger configuration.
+ 
+%\subsection {Practical Application}
+
+%In the real world, where you measure the temperature and where you action the results are 
+%often not the same place.
+
+%This is easy to achieve if you have two WebBricks.  You can arrange for one WebBrick to 
+%be near where you need to 
+%measure temperature and the second, say, in a boiler room.
+
+%The first WebBrick would be configured to trigger a Digital Input channel that was itself configured to generate 
+%a remote command.  This remote command would be directed at the second WebBrick.  The second WebBrick would then 
+%control the boiler.
+
+%This allows for a network of WebBricks that could all send commands to the 'Boiler WebBrick'.  This would then 
+%give a fine degree of control since each WebBrick could have its 'Context' changed to control behaviour, so 
+%individual zones could be configured by time to suppress requests to the Boiler WebBrick.  For 'vacation' 
+%mode, the Boiler WebBrick could have its 'Context' set to 'Commands Disabled' so that it would turn off 
+%the Boiler and not action any requests from the other WebBricks.
+
+\subsection {Installing}
+So as to get sensors connected as you want them connect them in the order you want 
+them in the temperature table, and wait for each one to register before adding the next sensor.

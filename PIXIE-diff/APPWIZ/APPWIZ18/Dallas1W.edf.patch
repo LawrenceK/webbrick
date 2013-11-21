@@ -1,0 +1,38 @@
+--- /home/lawrence/webbrick/webbrick/PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf
++++ /home/lawrence/webbrick/andy/SVN-WBS/vendor/fed/wizc/PIXIE/APPWIZ/APPWIZ18/Dallas1W.edf
+@@ -10,13 +10,14 @@
+ IntPri=0
+ Group=Data
+ nTemp=3
+-AppType=1
++AppType=0
+ LoopCall=
+ AllowMulti=0
+ UseAsm=1
+ [IOS]
+ nIO=1
+ IO0=TxRx1Wire,IO,256,-1,1
++IO1=SerialRx,I,259,-1,1
+ [Parameters]
+ nPar=0
+ Name0=SerRate,Serial Bit Rate
+@@ -42,7 +43,7 @@
+ Name0nPar=0
+ Name0nOccur=0
+ [PublicCalls]
+-nCalls=5
++nCalls=3
+ Name0=void Tx1Wire(unsigned char v);
+ Help0=Transmit v to 1 wire interface
+ Name1=unsigned char Rx1Wire();
+@@ -52,10 +53,6 @@
+ vHelp0=Received Value - temporary
+ Name2=char ResetCheck1W()
+ Help2=Reset bus & look for button, return 1 if found
+-Name3=void OwTx1WireABit
+-Help3=Transmit a single bit to the 1 wire interface
+-Name4=OwRx1WireABit
+-Help4=Receive a single bit from the 1 wire interface
+ [Defines]
+ nDefines=0
+ [AutoVar]

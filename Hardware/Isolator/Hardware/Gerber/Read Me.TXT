@@ -1,0 +1,7 @@
+Notes on pads for switches Sw1 and Sw2
+
+Due to the limitations of the PCB CAD system, the pads are shown as an oval shape with 3 holes.  The pad should have a single slotted hole with the two outside holes denoting the limits of the slot.
+
+Please arrange for the CNC router to complete the slots in these pads.
+
+AS.

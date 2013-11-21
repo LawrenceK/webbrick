@@ -1,0 +1,20 @@
+Use higher male connector.
+
+Assembly
+
+Download to SP on 192.168.1.250
+
+Then Program PIC.
+
+Make sure correct parts list to manufacturer.
+
+Adjust position of screw holes in IO board, slightly too close together.
+
+Factory test software. Test RTC.
+
+Clock crytsla on bottom, case soldered. Add small cap as well.
+
+Case drawings to subversion.
+
+POE version.
+

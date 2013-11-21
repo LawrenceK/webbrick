@@ -1,0 +1,28 @@
+EAGLE Version 4.13 Copyright (c) 1988-2004 CadSoft
+
+Electrical Rule Check for D:/EaglePCB/projects/WebBrick 6/WebBrick 6.0 64 IO/IOBoard-6-64.sch at 18/04/2007 16:06:10 
+
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC2G$2 GND
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC2G$3 VDD
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3G$1 INVALID\
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC3P VDD
+ERROR: Sheet 1/1: no SUPPLY for implicit POWER Pin IC3P GND
+WARNING: Only 1 Pin on net MGND
+ERROR: 2 OUTPUT Pins on net N$17
+WARNING: Only 1 Pin on net OC6
+WARNING: Only 1 Pin on net OC7
+WARNING: Sheet 1/1, Net VDD: missing Junction at (3.2 5.8)
+WARNING: Sheet 1/1: Nets GND and VDD too close at (4.7 5.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-4.5 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-4.3 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-4.1 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-3.9 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-3.7 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-3.5 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-3.3 7.9)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (4.7 5.9)
+
+Board and schematic are consistent
+
+    6 errors
+   13 warnings

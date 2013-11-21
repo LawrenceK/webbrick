@@ -1,0 +1,98 @@
+<h1>Integrating with the Harmony home automation server</h1>
+<p>A while back we met up with Daryl Mattocks of Simply Automate.  He told us about a range of developments that
+were in progress on the Harmony project from <a href="http://www.iDomus.com">iDomus</a>.</p>
+<p>In simple terms Harmony is a home automation server that runs on a Microsoft Windows platform.  Harmony has a 
+range of interfaces that allow it to talk to peripheral control equipment, the WebBrick of course being a splendid example.</p>
+<p>Originally we created a DLL plugin style interface, however since one of the principles of o2m8 is <b>"open"</b> we re-implemented the scheme
+using the HAPI interface.  This meant that we could write in Python and deploy to any operating system whilst still integrating with Harmony.</p>
+
+<h3>Basic Architecture</h3>
+
+<p>As soon as we started using HAPI we <b>were</b> happy, for one thing we got away from DLL Hell and RegSvr32.</p>
+
+<p>The HAPI architecture is fairly simple, it uses straightforward TCP/IP sockets, up which chuff one stuffs and receives blobs of XML</p>
+
+<p>In essence the architecture looks like:</p>
+<center><img src="http://www.o2m8.com/o2m8Images/Harmony/Architecture.png"></center>
+
+<p>There are several elegant elements to this architecture:</p>
+
+<li>WebBricks will continue to provide local control, even if the Harmony Server is stopped</li>
+<li>The WebBrick Integration Server does not rely on or block the Harmony Server and vice versa</li>
+<li>The WebBrick Integration Server and Harmony do not need to be on the same system</li>
+<li>Events raised by WebBricks can be used to control other devices that Harmony supports</li>
+<li>Harmony external controllers, e.g. InfraRed can be used to control a community of WebBricks</li>
+
+<h3>Cunning Plans</h3>
+
+<p>The mainstay of our cunning plan is to make WebBricks far far (and double far again) easier to use with Harmony than any other device.</p>
+
+<p>The first issue that we came across is how to bring the two concepts together, Harmony has a view of 'devices' as if they were the actual appliances that
+you might connect to a WebBrick.  Therefore a WebBrick 5 will look like 20 devices and a WebBrick 6 will look like 42 devices.</p>
+
+<center><img src="http://www.o2m8.com/o2m8Images/Harmony/Device.jpg"></center>
+
+<p> All these devices soon clutter up the Harmony interface, if we were to allow the user to add all the devices by hand, it could lead to many errors and slip-ups.</p>
+
+<h3>Self Discovery</h3>
+
+<p>So, to avoid all that nasty business of having to know where all the WebBricks are what thier IP addresses and node numbers are, we built a discovery scheme.</p>
+
+<p>This is based on the fact that WebBricks let you know when they start-up and, if they're unconfigured.  This lets us organise WebBricks into Harmony Zones
+(also called 'Rooms' elsewhere in the interface).  So, all you need do is start up Harmony and the WebBrick Integration Server, wait a few minutes so that each WebBrick
+is seen and you'll get views like:</p>
+<center>
+<table>
+<tr>
+<td><img src="http://www.o2m8.com/o2m8Images/Harmony/NewZones.jpg"></td>
+<td><img src="http://www.o2m8.com/o2m8Images/Harmony/InitialSmall.jpg"></td>
+</tr>
+</table>
+</center>
+
+<p>Note the note 'Unconfigured WebBricks' zone, this is where all new WebBricks go.  Once a WebBrick is configured, it will end up in its own zone
+based on its node number, in the above, zones: wb23 and wb33.</p>
+
+<h3>Drilling Down</h3>
+
+<p>Having collected the WebBricks into Harmony zone, we can now drill down to an individual WebBrick, here we get a display like:</p>
+
+<center><img src="http://www.o2m8.com/o2m8Images/Harmony/wbView.jpg"></center>
+
+<p>This lets us see all the 'devices' presented to Harmony.</p>
+
+<h3>Letting the users, well, use</h3>
+
+<p>At this point really really need to let other members of the household get to use the appliances connected to our WebBricks.</p>
+
+<p>This is a simple process, of going to the 'device' on the WebBrick and moving it to a new zone (well, room really!).  Here's a before and after example:</p>
+
+<table>
+<tr>
+<td><img src="http://www.o2m8.com/o2m8Images/Harmony/Before.jpg"></td>
+<td><img src="http://www.o2m8.com/o2m8Images/Harmony/After.jpg"></td>
+</tr>
+</table>
+
+<p>And here's an example of what the user might see on a Harmony touch screen:</p>
+
+<center><img src="http://www.o2m8.com/o2m8Images/Harmony/MainLights.jpg"></center>
+
+<h4>Thanks</h4>
+<p>Our thanks go to Daryl Mattocks for a tour through the HAPI interface and several pots of tea.</p>
+
+
+
+
+
+<table>
+<tr>
+<td><img src="http://www.o2m8.com/o2m8Images/Harmony/InitialThumb.jpg"></td>
+<td>
+<h3>Integrating WebBricks into Harmony</h3>
+<p>Harmony is a popular home automation server that runs on Windows, it can be found at <a href="http://www.iDomus.com">iDomus</a>.</p>
+<p>We wanted to make WebBricks the very best fun you could have with Harmony; here's how we went about it.</p>
+
+</td>
+</tr>
+</table>

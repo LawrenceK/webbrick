@@ -1,0 +1,172 @@
+PLOT REPORT
+-----------
+
+Report Written : Tuesday, October 14, 2008
+Design Path    : F:\WBS\Products\URPS\URPS Doc Package\Display\URPS_Displayx10.pcb
+Design Title   : 
+Created        : 28/05/2007 18:50:20
+Last Saved     : 20/08/2008 02:15:55
+Editing Time   : 468 min
+
+DEVICE SETTINGS
+---------------
+
+---------------Output NC Drill---------------
+    Leading zero suppression.
+    G01 assumed throughout.
+    Line termination <*> <CR> <LF>.
+    2.3 format absolute inches.
+    Format commands defined in gerber file.
+    Aperture table defined in gerber file.
+    Hardware arcs allowed.
+
+--------------
+Drill Settings
+--------------
+
+    Format 2.3 absolute in inches.
+    No zero suppression.
+
+
+PLOTS OUTPUT
+------------
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Top Silk.gbr"
+
+    Layers:
+    -------
+    Top Silk
+
+    D-Code    Shape  (thou)
+    -----------------------
+    D10       Circle 5
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Top Copper (Powerplane).gbr"
+
+    Layers:
+    -------
+    Top Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+    D76       Square 80 Hole 35
+    D77       Circle 79 Hole 39
+    D78       Circle 98 Hole 59
+    D79       Rectangle 40 X 80 Hole 30
+    D80       Circle 30
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Top Copper (Powerplane Positive).gbr"
+
+    Layers:
+    -------
+    Top Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+    D76       Square 80 Hole 35
+    D77       Circle 79 Hole 39
+    D78       Circle 98 Hole 59
+    D79       Rectangle 40 X 80 Hole 30
+    D80       Circle 30
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Top Copper (Resist).gbr"
+
+    Layers:
+    -------
+    Top Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Bottom Copper (Powerplane).gbr"
+
+    Layers:
+    -------
+    Bottom Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Bottom Copper (Powerplane Positive).gbr"
+
+    Layers:
+    -------
+    Bottom Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+    D10       Circle 5
+    D76       Square 80 Hole 35
+    D77       Circle 79 Hole 39
+    D78       Circle 98 Hole 59
+    D79       Rectangle 40 X 80 Hole 30
+    D80       Circle 30
+    D81       Rectangle 39 X 126
+    D82       Rectangle 40 X 130
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Bottom Copper (Resist).gbr"
+
+    Layers:
+    -------
+    Bottom Copper
+
+    D-Code    Shape  (thou)
+    -----------------------
+
+
+Gerber Output
+-------------
+
+    "gerber\URPS_Displayx10 - Bottom Silk.gbr"
+
+    Layers:
+    -------
+    Bottom Silk
+
+    D-Code    Shape  (thou)
+    -----------------------
+    D10       Circle 5
+
+
+NC Drill Output
+---------------
+
+
+    Tool             Size        Count
+    ------------------------------------
+    T001        00.030 in           90
+    T002        00.035 in           80
+    T003        00.039 in           20
+    T004        00.059 in           20
+    ------------------------------------
+    All                            210
+    ------------------------------------
+
+End Of Report.

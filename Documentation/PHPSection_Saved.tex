@@ -1,0 +1,316 @@
+\section{WebBrick and PHP}
+
+\subsection{Introduction}
+
+PHP is a web application langauge that allows you to mix business logic and user interface logic in a single file, this file
+is processed on a web server to mix fixed and variable parts of the user interface. http://www.php.net
+
+For the WebBrick we provide a number of PHP resources, these fall into the following catergories:
+
+\begin{tabular}{l|p{12cm}}
+    \hline
+	Libraries&These allow the user to create programs that interact with WebBricks
+				using routines that have been fully tested and debugged.  This allows
+				the programmer to get on with building the user interface they desire rather
+				than getting bogged down in the details of network protocols.\\
+    \hline
+	Example Code&This allows people to quickly build on some of the ideas we already had and
+				implemented.\\
+\end{tabular}
+
+\subsection{Libraries}
+
+\subsubsection{wb.php basic comms libray}
+\index{wb.php}
+
+This php module provides basic communication with the WebBrick and is mainly intended to be a building block.
+
+To use this library use the following in your code:
+
+\begin{verbatim} include("../API/wb.php") ;\end{verbatim}
+
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+wbSendCmd( '10.100.100.100', 'DO3;N' )
+
+\subsubsection{wb6.php the WebBrick 6 library}
+\index{wb6.php}
+
+This module provides basic commands that can be sent to a WebBrick.
+
+To import this library use the following in your code:
+
+\begin{verbatim} include("../API/wb6.php") ;\end{verbatim}
+
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+wb6DigOn( '10.100.100.100', 3 )
+
+\subsubsection{Functions implemented by wb6}
+
+\begin{tabular}{l|p{12cm}}
+    function&Description\\
+    \hline
+    \hline
+    wb6Trigger(\param{adrs}, \param{chn})&Generate a digital trigger on a digital input\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \hline
+    wb6DigOn(\param{adrs}, \param{chn})&Set a digital On\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \hline
+    wb6DigOff(\param{adrs}, \param{chn})&Set a digital Off\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \hline
+    wb6DigToggle(\param{adrs},\param{chn})&Toggle a digital Off\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \hline
+    wb6DigDwell(\param{adrs},\param{chn},\param{DwellNr})&Set a digital channel on for Dwell Time\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \param{DwellNr}&is the dwell number\\
+        \hline
+    wb6SetPoint(\param{adrs},\param{chn},\param{sp})&Set an analogue channel to preset sp.\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \param{sp}&is the preset number\\
+        \hline
+    wb6AnOutValue(\param{adrs},\param{chn},\param{val})&Set an analogue channel to a specific per-cent level.\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \param{chn}&is the channel on the webBrick being targetted\\
+        \param{val}&is a value 0-100 where 100 if 10V output\\
+        \hline
+    getStatusXml(\param{adrs})&Retrive the Xml blob that describes the current status of the addressed WebBrick\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \hline
+    getConfigXml(\param{adrs})&Retrive the Xml blob that describes the current configuration of the addressed WebBrick\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick being targetted.\\
+        \hline
+\end{tabular}
+
+\subsubsection{wb6Status.php}
+\index{wb6Status.php}
+
+This class retrieves a copy of the current WebBrick Status that can then be asked for specific details. Note
+the object reads and caches the values, so you get a current snapshot. To get updated values use the load method.
+There is no point retrieveing tha values at more a 1 second interval and it is recommended that you do as much as possible
+with a single retrieved snapshot.
+
+\begin{tabular}{l|p{12cm}}
+    call&Description\\
+    \hline
+    wbStatus()&Construct a wbStatus object.\\
+        \hline
+    load(\param{adrs})&load a wbStatus object with a status snapshot.\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick from which the status should be retrieved.\\
+        \hline
+    getOneWireBus = getOneWireBus(\param{chn})&return current status of the one wire bus.\\
+        \param{result}&Bit map showing which temperature sensors are available.\\
+        \hline
+    tempVal = getTemp(\param{chn})&return current setting of an analogue output channel.\\
+        \param{chn}&the temperature sensor number.\\
+        \param{result}&temperature.\\
+        \hline
+    digOutState = digOutState(\param{chn})&return current temperature.\\
+        \param{chn}&the analogue output channel number.\\
+        \param{result}&0-100 where 100 is an output of 10V\\
+        \hline    
+    anOutVal = getAnOut(\param{chn})&return current setting of an analogue output channel.\\
+        \param{chn}&the analogue output channel number.\\
+        \param{result}&0-100 where 100 is an output of 10V\\
+        \hline
+    anInVal = getAnIn(\param{chn})&return current level of an analogue input channel.\\
+        \param{chn}&the analogue input channel number.\\
+        \param{result}&0-100 where 100 is an input of 5V\\
+        \hline
+    digInState = getDigIn(\param{chn})&return current status of a digital input or monitor input (channels 8-11).\\
+        \param{chn}&the digital input channel number.\\
+        \param{result}&One of True or False for On or Off.\\
+        \hline
+    digOutState = getDigOut(\param{chn})&return current status of a digital output.\\
+        \param{chn}&the digital output channel number.\\
+        \param{result}&One of True or False for On or Off.\\
+        \hline
+    monitorInState = getMonitor(\param{chn})&return current status of a monitor input.\\
+        \param{chn}&the monitor channel number.\\
+        \param{result}&One of True or False for On or Off.\\
+        \hline
+    error = getCmdError()&return result of last command to webbrick.\\
+        \param{result}&0 was no error.\\
+        \hline
+    state = getOperationalState()&return operational state of webBrick.\\
+        \param{result}&See comnmand section for values.\\
+        \hline
+    state = getLoginState()&return login level at webBrick.\\
+        \param{result}&0-3.\\
+        \hline
+    date = getWbDate()&return current date at webBrick.\\
+        \param{result}&The date as a formatted string, not yet implemented at webbrick.\\
+        \hline
+    getTime = getTime()&return current time at webBrick.\\
+        \param{result}&The time as a formatted string.\\
+        \hline
+    getDay = getDay()&return current day at webBrick.\\
+        \param{result}&The day as a number 0-6 for Sunday through to Saturday.\\
+        \hline
+\end{tabular}
+
+\subsubsection{wb6Cfg.php}
+\index{wb6Cfg.php}
+This class retrieves a copy of the current WebBrick configuration that can then be asked for specific details.
+
+\begin{tabular}{l|p{12cm}}
+    function&Description\\
+    \hline
+    wbConfig()&Construct a wbConfig object\\
+        \hline
+    load(\param{adrs})&load a wbCfg object\\
+        \param{adrs}&is the Ip address/Dns Name of the WebBrick from which the configuration should be retrieved.\\
+        \hline
+    NodeName = getNodeName()&Retrive node name\\
+        \param{result}&is the node name.\\
+        \hline
+    NodeNumber = getNodeNumber()&Retrive node number\\
+        \param{result}&is the node number.\\
+        \hline
+    fadeRate = getFadeRate()&Retrive fade rate\\
+        \param{result}&is the fade rate.\\
+        \hline
+    ipAddress = getIpAddress()&Retrive IP address\\
+        \param{result}&is the IP address.\\
+        \hline
+    macAddress = getMacAddress()&Retrive ethernet MAC address\\
+        \param{result}&is the ethernet MAC address.\\
+        \hline
+    rotaryStep = getRotary( chan )&Retrieve rotary step value\\
+        \param{chan}&rotary channel number.\\
+        \param{result}&is the step value.\\
+        \hline
+    dwell = getDwell( idx )&Retrieve dwell value\\
+        \param{idx}&dwell number.\\
+        \param{result}&dwell in seconds.\\
+        \hline
+    dwellStr = getDwellStr( idx )&Retrieve dwell value\\
+        \param{idx}&dwell number.\\
+        \param{result}&dwell as a display string.\\
+        \hline
+    sp = getSetPoint( idx )&Retrieve set point value\\
+        \param{idx}&set point number.\\
+        \param{result}&setpoint 0-100\%.\\
+        \hline
+    nameStr = getDigOutName( chan )&Retrieve name for digital output\\
+        \param{chan}&output number.\\
+        \param{result}&name string.\\
+        \hline
+    nameStr = getMonitorName( chan )&Retrieve name for monitor input\\
+        \param{chan}&monitor number.\\
+        \param{result}&name string.\\
+        \hline
+    nameStr = getAnalogueOutName( chan )&Retrieve name for analogue output\\
+        \param{chan}&analogue number.\\
+        \param{result}&name string.\\
+        \hline
+    array = getDigInTrigger( chan )&Retrieve values for digital trigger\\
+        \param{chan}&digital in number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getTempTriggerLow( chan )&Retrieve values for low temperature trigger\\
+        \param{chan}&temperature number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getTempTriggerHigh( chan )&Retrieve values for high temperature trigger\\
+        \param{chan}&temperature number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getAnalogueTriggerLow( chan )&Retrieve values for low analogue trigger\\
+        \param{chan}&analogue in number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getAnalogueTriggerHigh( chan )&Retrieve values for high analogue trigger\\
+        \param{chan}&analogue in number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getScheduledEvent( chan )&Retrieve values for a scheduled event trigger\\
+        \param{chan}&analogue in number.\\
+        \param{result}&associative array.\\
+        \hline
+    array = getScene( chan )&Retrieve values for a scene\\
+        \param{chan}&scene number.\\
+        \param{result}&associative array.\\
+        \hline
+\end{tabular}
+
+Trigger results are returned as an asociative array with some of the following parameters in it, refer to commands 
+section for details on these values.
+
+\begin{tabular}{l|p{12cm}}
+    attribute name&Description\\
+    \hline
+    Name&channel name\\
+    Value&threshold value\\
+    Hours&scheduled time\\
+    Minutes&scheduled time\\
+    Days&scheduled days\\
+    actionNr&action type number\\
+    action&action type string\\
+    dwell&dwell number\\
+    UDPRemNr&UDP packet type number\\
+    UDPRem&UDP packet type string\\
+    RemNode&target remote node.\\
+    typeNr&channel type number\\
+    type&channel type string\\
+    setPoint&setpoint number\\
+    pairChn&target channel number\\
+\end{tabular}
+
+Scene results are returned as an asociative array with the following parameters in it.
+
+\begin{tabular}{l|p{12cm}}
+    attribute name&Description\\
+    \hline
+    Digital\param{nn}&Ignore|On|Off\\
+    Analogue\param{nn}&Ignore|SetPoint\param{mm}\\
+\end{tabular}
+where \param{nn} is a channel number and \param{mm} is a setpoint number.
+
+\subsection{PHP Examples}
+
+There is a PHP example that you can modify to produce your own central user interface.  
+
+\subsubsection{PanelLib.php}
+\index{PanelLib.php}
+
+This provides a library of code for a user interface panel that is capable of displaying details from one or more 
+webBricks and issuing commands to them. This uses an Xml file standard.xml to define a user interface that consists 
+of a number of columns that contain status information and/or commands.
+
+The xml file has a top level element called status with a single attribute cols that specifies the number of columns on the
+display. There are then a set of elements called item. Each item has a Type element and typically a channel number and an
+IP address to identify the webbrick and the data to access from it. Each entry may also contain a Trig element that is used to
+specify a command to be issued.
+
+item Type may be one of:
+
+\begin{tabular}{l|p{12cm}}
+    type&Description\\
+    \hline
+    Header&generates a text of Cols width.\\
+    Temp&displays a temperature.\\
+    inAnalogue&displays an analogue input value.\\
+    Analogue&displays an analogue output.\\
+    Switch&displays a digital output state.\\
+    Monitor&displays a monitor state.\\
+\end{tabular}
+
+\subsubsection{standard.php}
+\index{standard.php}
+
+This is the start page for the standard panel.
+

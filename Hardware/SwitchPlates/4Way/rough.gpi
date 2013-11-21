@@ -1,0 +1,39 @@
+Photoplotter Info File: D:/EaglePCB/projects/TouchPanel/TouchPanel/rough.gpi
+
+ Date              : 04/02/2005 14:56:00 
+ Plotfile          : D:/EaglePCB/projects/TouchPanel/TouchPanel/rough.sts
+ Apertures         : generated: 
+ Device            : Gerber photoplotter with RS-274-X aperture generation
+
+Parameter settings:
+
+ Emulate Apertures : no
+ Emulate Thermal   : no
+ Emulate Annulus   : no
+ Tolerance Draw  + :  0.00 %
+ Tolerance Draw  - :  0.00 %
+ Tolerance Flash + :  0.00 %
+ Tolerance Flash - :  0.00 %
+ Rotate            : no
+ Mirror            : yes
+ Optimize          : yes
+ Auto fit          : yes
+ OffsetX           : 0inch
+ OffsetY           : 0inch
+
+Plotfile Info:
+
+ Coordinate Format : 2.4
+ Coordinate Units  : Inch
+ Data Mode         : Absolute
+ Zero Suppression  : None
+ End Of Block      : *
+
+Apertures used:
+
+ Code     Shape     Size                  used
+
+ D10      oval      0.1120inch x 0.0600inch    28
+ D11      square    0.0595inch               6
+ D12      octagon   0.0600inch              24
+

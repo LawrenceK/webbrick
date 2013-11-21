@@ -1,0 +1,782 @@
+---------------------------------------------
+PIC ASSEMBLER LISTING
+Line    Address Opcode  Instruction
+---------------------------------------------
+0001    0000            ;Line removed by MPASMWIN preprocessor: 	list p=12f683
+0002    0000            ;Line removed by MPASMWIN preprocessor: 	#include <p12f683.inc>
+0003    0000            ;Line removed by MPASMWIN preprocessor (RADIX can not be changed - DEC is used): 	radix dec
+0004    0000            ; Begin
+0005    0000            	R0L EQU 0x20
+0006    0000            	R0H EQU 0x21
+0007    0000            	R1L EQU 0x22
+0008    0000            	R1H EQU 0x23
+0009    0000            	R2L EQU 0x24
+0010    0000            	R2H EQU 0x25
+0011    0000            	R3L EQU 0x26
+0012    0000            	R3H EQU 0x27
+0013    0000            	R4L EQU 0x28
+0014    0000            	R4H EQU 0x29
+0015    0000            	R5L EQU 0x2A
+0016    0000            	R5H EQU 0x2B
+0017    0000            	ORG 0x0000
+0018    0000    118A    	BCF PCLATH,3
+0019    0001    120A    	BCF PCLATH,4
+0020    0002    2805    	GOTO L0003
+0021    0003            	ORG 0x0004
+0022    0004    0009    	RETFIE
+0023    0005            L0003:
+0024    0005            ; 1: Define CONF_WORD = 0x30d4
+0025    0005            ; 2: 
+0026    0005            ; 3: 
+0027    0005            ; 4: Define CLOCK_FREQUENCY = 4
+0028    0005            ; 5: 
+0029    0005            ; 6: TRISIO.1 = 1
+0030    0005    1683    	BSF STATUS,RP0
+0031    0006    1485    	BSF 0x05,1
+0032    0007            ; 7: TRISIO.2 = 0
+0033    0007    1105    	BCF 0x05,2
+0034    0008            ; 8: TRISIO.5 = 0
+0035    0008    1285    	BCF 0x05,5
+0036    0009            ; 9: 
+0037    0009            ; 10: Define ADC_CLOCK = 3
+0038    0009            ; 11: Define ADC_SAMPLEUS = 50
+0039    0009            ; 12: AllDigital
+0040    0009    019F    	CLRF 0x1F
+0041    000A    1283    	BCF STATUS,RP0
+0042    000B    3007    	MOVLW 0x07
+0043    000C    0099    	MOVWF 0x19
+0044    000D            ; 13: Dim sig As Word
+0045    000D            ;       The address of 'sig' is 0x2C
+0046    000D            	sig EQU 0x2C
+0047    000D            ; 14: Dim pta As Word
+0048    000D            ;       The address of 'pta' is 0x2E
+0049    000D            	pta EQU 0x2E
+0050    000D            ; 15: Dim i As Byte
+0051    000D            ;       The address of 'i' is 0x30
+0052    000D            	i EQU 0x30
+0053    000D            ; 16: Dim l As Byte
+0054    000D            ;       The address of 'l' is 0x31
+0055    000D            	l EQU 0x31
+0056    000D            ; 17: Dim p As Byte
+0057    000D            ;       The address of 'p' is 0x32
+0058    000D            	p EQU 0x32
+0059    000D            ; 18: Dim pt As Word
+0060    000D            ;       The address of 'pt' is 0x33
+0061    000D            	pt EQU 0x33
+0062    000D            ; 19: 
+0063    000D            ; 20:  'ADCON0 = %1100000
+0064    000D            ; 21: ANSEL = 8
+0065    000D    1683    	BSF STATUS,RP0
+0066    000E    3008    	MOVLW 0x08
+0067    000F    009F    	MOVWF 0x1F
+0068    0010            ; 22: 
+0069    0010    1283    	BCF STATUS,RP0
+0070    0011            ; 23: PWMon 1, 9
+0071    0011    303F    	MOVLW 0x3F
+0072    0012    1683    	BSF STATUS,RP0
+0073    0013    0092    	MOVWF PR2
+0074    0014    1105    	BCF TRISIO,2
+0075    0015    1283    	BCF STATUS,RP0
+0076    0016    0193    	CLRF CCPR1L
+0077    0017    1295    	BCF CCP1CON,DC1B1
+0078    0018    1215    	BCF CCP1CON,DC1B0
+0079    0019    1012    	BCF T2CON,T2CKPS0
+0080    001A    1092    	BCF T2CON,T2CKPS1
+0081    001B    1512    	BSF T2CON,TMR2ON
+0082    001C    300C    	MOVLW 0x0C
+0083    001D    0495    	IORWF CCP1CON,F
+0084    001E            ; 24: Gosub eefill
+0085    001E    209A    	CALL L0002
+0086    001F            ; 25: 
+0087    001F            ; 26: start: 
+0088    001F            L0001:
+0089    001F            ; 27: pta = 0
+0090    001F    01AE    	CLRF 0x2E
+0091    0020    01AF    	CLRF 0x2F
+0092    0021            ; 28: GPIO.5 = 0
+0093    0021    1285    	BCF 0x05,5
+0094    0022            ; 29: WaitMs 10
+0095    0022    300A    	MOVLW 0x0A
+0096    0023    00A0    	MOVWF R0L
+0097    0024    01A1    	CLRF R0H
+0098    0025    20DA    	CALL W001
+0099    0026            ; 30: For l = 0 To 7
+0100    0026    01B1    	CLRF 0x31
+0101    0027            L0004:
+0102    0027    0831    	MOVF 0x31,W
+0103    0028    3C07    	SUBLW 0x07
+0104    0029    1C03    	BTFSS STATUS,C
+0105    002A    2845    	GOTO L0005
+0106    002B            ; 31: Adcin 3, pt
+0107    002B    179F    	BSF ADCON0,ADFM
+0108    002C    1683    	BSF STATUS,RP0
+0109    002D    3030    	MOVLW 0x30
+0110    002E    049F    	IORWF ANSEL,F
+0111    002F    3003    	MOVLW 0x03
+0112    0030    1283    	BCF STATUS,RP0
+0113    0031    00A0    	MOVWF R0L
+0114    0032    210D    	CALL A001
+0115    0033    1683    	BSF STATUS,RP0
+0116    0034    081E    	MOVF ADRESL,W
+0117    0035    1283    	BCF STATUS,RP0
+0118    0036    00B3    	MOVWF 0x33
+0119    0037    081E    	MOVF ADRESH,W
+0120    0038    00B4    	MOVWF 0x34
+0121    0039            ; 32: pta = pta + pt
+0122    0039    082E    	MOVF 0x2E,W
+0123    003A    0733    	ADDWF 0x33,W
+0124    003B    00AE    	MOVWF 0x2E
+0125    003C    082F    	MOVF 0x2F,W
+0126    003D    1803    	BTFSC STATUS,C
+0127    003E    3E01    	ADDLW 0x01
+0128    003F    0734    	ADDWF 0x34,W
+0129    0040    00AF    	MOVWF 0x2F
+0130    0041            ; 33: Next l
+0131    0041    3001    	MOVLW 0x01
+0132    0042    07B1    	ADDWF 0x31,F
+0133    0043    1C03    	BTFSS STATUS,C
+0134    0044    2827    	GOTO L0004
+0135    0045    301F    L0005:	MOVLW 0x1F
+0136    0046    0583    	ANDWF STATUS,F
+0137    0047            ; 34: GPIO.5 = 1
+0138    0047    1685    	BSF 0x05,5
+0139    0048            ; 35: pt = pta / 8
+0140    0048    082E    	MOVF 0x2E,W
+0141    0049    00A0    	MOVWF R0L
+0142    004A    082F    	MOVF 0x2F,W
+0143    004B    00A1    	MOVWF R0H
+0144    004C    3008    	MOVLW 0x08
+0145    004D    00A2    	MOVWF R1L
+0146    004E    01A3    	CLRF R1H
+0147    004F    209C    	CALL D001
+0148    0050    00B3    	MOVWF 0x33
+0149    0051    0821    	MOVF R0H,W
+0150    0052    00B4    	MOVWF 0x34
+0151    0053            ; 36: If pt < 456 Then pt = 456
+0152    0053    0833    	MOVF 0x33,W
+0153    0054    00A0    	MOVWF R0L
+0154    0055    0834    	MOVF 0x34,W
+0155    0056    00A1    	MOVWF R0H
+0156    0057    3001    	MOVLW 0x01
+0157    0058    00A3    	MOVWF R1H
+0158    0059    30C8    	MOVLW 0xC8
+0159    005A    20C1    	CALL C004
+0160    005B    1D03    	BTFSS STATUS,Z
+0161    005C    2861    	GOTO L0006
+0162    005D    30C8    	MOVLW 0xC8
+0163    005E    00B3    	MOVWF 0x33
+0164    005F    3001    	MOVLW 0x01
+0165    0060    00B4    	MOVWF 0x34
+0166    0061    301F    L0006:	MOVLW 0x1F
+0167    0062    0583    	ANDWF STATUS,F
+0168    0063            ; 37: If pt > 651 Then pt = 651
+0169    0063    0833    	MOVF 0x33,W
+0170    0064    00A0    	MOVWF R0L
+0171    0065    0834    	MOVF 0x34,W
+0172    0066    00A1    	MOVWF R0H
+0173    0067    3002    	MOVLW 0x02
+0174    0068    00A3    	MOVWF R1H
+0175    0069    308B    	MOVLW 0x8B
+0176    006A    20BE    	CALL C003
+0177    006B    1D03    	BTFSS STATUS,Z
+0178    006C    2871    	GOTO L0007
+0179    006D    308B    	MOVLW 0x8B
+0180    006E    00B3    	MOVWF 0x33
+0181    006F    3002    	MOVLW 0x02
+0182    0070    00B4    	MOVWF 0x34
+0183    0071    301F    L0007:	MOVLW 0x1F
+0184    0072    0583    	ANDWF STATUS,F
+0185    0073            ; 38: p = pt - 456 '(0 To 196)
+0186    0073            ;       The address of 'oshonsoft_temp_1' is 0x35
+0187    0073            	oshonsoft_temp_1 EQU 0x35
+0188    0073    30C8    	MOVLW 0xC8
+0189    0074    0233    	SUBWF 0x33,W
+0190    0075    00B5    	MOVWF 0x35
+0191    0076    3001    	MOVLW 0x01
+0192    0077    1C03    	BTFSS STATUS,C
+0193    0078    3E01    	ADDLW 0x01
+0194    0079    0234    	SUBWF 0x34,W
+0195    007A    00B6    	MOVWF 0x36
+0196    007B    0835    	MOVF 0x35,W
+0197    007C    00B2    	MOVWF 0x32
+0198    007D            ; 39: Read p, i
+0199    007D    0832    	MOVF 0x32,W
+0200    007E    1683    	BSF STATUS,RP0
+0201    007F    009B    	MOVWF EEADR
+0202    0080    141C    	BSF EECON1,RD
+0203    0081    0000    	NOP
+0204    0082    081A    	MOVF EEDATA,W
+0205    0083    1283    	BCF STATUS,RP0
+0206    0084    00B0    	MOVWF 0x30
+0207    0085            ; 40: PWMduty 1, i
+0208    0085    0830    	MOVF 0x30,W
+0209    0086    00A0    	MOVWF R0L
+0210    0087    1820    	BTFSC R0L,0
+0211    0088    1615    	BSF CCP1CON,DC1B0
+0212    0089    1C20    	BTFSS R0L,0
+0213    008A    1215    	BCF CCP1CON,DC1B0
+0214    008B    18A0    	BTFSC R0L,1
+0215    008C    1695    	BSF CCP1CON,DC1B1
+0216    008D    1CA0    	BTFSS R0L,1
+0217    008E    1295    	BCF CCP1CON,DC1B1
+0218    008F    1003    	BCF STATUS,C
+0219    0090    0CA0    	RRF R0L,F
+0220    0091    1003    	BCF STATUS,C
+0221    0092    0C20    	RRF R0L,W
+0222    0093    0093    	MOVWF CCPR1L
+0223    0094            ; 41: WaitMs 255
+0224    0094    30FF    	MOVLW 0xFF
+0225    0095    00A0    	MOVWF R0L
+0226    0096    01A1    	CLRF R0H
+0227    0097    20DA    	CALL W001
+0228    0098            ; 42: Goto start
+0229    0098    281F    	GOTO L0001
+0230    0099            ; 43: End
+0231    0099    2899    L0008:	GOTO L0008
+0232    009A            ; 44: eefill: 
+0233    009A            L0002:
+0234    009A            ; 45: EEPROM 0, 0
+0235    009A            ; 46: EEPROM 1, 1
+0236    009A            ; 47: EEPROM 2, 2
+0237    009A            ; 48: EEPROM 3, 3
+0238    009A            ; 49: EEPROM 4, 4
+0239    009A            ; 50: EEPROM 5, 4
+0240    009A            ; 51: EEPROM 6, 5
+0241    009A            ; 52: EEPROM 7, 6
+0242    009A            ; 53: EEPROM 8, 7
+0243    009A            ; 54: EEPROM 9, 8
+0244    009A            ; 55: EEPROM 10, 8
+0245    009A            ; 56: EEPROM 11, 9
+0246    009A            ; 57: EEPROM 12, 10
+0247    009A            ; 58: EEPROM 13, 11
+0248    009A            ; 59: EEPROM 14, 12
+0249    009A            ; 60: EEPROM 15, 13
+0250    009A            ; 61: EEPROM 16, 13
+0251    009A            ; 62: EEPROM 17, 14
+0252    009A            ; 63: EEPROM 18, 15
+0253    009A            ; 64: EEPROM 19, 16
+0254    009A            ; 65: EEPROM 20, 17
+0255    009A            ; 66: EEPROM 21, 18
+0256    009A            ; 67: EEPROM 22, 19
+0257    009A            ; 68: EEPROM 23, 20
+0258    009A            ; 69: EEPROM 24, 20
+0259    009A            ; 70: EEPROM 25, 21
+0260    009A            ; 71: EEPROM 26, 22
+0261    009A            ; 72: EEPROM 27, 23
+0262    009A            ; 73: EEPROM 28, 24
+0263    009A            ; 74: EEPROM 29, 26
+0264    009A            ; 75: EEPROM 30, 27
+0265    009A            ; 76: EEPROM 31, 28
+0266    009A            ; 77: EEPROM 32, 29
+0267    009A            ; 78: EEPROM 33, 29
+0268    009A            ; 79: EEPROM 34, 30
+0269    009A            ; 80: EEPROM 35, 31
+0270    009A            ; 81: EEPROM 36, 32
+0271    009A            ; 82: EEPROM 37, 33
+0272    009A            ; 83: EEPROM 38, 34
+0273    009A            ; 84: EEPROM 39, 35
+0274    009A            ; 85: EEPROM 40, 36
+0275    009A            ; 86: EEPROM 41, 37
+0276    009A            ; 87: EEPROM 42, 38
+0277    009A            ; 88: EEPROM 43, 39
+0278    009A            ; 89: EEPROM 44, 40
+0279    009A            ; 90: EEPROM 45, 41
+0280    009A            ; 91: EEPROM 46, 42
+0281    009A            ; 92: EEPROM 47, 43
+0282    009A            ; 93: EEPROM 48, 44
+0283    009A            ; 94: EEPROM 49, 45
+0284    009A            ; 95: EEPROM 50, 46
+0285    009A            ; 96: EEPROM 51, 47
+0286    009A            ; 97: EEPROM 52, 48
+0287    009A            ; 98: EEPROM 53, 49
+0288    009A            ; 99: EEPROM 54, 50
+0289    009A            ; 100: EEPROM 55, 51
+0290    009A            ; 101: EEPROM 56, 52
+0291    009A            ; 102: EEPROM 57, 53
+0292    009A            ; 103: EEPROM 58, 54
+0293    009A            ; 104: EEPROM 59, 55
+0294    009A            ; 105: EEPROM 60, 56
+0295    009A            ; 106: EEPROM 61, 57
+0296    009A            ; 107: EEPROM 62, 58
+0297    009A            ; 108: EEPROM 63, 59
+0298    009A            ; 109: EEPROM 64, 60
+0299    009A            ; 110: EEPROM 65, 61
+0300    009A            ; 111: EEPROM 66, 62
+0301    009A            ; 112: EEPROM 67, 63
+0302    009A            ; 113: EEPROM 68, 64
+0303    009A            ; 114: EEPROM 69, 65
+0304    009A            ; 115: EEPROM 70, 66
+0305    009A            ; 116: EEPROM 71, 67
+0306    009A            ; 117: EEPROM 72, 68
+0307    009A            ; 118: EEPROM 73, 69
+0308    009A            ; 119: EEPROM 74, 70
+0309    009A            ; 120: EEPROM 75, 71
+0310    009A            ; 121: EEPROM 76, 72
+0311    009A            ; 122: EEPROM 77, 74
+0312    009A            ; 123: EEPROM 78, 75
+0313    009A            ; 124: EEPROM 79, 77
+0314    009A            ; 125: EEPROM 80, 78
+0315    009A            ; 126: EEPROM 81, 79
+0316    009A            ; 127: EEPROM 82, 80
+0317    009A            ; 128: EEPROM 83, 81
+0318    009A            ; 129: EEPROM 84, 82
+0319    009A            ; 130: EEPROM 85, 84
+0320    009A            ; 131: EEPROM 86, 85
+0321    009A            ; 132: EEPROM 87, 86
+0322    009A            ; 133: EEPROM 88, 87
+0323    009A            ; 134: EEPROM 89, 88
+0324    009A            ; 135: EEPROM 90, 89
+0325    009A            ; 136: EEPROM 91, 90
+0326    009A            ; 137: EEPROM 92, 91
+0327    009A            ; 138: EEPROM 93, 93
+0328    009A            ; 139: EEPROM 94, 94
+0329    009A            ; 140: EEPROM 95, 95
+0330    009A            ; 141: EEPROM 96, 96
+0331    009A            ; 142: EEPROM 97, 97
+0332    009A            ; 143: EEPROM 98, 99
+0333    009A            ; 144: EEPROM 99, 100
+0334    009A            ; 145: EEPROM 100, 101
+0335    009A            ; 146: EEPROM 101, 102
+0336    009A            ; 147: EEPROM 102, 104
+0337    009A            ; 148: EEPROM 103, 105
+0338    009A            ; 149: EEPROM 104, 106
+0339    009A            ; 150: EEPROM 105, 107
+0340    009A            ; 151: EEPROM 106, 109
+0341    009A            ; 152: EEPROM 107, 110
+0342    009A            ; 153: EEPROM 108, 111
+0343    009A            ; 154: EEPROM 109, 112
+0344    009A            ; 155: EEPROM 110, 114
+0345    009A            ; 156: EEPROM 111, 115
+0346    009A            ; 157: EEPROM 112, 116
+0347    009A            ; 158: EEPROM 113, 118
+0348    009A            ; 159: EEPROM 114, 119
+0349    009A            ; 160: EEPROM 115, 120
+0350    009A            ; 161: EEPROM 116, 121
+0351    009A            ; 162: EEPROM 117, 123
+0352    009A            ; 163: EEPROM 118, 124
+0353    009A            ; 164: EEPROM 119, 125
+0354    009A            ; 165: EEPROM 120, 128
+0355    009A            ; 166: EEPROM 121, 129
+0356    009A            ; 167: EEPROM 122, 130
+0357    009A            ; 168: EEPROM 123, 132
+0358    009A            ; 169: EEPROM 124, 133
+0359    009A            ; 170: EEPROM 125, 135
+0360    009A            ; 171: EEPROM 126, 136
+0361    009A            ; 172: EEPROM 127, 137
+0362    009A            ; 173: EEPROM 128, 139
+0363    009A            ; 174: EEPROM 129, 140
+0364    009A            ; 175: EEPROM 130, 141
+0365    009A            ; 176: EEPROM 131, 143
+0366    009A            ; 177: EEPROM 132, 144
+0367    009A            ; 178: EEPROM 133, 146
+0368    009A            ; 179: EEPROM 134, 147
+0369    009A            ; 180: EEPROM 135, 149
+0370    009A            ; 181: EEPROM 136, 150
+0371    009A            ; 182: EEPROM 137, 152
+0372    009A            ; 183: EEPROM 138, 153
+0373    009A            ; 184: EEPROM 139, 154
+0374    009A            ; 185: EEPROM 140, 156
+0375    009A            ; 186: EEPROM 141, 157
+0376    009A            ; 187: EEPROM 142, 159
+0377    009A            ; 188: EEPROM 143, 160
+0378    009A            ; 189: EEPROM 144, 162
+0379    009A            ; 190: EEPROM 145, 163
+0380    009A            ; 191: EEPROM 146, 165
+0381    009A            ; 192: EEPROM 147, 167
+0382    009A            ; 193: EEPROM 148, 168
+0383    009A            ; 194: EEPROM 149, 170
+0384    009A            ; 195: EEPROM 150, 171
+0385    009A            ; 196: EEPROM 151, 173
+0386    009A            ; 197: EEPROM 152, 174
+0387    009A            ; 198: EEPROM 153, 176
+0388    009A            ; 199: EEPROM 154, 177
+0389    009A            ; 200: EEPROM 155, 180
+0390    009A            ; 201: EEPROM 156, 182
+0391    009A            ; 202: EEPROM 157, 183
+0392    009A            ; 203: EEPROM 158, 185
+0393    009A            ; 204: EEPROM 159, 187
+0394    009A            ; 205: EEPROM 160, 188
+0395    009A            ; 206: EEPROM 161, 190
+0396    009A            ; 207: EEPROM 162, 192
+0397    009A            ; 208: EEPROM 163, 193
+0398    009A            ; 209: EEPROM 164, 195
+0399    009A            ; 210: EEPROM 165, 197
+0400    009A            ; 211: EEPROM 166, 198
+0401    009A            ; 212: EEPROM 167, 200
+0402    009A            ; 213: EEPROM 168, 202
+0403    009A            ; 214: EEPROM 169, 203
+0404    009A            ; 215: EEPROM 170, 205
+0405    009A            ; 216: EEPROM 171, 207
+0406    009A            ; 217: EEPROM 172, 209
+0407    009A            ; 218: EEPROM 173, 210
+0408    009A            ; 219: EEPROM 174, 212
+0409    009A            ; 220: EEPROM 175, 214
+0410    009A            ; 221: EEPROM 176, 216
+0411    009A            ; 222: EEPROM 177, 218
+0412    009A            ; 223: EEPROM 178, 219
+0413    009A            ; 224: EEPROM 179, 221
+0414    009A            ; 225: EEPROM 180, 223
+0415    009A            ; 226: EEPROM 181, 225
+0416    009A            ; 227: EEPROM 182, 227
+0417    009A            ; 228: EEPROM 183, 230
+0418    009A            ; 229: EEPROM 184, 231
+0419    009A            ; 230: EEPROM 185, 233
+0420    009A            ; 231: EEPROM 186, 235
+0421    009A            ; 232: EEPROM 187, 237
+0422    009A            ; 233: EEPROM 188, 239
+0423    009A            ; 234: EEPROM 189, 241
+0424    009A            ; 235: EEPROM 190, 243
+0425    009A            ; 236: EEPROM 191, 245
+0426    009A            ; 237: EEPROM 192, 247
+0427    009A            ; 238: EEPROM 193, 249
+0428    009A            ; 239: EEPROM 194, 251
+0429    009A            ; 240: EEPROM 195, 253
+0430    009A            ; 241: EEPROM 196, 255
+0431    009A            ; 242: 
+0432    009A            ; 243: 
+0433    009A            ; 244: 
+0434    009A            ; 245: Return
+0435    009A    0008    	RETURN
+0436    009B            ; End of program
+0437    009B    289B    L0009:	GOTO L0009
+0438    009C            ; Division Routine
+0439    009C    3010    D001:	MOVLW 0x10
+0440    009D    00A6    	MOVWF R3L
+0441    009E    01A5    	CLRF R2H
+0442    009F    01A4    	CLRF R2L
+0443    00A0    0D21    D002:	RLF R0H,W
+0444    00A1    0DA4    	RLF R2L,F
+0445    00A2    0DA5    	RLF R2H,F
+0446    00A3    0822    	MOVF R1L,W
+0447    00A4    02A4    	SUBWF R2L,F
+0448    00A5    0823    	MOVF R1H,W
+0449    00A6    1C03    	BTFSS STATUS,C
+0450    00A7    0F23    	INCFSZ R1H,W
+0451    00A8    02A5    	SUBWF R2H,F
+0452    00A9    1803    	BTFSC STATUS,C
+0453    00AA    28B2    	GOTO D003
+0454    00AB    0822    	MOVF R1L,W
+0455    00AC    07A4    	ADDWF R2L,F
+0456    00AD    0823    	MOVF R1H,W
+0457    00AE    1803    	BTFSC STATUS,C
+0458    00AF    0F23    	INCFSZ R1H,W
+0459    00B0    07A5    	ADDWF R2H,F
+0460    00B1    1003    	BCF STATUS,C
+0461    00B2    0DA0    D003:	RLF R0L,F
+0462    00B3    0DA1    	RLF R0H,F
+0463    00B4    0BA6    	DECFSZ R3L,F
+0464    00B5    28A0    	GOTO D002
+0465    00B6    0820    	MOVF R0L,W
+0466    00B7    0008    	RETURN
+0467    00B8            ; Comparison Routine
+0468    00B8    00A2    C001:	MOVWF R1L
+0469    00B9    3005    	MOVLW 0x05
+0470    00BA    28CA    	GOTO C007
+0471    00BB    00A2    C002:	MOVWF R1L
+0472    00BC    3002    	MOVLW 0x02
+0473    00BD    28CA    	GOTO C007
+0474    00BE    00A2    C003:	MOVWF R1L
+0475    00BF    3006    	MOVLW 0x06
+0476    00C0    28CA    	GOTO C007
+0477    00C1    00A2    C004:	MOVWF R1L
+0478    00C2    3003    	MOVLW 0x03
+0479    00C3    28CA    	GOTO C007
+0480    00C4    00A2    C005:	MOVWF R1L
+0481    00C5    3004    	MOVLW 0x04
+0482    00C6    28CA    	GOTO C007
+0483    00C7    00A2    C006:	MOVWF R1L
+0484    00C8    3001    	MOVLW 0x01
+0485    00C9    28CA    	GOTO C007
+0486    00CA    00A8    C007:	MOVWF R4L
+0487    00CB    0823    	MOVF R1H,W
+0488    00CC    0221    	SUBWF R0H,W
+0489    00CD    1D03    	BTFSS STATUS,Z
+0490    00CE    28D1    	GOTO C008
+0491    00CF    0822    	MOVF R1L,W
+0492    00D0    0220    	SUBWF R0L,W
+0493    00D1    3004    C008:	MOVLW 0x04
+0494    00D2    1803    	BTFSC STATUS,C
+0495    00D3    3001    	MOVLW 0x01
+0496    00D4    1903    	BTFSC STATUS,Z
+0497    00D5    3002    	MOVLW 0x02
+0498    00D6    0528    	ANDWF R4L,W
+0499    00D7    1D03    	BTFSS STATUS,Z
+0500    00D8    30FF    	MOVLW 0xFF
+0501    00D9    0008    	RETURN
+0502    00DA            ; Waitms Routine
+0503    00DA    08A0    W001:	MOVF R0L,F
+0504    00DB    1903    	BTFSC STATUS,Z
+0505    00DC    28E5    	GOTO W002
+0506    00DD    20EC    	CALL W003
+0507    00DE    03A0    	DECF R0L,F
+0508    00DF    0000    	NOP
+0509    00E0    0000    	NOP
+0510    00E1    0000    	NOP
+0511    00E2    0000    	NOP
+0512    00E3    0000    	NOP
+0513    00E4    28DA    	GOTO W001
+0514    00E5    08A1    W002:	MOVF R0H,F
+0515    00E6    1903    	BTFSC STATUS,Z
+0516    00E7    0008    	RETURN
+0517    00E8    20EC    	CALL W003
+0518    00E9    03A1    	DECF R0H,F
+0519    00EA    03A0    	DECF R0L,F
+0520    00EB    28DA    	GOTO W001
+0521    00EC    300C    W003:	MOVLW 0x0C
+0522    00ED    00A5    	MOVWF R2H
+0523    00EE    0BA5    W004:	DECFSZ R2H,F
+0524    00EF    28EE    	GOTO W004
+0525    00F0    0000    	NOP
+0526    00F1    0000    	NOP
+0527    00F2    3012    	MOVLW 0x12
+0528    00F3    00A2    	MOVWF R1L
+0529    00F4    0BA2    W005:	DECFSZ R1L,F
+0530    00F5    28FB    	GOTO W006
+0531    00F6    20FD    	CALL W007
+0532    00F7    20FD    	CALL W007
+0533    00F8    0000    	NOP
+0534    00F9    0000    	NOP
+0535    00FA    0008    	RETURN
+0536    00FB    20FD    W006:	CALL W007
+0537    00FC    28F4    	GOTO W005
+0538    00FD    300D    W007:	MOVLW 0x0D
+0539    00FE    00A4    	MOVWF R2L
+0540    00FF    0BA4    W008:	DECFSZ R2L,F
+0541    0100    28FF    	GOTO W008
+0542    0101    0000    	NOP
+0543    0102    0008    	RETURN
+0544    0103            ; Waitus Routine - Byte Argument
+0545    0103    300A    X001:	MOVLW 0x0A
+0546    0104    02A8    	SUBWF R4L,F
+0547    0105    1C03    	BTFSS STATUS,C
+0548    0106    0008    	RETURN
+0549    0107    2908    	GOTO X002
+0550    0108    3006    X002:	MOVLW 0x06
+0551    0109    02A8    	SUBWF R4L,F
+0552    010A    1C03    	BTFSS STATUS,C
+0553    010B    0008    	RETURN
+0554    010C    2908    	GOTO X002
+0555    010D            ; Adcin Routine
+0556    010D    0DA0    A001:	RLF R0L,F
+0557    010E    0DA0    	RLF R0L,F
+0558    010F    303C    	MOVLW 0x3C
+0559    0110    05A0    	ANDWF R0L,F
+0560    0111    30C0    	MOVLW 0xC0
+0561    0112    059F    	ANDWF ADCON0,F
+0562    0113    0820    	MOVF R0L,W
+0563    0114    049F    	IORWF ADCON0,F
+0564    0115    141F    	BSF ADCON0,ADON
+0565    0116    3032    	MOVLW 0x32
+0566    0117    00A8    	MOVWF R4L
+0567    0118    2103    	CALL X001
+0568    0119    149F    	BSF ADCON0,GO
+0569    011A    189F    A002:	BTFSC ADCON0,GO
+0570    011B    291A    	GOTO A002
+0571    011C    130C    	BCF PIR1,ADIF
+0572    011D    101F    	BCF ADCON0,ADON
+0573    011E    0008    	RETURN
+0574    011F            ; Configuration word settings
+0575    011F            	ORG 0x2007
+0576    2007    30D4    	DW 0x30D4
+0577    2008            ; EEPROM data
+0578    2008            	ORG 0x2100
+0579    2100    0000    	DW 0x00
+0580    2101    0001    	DW 0x01
+0581    2102    0002    	DW 0x02
+0582    2103    0003    	DW 0x03
+0583    2104    0004    	DW 0x04
+0584    2105    0004    	DW 0x04
+0585    2106    0005    	DW 0x05
+0586    2107    0006    	DW 0x06
+0587    2108    0007    	DW 0x07
+0588    2109    0008    	DW 0x08
+0589    210A    0008    	DW 0x08
+0590    210B    0009    	DW 0x09
+0591    210C    000A    	DW 0x0A
+0592    210D    000B    	DW 0x0B
+0593    210E    000C    	DW 0x0C
+0594    210F    000D    	DW 0x0D
+0595    2110    000D    	DW 0x0D
+0596    2111    000E    	DW 0x0E
+0597    2112    000F    	DW 0x0F
+0598    2113    0010    	DW 0x10
+0599    2114    0011    	DW 0x11
+0600    2115    0012    	DW 0x12
+0601    2116    0013    	DW 0x13
+0602    2117    0014    	DW 0x14
+0603    2118    0014    	DW 0x14
+0604    2119    0015    	DW 0x15
+0605    211A    0016    	DW 0x16
+0606    211B    0017    	DW 0x17
+0607    211C    0018    	DW 0x18
+0608    211D    001A    	DW 0x1A
+0609    211E    001B    	DW 0x1B
+0610    211F    001C    	DW 0x1C
+0611    2120    001D    	DW 0x1D
+0612    2121    001D    	DW 0x1D
+0613    2122    001E    	DW 0x1E
+0614    2123    001F    	DW 0x1F
+0615    2124    0020    	DW 0x20
+0616    2125    0021    	DW 0x21
+0617    2126    0022    	DW 0x22
+0618    2127    0023    	DW 0x23
+0619    2128    0024    	DW 0x24
+0620    2129    0025    	DW 0x25
+0621    212A    0026    	DW 0x26
+0622    212B    0027    	DW 0x27
+0623    212C    0028    	DW 0x28
+0624    212D    0029    	DW 0x29
+0625    212E    002A    	DW 0x2A
+0626    212F    002B    	DW 0x2B
+0627    2130    002C    	DW 0x2C
+0628    2131    002D    	DW 0x2D
+0629    2132    002E    	DW 0x2E
+0630    2133    002F    	DW 0x2F
+0631    2134    0030    	DW 0x30
+0632    2135    0031    	DW 0x31
+0633    2136    0032    	DW 0x32
+0634    2137    0033    	DW 0x33
+0635    2138    0034    	DW 0x34
+0636    2139    0035    	DW 0x35
+0637    213A    0036    	DW 0x36
+0638    213B    0037    	DW 0x37
+0639    213C    0038    	DW 0x38
+0640    213D    0039    	DW 0x39
+0641    213E    003A    	DW 0x3A
+0642    213F    003B    	DW 0x3B
+0643    2140    003C    	DW 0x3C
+0644    2141    003D    	DW 0x3D
+0645    2142    003E    	DW 0x3E
+0646    2143    003F    	DW 0x3F
+0647    2144    0040    	DW 0x40
+0648    2145    0041    	DW 0x41
+0649    2146    0042    	DW 0x42
+0650    2147    0043    	DW 0x43
+0651    2148    0044    	DW 0x44
+0652    2149    0045    	DW 0x45
+0653    214A    0046    	DW 0x46
+0654    214B    0047    	DW 0x47
+0655    214C    0048    	DW 0x48
+0656    214D    004A    	DW 0x4A
+0657    214E    004B    	DW 0x4B
+0658    214F    004D    	DW 0x4D
+0659    2150    004E    	DW 0x4E
+0660    2151    004F    	DW 0x4F
+0661    2152    0050    	DW 0x50
+0662    2153    0051    	DW 0x51
+0663    2154    0052    	DW 0x52
+0664    2155    0054    	DW 0x54
+0665    2156    0055    	DW 0x55
+0666    2157    0056    	DW 0x56
+0667    2158    0057    	DW 0x57
+0668    2159    0058    	DW 0x58
+0669    215A    0059    	DW 0x59
+0670    215B    005A    	DW 0x5A
+0671    215C    005B    	DW 0x5B
+0672    215D    005D    	DW 0x5D
+0673    215E    005E    	DW 0x5E
+0674    215F    005F    	DW 0x5F
+0675    2160    0060    	DW 0x60
+0676    2161    0061    	DW 0x61
+0677    2162    0063    	DW 0x63
+0678    2163    0064    	DW 0x64
+0679    2164    0065    	DW 0x65
+0680    2165    0066    	DW 0x66
+0681    2166    0068    	DW 0x68
+0682    2167    0069    	DW 0x69
+0683    2168    006A    	DW 0x6A
+0684    2169    006B    	DW 0x6B
+0685    216A    006D    	DW 0x6D
+0686    216B    006E    	DW 0x6E
+0687    216C    006F    	DW 0x6F
+0688    216D    0070    	DW 0x70
+0689    216E    0072    	DW 0x72
+0690    216F    0073    	DW 0x73
+0691    2170    0074    	DW 0x74
+0692    2171    0076    	DW 0x76
+0693    2172    0077    	DW 0x77
+0694    2173    0078    	DW 0x78
+0695    2174    0079    	DW 0x79
+0696    2175    007B    	DW 0x7B
+0697    2176    007C    	DW 0x7C
+0698    2177    007D    	DW 0x7D
+0699    2178    0080    	DW 0x80
+0700    2179    0081    	DW 0x81
+0701    217A    0082    	DW 0x82
+0702    217B    0084    	DW 0x84
+0703    217C    0085    	DW 0x85
+0704    217D    0087    	DW 0x87
+0705    217E    0088    	DW 0x88
+0706    217F    0089    	DW 0x89
+0707    2180    008B    	DW 0x8B
+0708    2181    008C    	DW 0x8C
+0709    2182    008D    	DW 0x8D
+0710    2183    008F    	DW 0x8F
+0711    2184    0090    	DW 0x90
+0712    2185    0092    	DW 0x92
+0713    2186    0093    	DW 0x93
+0714    2187    0095    	DW 0x95
+0715    2188    0096    	DW 0x96
+0716    2189    0098    	DW 0x98
+0717    218A    0099    	DW 0x99
+0718    218B    009A    	DW 0x9A
+0719    218C    009C    	DW 0x9C
+0720    218D    009D    	DW 0x9D
+0721    218E    009F    	DW 0x9F
+0722    218F    00A0    	DW 0xA0
+0723    2190    00A2    	DW 0xA2
+0724    2191    00A3    	DW 0xA3
+0725    2192    00A5    	DW 0xA5
+0726    2193    00A7    	DW 0xA7
+0727    2194    00A8    	DW 0xA8
+0728    2195    00AA    	DW 0xAA
+0729    2196    00AB    	DW 0xAB
+0730    2197    00AD    	DW 0xAD
+0731    2198    00AE    	DW 0xAE
+0732    2199    00B0    	DW 0xB0
+0733    219A    00B1    	DW 0xB1
+0734    219B    00B4    	DW 0xB4
+0735    219C    00B6    	DW 0xB6
+0736    219D    00B7    	DW 0xB7
+0737    219E    00B9    	DW 0xB9
+0738    219F    00BB    	DW 0xBB
+0739    21A0    00BC    	DW 0xBC
+0740    21A1    00BE    	DW 0xBE
+0741    21A2    00C0    	DW 0xC0
+0742    21A3    00C1    	DW 0xC1
+0743    21A4    00C3    	DW 0xC3
+0744    21A5    00C5    	DW 0xC5
+0745    21A6    00C6    	DW 0xC6
+0746    21A7    00C8    	DW 0xC8
+0747    21A8    00CA    	DW 0xCA
+0748    21A9    00CB    	DW 0xCB
+0749    21AA    00CD    	DW 0xCD
+0750    21AB    00CF    	DW 0xCF
+0751    21AC    00D1    	DW 0xD1
+0752    21AD    00D2    	DW 0xD2
+0753    21AE    00D4    	DW 0xD4
+0754    21AF    00D6    	DW 0xD6
+0755    21B0    00D8    	DW 0xD8
+0756    21B1    00DA    	DW 0xDA
+0757    21B2    00DB    	DW 0xDB
+0758    21B3    00DD    	DW 0xDD
+0759    21B4    00DF    	DW 0xDF
+0760    21B5    00E1    	DW 0xE1
+0761    21B6    00E3    	DW 0xE3
+0762    21B7    00E6    	DW 0xE6
+0763    21B8    00E7    	DW 0xE7
+0764    21B9    00E9    	DW 0xE9
+0765    21BA    00EB    	DW 0xEB
+0766    21BB    00ED    	DW 0xED
+0767    21BC    00EF    	DW 0xEF
+0768    21BD    00F1    	DW 0xF1
+0769    21BE    00F3    	DW 0xF3
+0770    21BF    00F5    	DW 0xF5
+0771    21C0    00F7    	DW 0xF7
+0772    21C1    00F9    	DW 0xF9
+0773    21C2    00FB    	DW 0xFB
+0774    21C3    00FD    	DW 0xFD
+0775    21C4            ; End of listing
+0776    21C4            	END
+---------------------------------------------
+Number of errors = 0

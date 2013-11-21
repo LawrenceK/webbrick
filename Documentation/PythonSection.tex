@@ -1,0 +1,272 @@
+\section{WebBrick and Python}
+
+\subsection{Introduction}
+
+Python is a very useful langauge. it can be used by almost anyone and allows for a full range of programming 
+from simple scripting to full on object orientated programming. Webbrick Systems have used Python to implement 
+the interface service between the webbrick and ITunes (Apple).
+
+For the WebBrick we provide a number of Python resources, these fall into the following catergories:
+
+\begin{tabular}{l|p{12cm}}
+
+	Class Libraries&These allow the user to create programs that interact with WebBricks
+				using routines that have been fully tested and debugged.  This allows
+				the programmer to get on with building the automation they desire rather
+				than getting bogged down in the details of network protocols.\\
+	Utilities&These allow for common operatios such as uploading and downloading
+				WebBrick configuration files.\\
+	Example Code&This allows people to quickly build on some of the ideas we already had and
+				implemented.\\
+\end{tabular}
+
+\subsection{Class Libraries}
+
+\subsection{wb6.py the WebBrick class library}
+\index{wb6.py}
+
+This python module provides basic commands that can be sent to a WebBrick.
+
+To import this library use the following in your code:
+
+\begin{verbatim} import wb6 \end{verbatim}
+
+From this point you can use this module to interact with WebBricks, for example
+if you wanted to switch on a particular output channel you might use
+somethine like
+
+wb6.DigOn( '10.100.100.100', 3 )
+
+\subsection{Functions implemented by wb class}
+
+\subsubsection{getStatusXml}
+getStatusXml(\param{adrs})
+
+Retrieve the Xml blob that describes the current status of the addressed WebBrick
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+
+\subsubsection{getConfigXml}
+getConfigXml(\param{adrs})
+
+Retrive the Xml blob that describes the current configuration of the addressed WebBrick
+\param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+
+\subsubsection{DigTrigger}
+DigTrigger(\param{adrs}, \param{chn}) 
+
+Generate a digital trigger on a digital input
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+
+\subsubsection{DigOn}
+DigOn(\param{adrs}, \param{chn})
+
+Set a digital On
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+
+\subsubsection{DigOff}
+DigOff(\param{adrs}, \param{chn})
+
+Set a digital Off
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+
+\subsubsection{DigToggle}
+DigToggle(\param{adrs},\param{chn})
+
+Toggle a digital Off
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+
+\subsubsection{DigDwell}
+DigDwell(\param{adrs},\param{chn},\param{DwellNr})
+
+Set a digital channel on for Dwell Time
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+    \param{DwellNr} is the dwell number
+
+\subsubsection{AnOutSp}
+AnOutSp(\param{adrs},\param{chn},\param{sp}) 
+
+Set an analogue channel to preset sp.
+
+        \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+        \param{chn} is the channel on the webBrick being targetted
+        \param{sp} is the preset number
+
+
+\subsubsection{AnOutPercent}
+AnOutPercent(\param{adrs},\param{chn},\param{val})
+
+Set an analogue channel to a specific per-cent level.
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{chn} is the channel on the webBrick being targetted
+    \param{val} is a value 0-100 where 100 if 10V output
+
+\subsubsection{Send}
+Send(\param{adrs},\param{cmd})
+
+Send a specific WebBrick command.
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{cmd} is the command to be sent, see the section on Commands.
+
+\subsubsection{GetXml}
+result = GetXml(\param{adrs},\param{xmlName})
+
+Retrieve a specific Xml blob from a webBrick.
+
+    \param{adrs} is the Ip address/Dns Name of the WebBrick being targetted.
+    \param{xmlName} The name of the Xml blob, currently xmlStatus.xml and xmlCfg.xml.
+    \param{result} the return value is the Xml if the parameters are valid
+
+\subsubsection{wbUdpEvents.py}
+\index{wbUdpEvents.py}
+This is a class that captures and delivers Udp events to an event target. To use this you create an event
+target derived from wbUdpEvents.udpPacket for the events to be delivered to and pass this when you create 
+wbUdpEvents.wbUdpEvents. 
+
+wbMonitor is an example using this, See under Python Utilities.
+
+\subsubsection{wbXmlEvent.py}
+\index{wbXmlEvent.py}
+
+This is a class that builds upon wbUdpEvents to turn the UDP events from a webbrick into an Xml format, another example of an
+Event target for wbUdpEvents.  wbXmlEventTest.py (see under Python Utilities) uses this class.
+
+\subsubsection{WebBrickConfig.py}
+\index{WebBrickConfig.py}
+
+This class contains methods to read a WebBrick XML configuration file, and convert them into WebBrick configuration commands.
+There is a command interface to this class that uses it to save and restore configuration to/from disk. 
+See under Python Utilities.
+
+\subsubsection{wbStatus.py}
+\index{wbStatus.py}
+
+This class retrieves a copy of the current WebBrick Status that can then be asked for specific details. Note
+the object reads and caches the values, so you get a current snapshot. To get updated values create a new object.
+There is no point retrieveing tha values at more a 1 second interval and it is recommended that you do as much as possible
+with a single retrieved snapshot.
+
+\begin{enumerate}
+\item wbStatus(\param{adrs}) Construct a wbStatus object.
+        \param{adrs} is the Ip address/Dns Name of the WebBrick from which the status should be retrieved.
+
+\item digOutState = digOutState(\param{chn}) return current status of a digital output.
+         \param{chn} the digital output channel number.
+         \param{result} One of True or False for On or Off.
+\item digInState = digInState(\param{chn}) return current status of a digital input or monitor input (channels 8-11).
+         \param{chn} the digital input channel number.
+         \param{result} One of True or False for On or Off.
+\item anOutVal = anOutVal(\param{chn}) return current setting of an analogue output channel.
+         \param{chn} the analogue output channel number.
+         \param{result} 0-100 where 100 is an output of 10V
+\item anInVal = anInVal(\param{chn}) return current level of an analogue input channel.
+         \param{chn} the analogue input channel number.
+         \param{result} 0-100 where 100 is an input of 5V
+\item tempVal = tempVal(\param{chn}) return current temperature.
+         \param{chn} the analogue input channel number.
+         \param{result} a signed temperature value multipled by 16, temperarure resolution is to 1/16 of a degree celcius.
+\item getTime = getTime() return current time at webBrick.
+         \param{result} The time as a formatted string.
+\item getHour = getHour() return current hour at webBrick.
+         \param{result} The hour in 24 hour format 0-23
+\item getMinute = getMinute() return current minute at webBrick.
+         \param{result} The minute as 0-59
+\item getSecond= getSecond() return current second at webBrick.
+         \param{result} The second as 0-59
+\item getDay = getDay() return current day at webBrick.
+         \param{result} The day as a number 0-6 for Sunday through to Saturday.
+\item getVersion = getVersion() return firmware version for WebBrick.
+         \param{result} String version number.
+\item getOpState = getOpState() return operational state of webBrick.
+         \param{result} See comnmand section for values.
+\item getLoginState = getLoginState() return login level at webBrick.
+         \param{result} 0-3.
+\item getLastError = getLastError() return result of last command to webbrick.
+         \param{result} 0 was no error.
+\end{enumerate}
+
+\subsubsection{wbCurrentCfg.py}
+\index{wbCurrentCfg.py}
+This class retrieves a copy of the current WebBrick configuration that can then be asked for specific details.
+Not yet implemented.
+
+\begin{enumerate}
+\item wbCfg(\param{adrs}) Construct a wbCfg object
+        \param{adrs} is the Ip address/Dns Name of the WebBrick from which the configuration should be retrieved.
+
+\item NodeName = NodeName()Retrive node name
+\item NodeNumber = NodeNumber()Retrive node number
+    
+\end{enumerate}
+
+\subsection{Python Utilities}
+
+\subsubsection{wbMonitor.py}
+\index{wbMonitor.py}
+Uses wbUdpEvents to display received webbrick events.
+
+\subsubsection{wbXmlEventTest.py}
+\index{wbXmlEventTest.py}
+Uses wbXmlEvent to display received webbrick events as Xml blobs.
+
+\subsubsection{WbCfg.py}
+\index{WbCfg configuration download utility}
+
+This program is used to configure a WebBrick from a configuration file and to save there configuration. It uses the 
+class WebBrickConfig.
+
+Usage wbCfg.py prog [options] \param{WbAdrs}
+
+\begin{tabular}{l|l|p{12cm}}
+    option&option parameters&Description\\
+    \hline
+    \hline
+    -d,--display&&Display WebBrick configuration (default)\\
+        \hline
+    -s,--save&(\param{fileName})&save webbrick configuration\\
+        &\param{fileName}&name of file to save configuration to.\\
+        \hline
+    -u,--update&(\param{fileName})&Update WebBrick configuration\\
+        &\param{fileName}&name of file to read configuration from.\\
+        \hline
+    -p,--password&(\param{password})&Access password\\
+        &\param{password}&Access password, default password.\\
+        \hline
+    -t,--trace&&Trace operation\\
+        \hline
+\end{tabular}
+
+You should note that during configuration we set the operating state - to '1' (startup) to disable 
+all the functions of the WebBrick.We do this to ensure that there are no extraneous actions or 
+commands in progress that would interrupt or corrupt the configuration process.
+
+The save format at present is the wbCfg.xml format.
+
+\subsection{Python Examples}
+
+There are some Python examples that you can use to generate the command packets that WebBricks will respond to.  
+
+\subsubsection{wbDigOut.py}
+\index{wbDigOut.py}
+
+This program turns a single digital channel on off or toggles it.
+
+usage:  python wbDigOut.py \param{ipAdrs} \param{channel} \param{action}
+
+\subsubsection{wbExcercise.py}
+\index{wbExcercise.py}
+
+This program just repeatadly toggles all the digital channel in turn. If you have LEDs attached to the outputs you will
+get a NightRider type scan.
+

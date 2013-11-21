@@ -1,0 +1,43 @@
+\section{CE Marking}
+
+\index{CE Mark}
+
+WebBrick WB10B60 is in conformity with the essential requirements of the directive 1999/5/EC. The product has been tested
+ to the standard EN55022:1998 "EMC emmissions and immunity", using the limits described on EN55022 Class B CISPR22(B).
+
+
+\subsubsection{General Description}
+
+
+\subsubsection{Risk - High Temperatures}
+\index{Risks ! High Temperatures}
+
+The WebBrick has 4 triacs each rated at 2A with an overall rating of 6.3A.  If 6.3A of 240VAC is drawn through the WebBrick
+the triacs will dissipate around 7W of heat.  There is sufficient heat sinking in the WebBrick to cope with this.  Internal temperatures
+can rise to 85 Deg C.  It is important that the WebBrick is not housed in small totally enclosed areas.  Air circulation is best when the 
+WebBrick is mounted in the vertical plane.
+
+
+\subsubsection{Risk EMI}
+\index{Risks ! EMI}
+
+Since the WebBrick uses a number of microprocessors, it may be prone to electromagnetic emissions if it is not installed properly.  The current
+standards are stringent and require that a typical installation radiates less that 2 nano watts of power in the RF range.
+
+We recommend that CAT 5/5E/6/7 type cables are used and one core of each pair is connected to ground.
+
+Further we suggest that you use a good quality clean 12V supply to the WebBrick to ensure that supply borne noise is radiated via the ground plane.
+
+It is not a requirement to connect the mains ground to the electronic ground of a WebBrick.  However, please note that if you use the triacs for 
+mains loads then the protective mains ground should be connected.  There is no internal connection between this protective ground and the 
+electronic ground.
+
+
+\subsubsection{Risk Software Failures}
+\index{Risks ! Software}
+
+The WebBrick contains about 40K assembler code, whilst this has been thoroughly tested, 
+software errors cannot be ruled out.
+
+\paragraph{WebBricks should not take the place of safety systems or override safety systems.}
+

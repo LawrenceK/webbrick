@@ -1,0 +1,349 @@
+--- /home/lawrence/webbrick/webbrick/PIXIE/Libs/DataLib16.c
++++ /home/lawrence/webbrick/andy/SVN-WBS/vendor/fed/wizc/PIXIE/Libs/DataLib16.c
+@@ -496,6 +496,8 @@
+ #asmdefine _GetSPOtoFSR0
+ 
+ #pragma asm
++
++
+ module "_IIRout"
+ 
+ ifndef _IIStretch
+@@ -1347,10 +1349,6 @@
+ 	else
+ 		MGETFSRSPO 3		; FSR points to EAddr
+ 	endif
+-; Moved this here as we had a silly with EEADR being modified on
+-; 18f452 whilst previous write active
+-WaitEE:		btfsc EECON1,WR		; Pending write ?
+-		bra WaitEE
+ 		movf POSTINC0,w
+ 		movwf EEADR
+ 	if EEADRH
+@@ -1359,10 +1357,10 @@
+ 	endif
+ 		bcf EECON1,7		; Clear EEPGD and CFGS bits
+   		bcf EECON1,6
+-                bcf INTCON,GIEH         ; disble interrupts as per 18f452 errata
++WaitEE:		btfsc EECON1,WR		; Pending write ?
++		bra WaitEE
+   		bsf EECON1,RD
+ 		movf EEDATA,w
+-                bsf INTCON,GIEH
+ 		movwf ACC
+   		MRET 0
+ endmodule
+@@ -1412,7 +1410,6 @@
+ endmodule
+ 	#pragma asmend
+ #endif
+-
+ #ifdef _ResetCheck1W
+ 
+ #callfunction Delays
+@@ -1421,48 +1418,32 @@
+ #pragma asm
+ module "_ResetCheck1W"
+ if _TxRx1WirePort&8
+-  _TxRx1WireTris=_TxRx1WirePort+9	; Address of TRIS
++ _TxRx1WireTris=_TxRx1WirePort+9	; Address of TRIS
+ else
+-  _TxRx1WireTris=_TxRx1WirePort+18	; Address of TRIS
++ _TxRx1WireTris=_TxRx1WirePort+18	; Address of TRIS
+ endif
+-
+-;
+-; Bus times - all calculated in instruction cycles
+-;
+-; calculate instruction time in nanoseconds
+-; i.e. 200ns for a 20Mhz CPU.
++;
++; Bus times - all given in instruction cycles
++;
++
+  CycnS1W=D'4000000'/(_APROCFREQ/D'1000')	
+-; Reset/presence timing 
++ 
+  tRstL1W=D'500000'/CycnS1W		; Reset time (low)
+-
+- tPresWait1WSlot=D'30000'/CycnS1W	; time slot for waiting for presence
+- tPresWait1WCount=D'10'	                ; In this number of slots we should see both a low and a high.
+-
+-; Updated values.
+-; initial pulse width
+- tStart1W=D'3000'/CycnS1W		; Clock width
+- tRec1W=D'1000'/CycnS1W		        ; Recovery time
++ tPresWait1W=D'150000'/CycnS1W		; Wait for device to show its present
++ tLow1W=D'3000'/CycnS1W			; Clock width
++ tRec1W=D'1000'/CycnS1W			; Recovery time
+  tSlot1W=D'80000'/CycnS1W		; Allow 80uS slot for safety
+- tRead1W=D'10000'/CycnS1W		; Sample time after clock released
+-; tRead1W=D'4000'/CycnS1W		; Sample time after clock released, Original FORED value
++ tRead1W=D'4000'/CycnS1W		; Sample time after clock released
+ 
+ ; Macro to drive or release the bus
+- Set1WOut	macro
+-    bcf _TxRx1WireTris,_TxRx1WireBit
+- endm
+-
+- Set1WIn	macro
+-    bsf _TxRx1WireTris,_TxRx1WireBit
+- endm
+-
+- Drive1WLow macro
+-    bcf _TxRx1WirePort,_TxRx1WireBit
+- endm
+-
+- Drive1WHigh macro
+-    bsf _TxRx1WirePort,_TxRx1WireBit
+- endm
+-
++  
++ Set1W	macro x
++ 	if x
++ 	 bsf _TxRx1WireTris,_TxRx1WireBit
++ 	else
++ 	 bcf _TxRx1WireTris,_TxRx1WireBit
++ 	endif
++ 	endm
+ ;
+ ; Reset bus & look for button, return 0 
+ ; W=1  Z=0 if button found
+@@ -1471,30 +1452,26 @@
+ ;
+ 
+ ResetCheck1W::
+-		Set1WOut
+-		Drive1WLow
++		bcf _TxRx1WirePort,_TxRx1WireBit	; Always set o/p low
++		Set1W 0
+ 		DELAY tRstL1W				; Reset period
+-		Drive1WHigh
+-		Set1WIn
+-		movlw #tPresWait1WCount                 ; maximum of 10 presence wait slots
++		Set1W 1
++		movlw 1					; Always minimum of 1
++		addlw #tPresWait1W/D'20'
+ 		movwf Temp
+-; delay first otherwise on fast CPU and long 1 wire bus the bus is still
+-; low when we get here from the reset pulse.
+-RCLop1W		DELAY tPresWait1WSlot                   ; wait before first sample.
+-		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
++RCLop1W		btfss _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		bra LoFd1W
++		DELAY 15				; 15
+ 		decfsz Temp				; 1
+ 		bra RCLop1W				; 2
+ 		clrf ACC
+ 		MRET 0
+-LoFd1W		
+-; temp is already counting presence wait slots
+-;                movlw 1
+-;		addlw #tPresWait1W/D'20'
+-;		movwf Temp
++LoFd1W		movlw 1
++		addlw #tPresWait1W/D'20'
++		movwf Temp
+ RCLHi1W		btfsc _TxRx1WirePort,_TxRx1WireBit 	; 2
+ 		bra HiFd1W
+-		DELAY tPresWait1WSlot                   ; 30 uS
++		DELAY D'15'				; 15
+ 		decfsz Temp				; 1
+ 		bra RCLHi1W				; 2
+ 		movlw -1
+@@ -1515,113 +1492,54 @@
+ 		movf INDF0,w
+ 		movwf ACC			 ; Transmitted value
+ 		movlw 8
+-	
+ 		movwf Temp			 ; Loop counter
+-		Set1WOut
+-Tx1WL1		
+-		Drive1WLow			; 1
+-		if tStart1W>3			; following 3 instructions.
+-	 	    DELAY (tStart1W-3)		; Clock low time before data
++Tx1WL1		bcf _TxRx1WirePort,_TxRx1WireBit
++		Set1W 0				 ; 1
++		if tLow1W>5
++		 DELAY (tLow1W-5)		 ; Clock low time before data
+ 		endif
+-		rrcf ACC			; 1
+-		btfsc STATUS,C			; 1
+-		Drive1WHigh			; 1, conditional
+-		
+-		DELAY (tSlot1W-tStart1W-1)	; Slot time (low or high)
+-		Drive1WHigh			; 1, now definite high.
+-		DELAY (tRec1W)			; Recovery time
+-		decfsz Temp			; 1
+-		bra Tx1WL1			; 2
+-		Set1WIn
++		rrcf ACC				 ; 1
++		btfsc STATUS,C				 ; 1
++		bsf _TxRx1WirePort,_TxRx1WireBit ; 1
++		DELAY (tSlot1W-3)		 ; 1+2 Slot time (low or high)
++		Set1W 1				 ; 1
++		if tRec1W>5
++		 DELAY (tLow1W-5)		 ; Recovery time
++		endif
++		decfsz Temp			 ; 1
++		bra Tx1WL1			 ; 2
+ 		MRET 0
+ 
+-; Receive 1 byte from bus, place in ACC
++; Recieve 1 byte from bus, place in ACC
+ 
+ Rx1Wire::
+ 		movlw 8
+ 		movwf Temp			; Loop counter
+ 		bcf _TxRx1WirePort,_TxRx1WireBit
+-		Set1WOut				;
+-Rx1WL1		
+-		Drive1WLow				;
+-		if tStart1W>3
+-		    DELAY (tStart1W)			; Clock low time 
+-        endif
+-		Drive1WHigh				; 1
+-		Set1WIn					; 1
+-		
++Rx1WL1		Set1W 0					; 1
++		if tLow1W>3
++		 DELAY (tLow1W-3)			; Clock low time 
++		endif
++		Set1W 1					; 2+1
+ 		if tRead1W>3
+-			DELAY (tRead1W-3)		; Delay before read
++		 DELAY (tRead1W-3)			; Delay before read
+ 		endif
+-		bcf STATUS,C				; 1
++		bcf STATUS,C					; 1
+ 		btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
+-	
+-		bsf STATUS,C				; 1
+-		rrcf ACC				; 1
+-		if tSlot1W>(tStart1W+tRead1W+5)
+-			DELAY (tSlot1W-tStartW-tRead1W-5); Delay before slot end
++		bsf STATUS,C
++		rrcf ACC
++		if tSlot1W>(tLow1W+tRead1W+5)
++		 DELAY (tSlot1W-tLow1W-tRead1W-5)	; Delay before slot end
+ 		endif
+-; want recovery time for Read
+-		Set1WOut				;
+-		Drive1WHigh			        ; 1, now definite high.
+-		DELAY (tRec1W)			        ; Recovery time
+-		decfsz Temp				; 1
+-		bra Rx1WL1				; 1
++		decfsz Temp
++		bra Rx1WL1
+ 		ifdef _Rx1WireUsed
+-			bsf _Rx1WireFlag,_Rx1WireFlagBit
++		 bsf _Rx1WireFlag,_Rx1WireFlagBit
+ 		endif
+ 		MRET 0
+-
+-//  void Tx1WireBit(unsigned char v);
+-; Transmit 8 bit value in W to bus
+-OwTx1WireABit::
+-		
+-	if _QUICKCALL==1
+-	    MGETFSRSPO 1	; FSR points to Data
+-	else
+-	    MGETFSRSPO 3	; FSR points to Data
+-	endif
+-		
+-	Set1WOut
+-	Drive1WLow		; 1
+-	if tStart1W>3		; following 3 instructions.
+-	    DELAY (tStart1W-3)	; Clock low time before data
+-	endif
+-	movf INDF0,w
+-	btfss STATUS,Z		; 1, skip if parameter is zero
+-	Drive1WHigh		; 1, conditional
+-	DELAY (tSlot1W-tStart1W); Slot time (low or high)
+-	Drive1WHigh		; 1, now definite high.
+-	DELAY (tRec1W)		; Recovery time
+-	Set1WIn
+-	MRET 0
+-	
+-// unsigned char Rx1WireBit(void);
+-OwRx1WireABit::
+-	clrf ACC
+-	Set1WOut				;
+-	Drive1WLow				;
+-	DELAY (tStart1W)			; Clock low time 
+-	Drive1WHigh				; 1
+-	Set1WIn					; 1
+-		
+-	if tRead1W>2
+-	    DELAY (tRead1W-2)			; Delay before read
+-	endif
+-	btfsc _TxRx1WirePort,_TxRx1WireBit	; 1
+-	incf ACC				; 1
+-	if tSlot1W>(tStart1W+tRead1W+2)
+-	    DELAY (tSlot1W-tStartW-tRead1W-2); Delay before slot end
+-	endif
+-	Set1WOut				;
+-	Drive1WHigh			        ; 1, now definite high.
+-	DELAY (tRec1W)			        ; Recovery time
+-	MRET 0
+- 
+-endmodule
+-#pragma asmend
+-#endif
+-
++endmodule
++#pragma asmend
++#endif
+ #ifdef _ISerialIn
+ //
+ // Interrupt driven serial interface
+@@ -1816,23 +1734,8 @@
+ 	MRET 0
+ 
+ RC5Rx::
+-	movlw (2*TimePerBit)/.15	; 1 Wait for up to 2bits for change
+-	movwf BakStop			; 1
+-	movlw ((2*TimePerBit/2)/.15)>>8	; 1 Wait for up to 2bits for change
+-	movwf BakStopH			; 1
+-
+-Rc5WaitRx:
+-	movf BakStop,w			; 1 timeout wait for start
+-	iorwf BakStopH,w		; 1
+-	btfsc STATUS,Z			; 2
+-	goto IRError
+-	decf BakStop			; 1
+-	decf BakStopH			; 1
+-	incfsz BakStop,w		; 1
+-	incf BakStopH			; 1
+  	btfsc _IRRXPORT,_IRRXBIT	; If not receiving wait until we do
+- 	goto Rc5WaitRx
+-
++ 	goto RC5Rx
+ EndOne:	btfss _IRRXPORT,_IRRXBIT	; If receiving wait for end of 1st bit
+ 	goto EndOne			; 3 - average time out of here
+ 		
+@@ -1903,6 +1806,7 @@
+ #pragma asmend
+ #endif
+ 
++
+ #ifdef _hIIInit
+ 
+ void hIIInit()
+@@ -1959,3 +1863,16 @@
+  return bACKDT;
+ }
+ #endif
++
++
++
++
++
++
++
++
++
++
++
++
++

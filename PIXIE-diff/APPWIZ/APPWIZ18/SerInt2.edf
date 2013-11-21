@@ -1,0 +1,94 @@
+[Main]
+Name=Interrupt Driven Serial Interface 2
+ShortName=SerInt2
+ASMFileName=
+HelpText=Uses 2nd Asynchronous Serial Hardware Module
+Icon=SerInt2.bmp
+HasInterrupt=1
+Group=Data
+nTemp=0
+AppType=0
+IniFileName=SerInt2.h
+LoopCall=
+AllowMulti=0
+HelpApp=
+IntPri=0
+nConfig=2
+UseAsm=1
+
+[IOS]
+nIO=2
+IO0=Rx2,I,6,2,1
+IO1=Tx2,O,6,1,1
+
+[Parameters]
+;buffer sizes are fixed in the support code - serint2.h,serint2.c
+nPar=2
+Name0=SERINTRATE2,Serial Bit Rate
+Type0=0,75,115200
+Default0=19200
+Name1=SER2ENABLE,Enable serial 2 by default
+Type1=3
+Default1=1
+Name2=RXBUFSZ2x,Receive Buffer Size
+Type2=1,3
+Default2=32
+List2=8,16,32,64,128
+Name3=TXBUFSZ2x,Transmit Buffer Size
+Type3=1,3
+Default3=8
+List3=8,16,32,64,128
+Name4=DefMemAdd2,Define Buffer Addresses Manually
+Type4=3
+Default4=0
+Name5=TxBufStart2,Manual Transmit Buffer Address
+Type5=2,16
+Default5=H'00D0'
+Name6=RxBufStart2,Manual Receive Buffer Address
+Type6=2,16
+Default6=H'00E0'
+
+[Interrupt]
+NLines=3
+Line0=#ifdef SerInt2IntUsed
+Line1=>SerIntHandler2();
+Line2=#endif
+
+[Init]
+HasInit=1
+InitCall=SerIntInit2
+nLines=0
+Line0=unsigned char TxTab2[TXBUFSZ2];
+Line1=unsigned char RxTab2[RXBUFSZ2];
+
+[Occurrences]
+nOccur=2
+Name0=TxFree2,Transmission buffer has space,,,0
+Name1=RxByte2,Byte received on serial interface,,,0
+
+[HookElements]
+nHooked=0
+
+[PublicCalls]
+nCalls=4
+nVars=0
+Name0=unsigned char GetRxSize2();
+Help0=Return the number of bytes in the Receive Buffer
+Name1=unsigned char GetTxSize2();
+Help1=Return the size of the Transmit Buffer 
+Name2=void AddTx2(unsigned char V);
+Help2=Add byte V to Transmit buffer
+Name3=unsigned char WaitRx2();
+Help3=Get a byte from the receive buffer - wait if none available
+
+[InComp]
+NLines=0
+
+[AutoVar]
+nAVar=3
+Name0=INTCON,255,64,1
+Name1=PIE3,255,48,1
+Name2=BAUDCON2,255,8,0
+
+[Defines]
+nDefines=0
